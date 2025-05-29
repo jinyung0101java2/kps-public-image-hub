@@ -8,64 +8,64 @@ package org.kps.pub.image.hub.ui.common;
  * @since 2021.06.14
  */
 public class ConstantsUrl {
-    public static final String URI_CP_BASE_URL = "/container-platform";
-    public static final String URI_CP_GLOBAL_URL = "/container-platform";
-    public static final String URI_CP_INDEX_URL = "/container-platform/clusters";
-    public static final String URI_CP_CLUSTERS_NAMESPACES = "/container-platform/namespaces";
-    public static final String URI_CP_CLUSTERS_NODES = "/container-platform/nodes";
+    public static final String URI_CP_BASE_URL = "/hub";
+    public static final String URI_CP_GLOBAL_URL = "/hub";
+    public static final String URI_CP_INDEX_URL = "/hub/clusters";
+    public static final String URI_CP_CLUSTERS_NAMESPACES = "/hub/namespaces";
+    public static final String URI_CP_CLUSTERS_NODES = "/hub/nodes";
 
-    public static final String URI_CP_WORKLOADS_DEPLOYMENTS = "/container-platform/deployments";
-    public static final String URI_CP_WORKLOADS_PODS = "/container-platform/pods";
-    public static final String URI_CP_WORKLOADS_REPLICASETS = "/container-platform/replicaSets";
+    public static final String URI_CP_WORKLOADS_DEPLOYMENTS = "/hub/deployments";
+    public static final String URI_CP_WORKLOADS_PODS = "/hub/pods";
+    public static final String URI_CP_WORKLOADS_REPLICASETS = "/hub/replicaSets";
 
-    public static final String URI_CP_SERVICES_SERVICES = "/container-platform/services";
-    public static final String URI_CP_SERVICES_INGRESSES = "/container-platform/ingresses";
+    public static final String URI_CP_SERVICES_SERVICES = "/hub/services";
+    public static final String URI_CP_SERVICES_INGRESSES = "/hub/ingresses";
 
-    public static final String URI_CP_STORAGES_STORAGECLASSES = "/container-platform/storageClasses";
-    public static final String URI_CP_STORAGES_PERSISTENTVOLUMES = "/container-platform/persistentVolumes";
-    public static final String URI_CP_STORAGES_PERSISTENTVOLUMECLAIMS = "/container-platform/persistentVolumeClaims";
+    public static final String URI_CP_STORAGES_STORAGECLASSES = "/hub/storageClasses";
+    public static final String URI_CP_STORAGES_PERSISTENTVOLUMES = "/hub/persistentVolumes";
+    public static final String URI_CP_STORAGES_PERSISTENTVOLUMECLAIMS = "/hub/persistentVolumeClaims";
 
-    public static final String URI_CP_MANAGEMENTS_LIMITRANGES = "/container-platform/limitRanges";
-    public static final String URI_CP_MANAGEMENTS_RESOURCEQUOTAS = "/container-platform/resourceQuotas";
-    public static final String URI_CP_MANAGEMENTS_ROLES = "/container-platform/roles";
-    public static final String URI_CP_MANAGEMENTS_USERS_ADMIN = "/container-platform/admin";
-    public static final String URI_CP_MANAGEMENTS_USERS = "/container-platform/users";
-    public static final String URI_CP_MANAGEMENTS_INACTIVE_USERS = "/container-platform/inactiveUsers";
-    public static final String URI_CP_CONFIGS_CONFIGMAPS = "/container-platform/configMaps";
-    public static final String URI_CP_CONFIGS_SECRETS = "/container-platform/secrets";
-    public static final String URI_CP_CONFIGS_VAULT_SECRETS = "/container-platform/vaultSecrets";
+    public static final String URI_CP_MANAGEMENTS_LIMITRANGES = "/hub/limitRanges";
+    public static final String URI_CP_MANAGEMENTS_RESOURCEQUOTAS = "/hub/resourceQuotas";
+    public static final String URI_CP_MANAGEMENTS_ROLES = "/hub/roles";
+    public static final String URI_CP_MANAGEMENTS_USERS_ADMIN = "/hub/admin";
+    public static final String URI_CP_MANAGEMENTS_USERS = "/hub/users";
+    public static final String URI_CP_MANAGEMENTS_INACTIVE_USERS = "/hub/inactiveUsers";
+    public static final String URI_CP_CONFIGS_CONFIGMAPS = "/hub/configMaps";
+    public static final String URI_CP_CONFIGS_SECRETS = "/hub/secrets";
+    public static final String URI_CP_CONFIGS_VAULT_SECRETS = "/hub/vaultSecrets";
 
-    public static final String URI_CP_CHAOS_EXPERIMENTS = "/container-platform/experiments";
-    public static final String URI_CP_CHAOS_EVENTS = "/container-platform/events";
-    public static final String URI_CP_INFO_ACCESS = "/container-platform/access";
-    public static final String URI_CP_INFO_PRIVATE_REPOSITORY = "/container-platform/private_repository";
+    public static final String URI_CP_CHAOS_EXPERIMENTS = "/hub/experiments";
+    public static final String URI_CP_CHAOS_EVENTS = "/hub/events";
+    public static final String URI_CP_INFO_ACCESS = "/hub/access";
+    public static final String URI_CP_INFO_PRIVATE_REPOSITORY = "/hub/private_repository";
 
-    public static final String URI_CP_GLOBAL_CLUSTERS = "/global/clusters";
-    public static final String URI_CP_GLOBAL_CLOUD_ACCOUNTS = "/global/cloudAccounts";
-    public static final String URI_CP_GLOBAL_INSTANCE_CODE_TEMPLATES = "/global/templates";
-    public static final String URI_CP_GLOBAL_SSH_KEYS = "/global/sshKeys";
+    public static final String URI_CP_GLOBAL_CLUSTERS = "/hub/global/clusters";
+    public static final String URI_CP_GLOBAL_CLOUD_ACCOUNTS = "/hub/global/cloudAccounts";
+    public static final String URI_CP_GLOBAL_INSTANCE_CODE_TEMPLATES = "/hub/global/templates";
+    public static final String URI_CP_GLOBAL_SSH_KEYS = "/hub/global/sshKeys";
 
-    public static final String URI_CP_GLOBAL_ = "/global/templates";
+    public static final String URI_CP_GLOBAL_ = "/hub/global/templates";
 
 
-    public static final String URI_CP_CATALOG_REPOSITORIES = "/catalog/repositories";
-    public static final String URI_CP_CATALOG_RELEASES = "/catalog/releases";
-    public static final String URI_CP_CATALOG_CHARTS = "/charts";
+    public static final String URI_CP_CATALOG_REPOSITORIES = "/hub/catalog/repositories";
+    public static final String URI_CP_CATALOG_RELEASES = "/hub/catalog/releases";
+    public static final String URI_CP_CATALOG_CHARTS = "/hub/charts";
 
-    public static final String URI_CP_CATALOG_INSTALL = "/install";
+    public static final String URI_CP_CATALOG_INSTALL = "/hub/install";
 
-    public static final String URI_CP_LIST = "/list";
-    public static final String URI_CP_DETAILS = "/details";
-    public static final String URI_CP_VAULT_DETAILS = "/vault/details";
-    public static final String URI_CP_CREATE = "/create";
-    public static final String URI_CP_UPDATE = "/update";
-    public static final String URI_CP_POPUP = "/popup";
-    public static final String URI_CP_LOGS = "/logs";
+    public static final String URI_CP_LIST = "/hub/list";
+    public static final String URI_CP_DETAILS = "/hub/details";
+    public static final String URI_CP_VAULT_DETAILS = "/hub/vault/details";
+    public static final String URI_CP_CREATE = "/hub/create";
+    public static final String URI_CP_UPDATE = "/hub/update";
+    public static final String URI_CP_POPUP = "/hub/popup";
+    public static final String URI_CP_LOGS = "/hub/logs";
 
-    public static final String URI_CP_ADD = "/add";
-    public static final String URI_CP_UPGRADE = "/upgrade";
-    public static final String URI_CP_GET_USER_LOGIN_DATA = "/container-platform/userLoginData";
-    public static final String URI_CP_REFRESH_TOKEN = "/container-platform/refreshToken";
+    public static final String URI_CP_ADD = "/hub/add";
+    public static final String URI_CP_UPGRADE = "/hub/upgrade";
+    public static final String URI_CP_GET_USER_LOGIN_DATA = "/hub/userLoginData";
+    public static final String URI_CP_REFRESH_TOKEN = "/hub/refreshToken";
 
     public static final String URI_CP_SESSION_OUT = "/sessionout";
     public static final String URI_AUTHENTICATION_FAILED = "/error/authenticationFailed";
