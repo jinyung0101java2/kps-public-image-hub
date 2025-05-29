@@ -6,15 +6,11 @@
 <div layout:fragment="content">
     <div id="content" class="sub-page">
         <article class="location">
-            <ul>
-                    <li><a onclick="movePage(URI_CP_CATALOG_REPOSITORIES)">Catalogs</a></li>
-                    <li><a onclick="movePage(URI_CP_CATALOG_REPOSITORIES)">Repositories</a></li>
-                </ul>
             <!-- Click event class="on" -->
             <fieldset>
                     <input type="text" name="keyword" id="searchText" autocomplete="off" th:placeholder="#{M0017}" />
                     <button type="submit" id="search" th:text="#{M0031}"></button>
-                </fieldset>
+            </fieldset>
         </article>
             <article class="base">
                 <div class="notice">

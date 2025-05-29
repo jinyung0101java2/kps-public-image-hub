@@ -79,12 +79,12 @@ body {font-family:'Apple SD Gothic Neo',"Noto Sans KR", "맑은 고딕", sans-se
 
 /*------------------------ Header -------------------------*/
 header {position:absolute; top:0; left:0; z-index:2; width:100%;}
-header > div {position:relative; width:1600px; min-width:1600px; height:110px; margin:0 auto; padding-top:43px;}
+header > div {position:relative; height:60px; margin:0 auto; background-color: #0ACF83}
 /*logo*/
-header > div h1 {float:left; width:310px; padding-top:8px; padding-left:44px;}
+header > div h1 {float:left; width:310px; padding-left:40px; padding-top:8px;}
 header > div h1 a {display:block;}
 /*menu*/
-header > div > div {float:left; width:1150px; height:68px; margin:0 70px; border-bottom:1px solid rgba(255, 255, 255, 0.281); display: flex;}
+header > div > div {float:left; width:76%; height:68px; margin:0 70px; border-bottom:1px solid rgba(255, 255, 255, 0.281); display: flex;}
 /*title*/
 header > div > div h3 {width: 250px; position:relative; padding-bottom:34px; padding-top:3px; color:#ffffff; font-size:27px; line-height:30px; margin-right: 40px;}
 header > div > div h3 > a {color:#ffffff; font-size:27px; display:block; line-height:30px; padding-right:30px; background:url("../img/arrowtop_icon.png") no-repeat 0 0; background-position:right 50%; transition:.3s; white-space: nowrap;  text-overflow: ellipsis; overflow: hidden;}
@@ -105,7 +105,7 @@ header > div > div h3 ul li a.on {background-color:#ff7a0f; color:#ffffff;}
 .scroll02::-webkit-scrollbar-thumb {background-color:#c1c1c1; border-radius:10px; border:2px solid #fafafa;}
 
 /*member-menu*/
-header > div > div > div:not(.g-select-wrap) { padding-top:3px; margin-left: auto; margin-right: 0; !important; }
+header > div > div > div:not(.g-select-wrap) { padding-top:12px; margin-left: auto; margin-right: 0; !important; }
 header > div > div > div > a {float:left; color:rgba(255, 255, 255, 0.568); padding-left:37px; background:url("../img/logout_icon.svg") no-repeat 0 0; background-position:left 3px; transition:.3s; line-height:31px; margin-top: 3.5px; background-size: 23px;}
 header > div > div > div > a:hover {color:#fff;}
 header > div > div > div > div {float:left; margin-left:26px;}
@@ -113,7 +113,7 @@ header > div > div > div > div > a {text-indent:-9999px; display:inline-block; w
 /*------------------------ // Header -------------------------*/
 
 /*------------------------ Main Container -------------------------*/
-#container {position:relative; overflow:hidden; display:flex; width:1600px; min-height:100%; margin:0 auto;}
+#container {position:relative; overflow:hidden; display:flex; min-height:100%; margin:0 auto;}
 
 
 /*------------------------ my info -------------------------*/
@@ -135,7 +135,7 @@ header > div > div > div > div > a {text-indent:-9999px; display:inline-block; w
 
 
 /*------------------------ Aside -------------------------*/
-aside {width:310px; background-color:#fff; padding:177px 47px 0 47px; font-family:'Apple SD Gothic Neo B', sans-serif;}
+aside {width:240px; background-color:#f3f3f3; padding:177px 47px 0 47px; font-family:'Apple SD Gothic Neo B', sans-serif;}
 aside nav > ul > li {font-size:22px; line-height:35px; margin-top:26px; position:relative;}
 aside nav > ul > li:first-child {margin-top:0;}
 aside nav ul li ul {height:0!important; opacity:0;}
