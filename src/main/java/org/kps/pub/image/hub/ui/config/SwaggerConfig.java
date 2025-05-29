@@ -30,7 +30,7 @@ public class SwaggerConfig {
 
     private Info apiInfo() {
         return new Info()
-                .title("K-PaaS Container Platform UI Docs")
+                .title("K-PaaS Public Image Hub UI Docs")
                 .version("v1.0")
                 .description("This is a API Document created with swagger.")
                 .license(getLicense());
