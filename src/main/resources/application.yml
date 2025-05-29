@@ -28,7 +28,7 @@ keycloak:
   introspectUri: ${KEYCLOAK_URI}/realms/${KEYCLOAK_CP_REALM}/protocol/openid-connect/token/introspect
 
 server:
-  port: ${PORT:8090}
+  port: ${PORT:8095}
   servlet:
     session:
       cookie:
