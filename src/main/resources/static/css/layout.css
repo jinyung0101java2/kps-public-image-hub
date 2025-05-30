@@ -201,18 +201,18 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 
 /*------------------------ Sub-page -------------------------*/
 /* location */
-.location {padding:111px 71px 0px 71px; overflow:hidden; height:167px;}
+.location {padding:66px 71px 0px 33px; overflow:hidden; height:167px;}
 .location ul {overflow:hidden; float:left; margin-top:20px; padding-bottom:16px;}
 .location ul li {float:left; padding-left:18px; margin-left:18px; position:relative; color:#ffffff;}
 .location ul li:first-child {padding-left:0; margin-left:0;}
 .location ul li:after {content:""; width:6px; height:6px; border-top:1px solid #afb5bb; border-right:1px solid #afb5bb; transform:rotate(45deg); position:absolute; top:5px; left:0;}
 .location ul li:first-child:after {content:""; display:none;}
-.location ul li a {color:#afb5bb; display:block;}
-.location ul li a:hover {border-bottom:1px solid #afb5bb;}
+.location ul li a {color:#0ca583; display:block;}
+.location ul li a:hover {border-bottom:1px solid #0ca583;}
 
 /* search bar */
 .location fieldset {float:right; overflow:hidden; margin-top:8px;}
-.location fieldset input {display:none; background-color:#3a3e48; padding:0 13px; line-height:38px; height:40px; width:370px; float:left; color:#afb5bb;}
+.location fieldset input {display:none; padding:0 13px; line-height:38px; height:40px; float:left; color:#0ca583; border-bottom:solid 2px;}
 .location fieldset.on input {display:block;}
 .location fieldset :-ms-input-placeholder {color:rgba(255, 255, 255, 0.568);}
 .location fieldset ::-webkit-input-placeholder {color:rgba(255, 255, 255, 0.568);}
@@ -283,10 +283,10 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 .table_style01 {margin-bottom:57px; border-top:2px solid #333333;}
 .notice h4 {text-align:left; font-size:22px; line-height:30px; font-family:'Apple SD Gothic Neo B', sans-serif; font-weight:500; margin-bottom:6px;}
 .table_style01 table {background-color:#fff; padding-bottom:20px;}
-.table_style01 table tr th {text-align:center; background-color:#f7f7f7; padding:12px 11px 10px 11px; border-bottom:1px solid #ebebeb; font-family:'Apple SD Gothic Neo',"Noto Sans KR", "맑은 고딕", "Font Awesome 5 Free"; font-weight:500; border-left:1px solid #ebebeb;}
+.table_style01 table tr th {text-align:center; background-color:#f7f7f7; padding:7px 7px 7px 7px; border-bottom:1px solid #ebebeb; font-family:'Apple SD Gothic Neo',"Noto Sans KR", "맑은 고딕", "Font Awesome 5 Free"; font-weight:500; border-left:1px solid #ebebeb;}
 .table_style01 table tr th:first-child {border-left:0;}
 .table_style01 table tr th.left {text-align:left;}
-.table_style01 table tr td {text-align:center; border:1px solid #ebebeb; border-left:0; padding:18px 11px 16px 11px; color:#818894; font-size:15px; white-space:normal; letter-spacing:-0.2px;}
+.table_style01 table tr td {text-align:center; border:1px solid #ebebeb; border-left:0; padding:7px 7px 7px 7px; color:#818894; font-size:15px; white-space:normal; letter-spacing:-0.2px;}
 .table_style01 table tr td:last-child {border-right:0;}
 .table_style01 table tr td.active,
 .table_style01 table tr td.running,
