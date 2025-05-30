@@ -74,6 +74,8 @@ chaosApi:
   url: http://localhost:8092
 catalogApi:
   url: http://localhost:8093
+harborApi:
+  url: ${HARBOR_API_URI}
 
 ---
 spring:
@@ -91,3 +93,5 @@ chaosApi:
   url: ${CP_PORTAL_CHAOS_API_URI}
 catalogApi:
   url: ${CP_PORTAL_CATALOG_API_URI}
+harborApi:
+  url: ${HARBOR_API_URI}

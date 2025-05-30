@@ -1,6 +1,6 @@
 
 const func = {
-
+	harborUrl : URI_REQUEST_HARBOR_API,
 	url : URI_REQUEST_CP_API,
 	catalogUrl : URI_REQUEST_CATALOG_API,
 	chaosUrl : URI_REQUEST_CHAOS_API,
@@ -598,6 +598,63 @@ const func = {
 			request.send(); },0);
 	},
 
+	loadHarborData(method, url, header, callbackFunction, list){
+		if(sessionStorage.getItem('token') == null){
+			func.loginCheck();
+		};
+
+		if(url == null) {
+			callbackFunction();
+			return false;
+		}
+
+		let credential = this.encodeBase64()
+
+		var request = new XMLHttpRequest();
+
+		setTimeout(function() {
+			request.open(method, url, false);
+			request.setRequestHeader('Content-type', header);
+			request.setRequestHeader('Authorization','Basic ' + credential);
+			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
+			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
+
+			request.onreadystatechange = () => {
+				if (request.readyState === XMLHttpRequest.DONE){
+					if(request.status === 200 && request.responseText != ''){
+						var resultMessage = JSON.parse(request.responseText).resultMessage;
+						var resultCode =  JSON.parse(request.responseText).resultCode;
+						var detailMessage = JSON.parse(request.responseText).detailMessage;
+						//토큰 만료 검사
+						/*if( resultMessage == 'TOKEN_EXPIRED') {
+							func.refreshToken();
+							return func.loadData(method, url, header, callbackFunction, list);
+						}
+						else if(resultMessage == 'TOKEN_FAILED') {
+							func.loginCheck();
+							return func.loadData(method, url, header, callbackFunction, list);
+						}
+						else if(resultCode != RESULT_STATUS_SUCCESS) {
+							if(document.getElementById('loading')){
+								document.getElementById('wrap').removeChild(document.getElementById('loading'));
+							};
+							func.alertPopup('ERROR', detailMessage, true, MSG_CONFIRM, 'closed');
+						}
+						else {
+							callbackFunction(JSON.parse(request.responseText), list);
+						}*/
+						callbackFunction(JSON.parse(request.responseText), list);
+					} else if(JSON.parse(request.responseText).httpStatusCode === 500){
+						console.log("500")
+						sessionStorage.clear();
+						func.loginCheck();
+					};
+				};
+			};
+
+			request.send(); },0);
+	},
+
 	/////////////////////////////////////////////////////////////////////////////////////
 	// 상태 데이터 로드 - statusLoadData(method, url, callbackFunction)
 	// (전송타입, url, 콜백함수)
@@ -950,5 +1007,20 @@ const func = {
 		}else {
 			el.title="Expand Content"
 		}
+	},
+
+	encodeBase64() {
+
+		let credential = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse("admin:Harbor12345"))
+		console.log(credential)
+		this.decodeBase64(credential)
+		return credential;
+	},
+
+	decodeBase64(data) {
+
+		let credential = CryptoJS.enc.Base64.parse(data).toString(CryptoJS.enc.Utf8)
+		console.log(credential)
+		return credential;
 	}
 }

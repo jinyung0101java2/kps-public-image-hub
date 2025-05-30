@@ -23,23 +23,23 @@
                 <div class="table_style01">
                     <!-- board -->
                     <table>
-                        <caption>clusters List</caption>
+                        <caption>Projects List</caption>
                         <colgroup >
-                            <col width="70%" />
-                            <col width="15%" />
-                            <col width="15%" />
-                            <!--							<col width="10%" />-->
-                            <!--							<col width="10%" />-->
-                            <!--							<col width="8%" />-->
+                            <col width="17%" />
+                            <col width="17%" />
+                            <col width="17%" />
+                            <col width="17%" />
+                            <col width="16%" />
+                            <col width="16%" />
                         </colgroup>
                         <thead>
                         <tr>
                             <th scope="col">Name</th>
-                            <th scope="col">Provider</th>
-                            <!--							<th scope="col">k8s version</th>-->
-                            <!--							<th scope="col">node</th>-->
-                            <!--							<th scope="col">pods</th>-->
-                            <th scope="col">status</th>
+                            <th scope="col">Access Level</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Repositories Count</th>
+                            <th scope="col">Create Time</th>
                         </tr>
                         </thead>
                         <tbody class="listTable">
@@ -65,35 +65,39 @@
             IS_GLOBAL = true;
             func.init(ASIDE_DP1.IMAGES, ASIDE_DP2.PROJECTS);
 
-            const cluster = {
+            const project = {
                 offset : 0, // 로드 페이지 넘버
                 limit : 10, // 로드 게시물 개수
                 allItemCount : 0, //게시물 촐 개수
                 type : 'administrator',
 
                 init(){
-                    func.nameLoad = cluster.reset;
+                    func.nameLoad = project.reset;
 
-                    cluster.load();
+                    project.load();
 
-                    cluster.event();
+                    project.event();
                 },
 
                 reset(){
                     func.removeHtml(document.querySelector('.listTable'));
-                    cluster.offset = 0;
-                    cluster.load();
+                    project.offset = 0;
+                    project.load();
                 },
 
                 load(){
                     func.loading();
 
                     // nameSpace 정보 조회
-                    func.loadData('GET', `${func.url}clusters?searchName=${document.getElementById('searchText').value}&limit=${cluster.limit}&offset=${cluster.offset}`, 'application/json', cluster.draw);
+                    //https://harbor.133.186.219.222.nip.io/api/v2.0/projects?page=1&page_size=15
+                    // func.loadData('GET', `${func.harborUrl}/api/v2.0/projects?searchName=${document.getElementById('searchText').value}&limit=${project.limit}&offset=${project.offset}`, 'application/json', project.draw);
+                    func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', project.draw);
                 },
 
                 draw(data){
-                    if(cluster.offset == 0) cluster.allItemCount = data.itemMetaData.allItemCount;
+                    alert("data:"+ JSON.stringify(data))
+                    console.log(JSON.stringify(data))
+                  /*  if(cluster.offset == 0) cluster.allItemCount = data.itemMetaData.allItemCount;
                     let html;
                     if(data.httpStatusCode == 200){
                         if(data.items.length > 0){
@@ -127,16 +131,16 @@
                         document.getElementById('wrap').removeChild(document.getElementById('loading'));
                     }
 
-                    cluster.listEvent();
+                    cluster.listEvent();*/
                 },
 
                 event(){
                     // more 버튼 event
                     document.querySelector('.more').addEventListener('click', () => {
-                        if(document.querySelector('.listTable').querySelectorAll('tr').length < cluster.allItemCount){
-                            cluster.offset++;
+                        if(document.querySelector('.listTable').querySelectorAll('tr').length < project.allItemCount){
+                            project.offset++;
 
-                            cluster.load();
+                            project.load();
                         }
                     }, false);
 
@@ -170,7 +174,7 @@
                 },
             };
 
-            cluster.init();
+            project.init();
         }
     </script>
 </th:block>
