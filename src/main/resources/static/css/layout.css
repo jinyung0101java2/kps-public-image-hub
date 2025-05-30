@@ -146,13 +146,13 @@ aside nav ul li ul li {margin-top:10px;}
 aside nav ul li ul li:first-child {margin-top:0;}
 aside nav ul li ul li a {font-size:18px; color:#a4abb6;}
 aside nav > ul > li a {transition:.3s;}
-aside nav > ul > li a.on {color:#f85812;}
-aside nav > ul > li a:hover {color:#f85812;}
+aside nav > ul > li a.on {color:#0ca583;}
+aside nav > ul > li a:hover {color:#0ca583;}
 
 /*underline*/
 aside nav > ul > li a {position:relative;}
-aside nav > ul > li a.on:before {content:""; width:100%; height:11px; background-color:rgba(248, 87, 18, 0.103); position:absolute; bottom:0px; left:-2px;}
-aside nav > ul > li ul li a:hover:before {content:""; width:100%; height:11px; background-color:rgba(248, 87, 18, 0.103); position:absolute; bottom:0px; left:-2px;}
+aside nav > ul > li a.on:before {content:""; width:100%; height:11px; background-color:#0ca58324; position:absolute; bottom:0px; left:-2px;}
+aside nav > ul > li ul li a:hover:before {content:""; width:100%; height:11px; background-color:#0ca58324; position:absolute; bottom:0px; left:-2px;}
 
 /*plus btn*/
 aside nav > ul > li.plus:before {content:""; width:12px; height:2px; background-color:#b6bcc5; position:absolute; top:13px; right:1px;}
@@ -162,7 +162,7 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 
 
 /*------------------------ Content -------------------------*/
-#container #content {flex:1; min-width:1290px; width:1290px; background:linear-gradient( to right, #e7e9ed, #f5f7fa 2.5%)}
+#container #content {flex:1; width:1700px;}
 
 /*------------------------ view -------------------------*/
 .view {background:linear-gradient( to right, #15181d, #292d37 2.5%); padding:111px 71px 66px 71px;}
@@ -201,7 +201,7 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 
 /*------------------------ Sub-page -------------------------*/
 /* location */
-.location {background:linear-gradient( to right, #15181d, #292d37 2.5%); padding:111px 71px 0px 71px; overflow:hidden; height:167px;}
+.location {padding:111px 71px 0px 71px; overflow:hidden; height:167px;}
 .location ul {overflow:hidden; float:left; margin-top:20px; padding-bottom:16px;}
 .location ul li {float:left; padding-left:18px; margin-left:18px; position:relative; color:#ffffff;}
 .location ul li:first-child {padding-left:0; margin-left:0;}
@@ -224,7 +224,7 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 .base-top.tab-cont-wrap > div {background-color:#ffffff; padding:50px 40px 30px 40px; box-shadow:-3px 2px 5px -5px rgba(204, 204, 204, 0.5);}
 
 /* base */
-.base {padding:60px 70px 200px 70px;}
+/*.base {padding:60px 70px 200px 70px;}*/
 .base > div:first-child {background-color:#ffffff; padding:50px 40px 30px 40px; box-shadow:-3px 2px 5px -5px rgba(204, 204, 204, 0.5);}
 .base.tab-cont-wrap > div {background-color:#ffffff; padding:50px 40px 30px 40px; box-shadow:-3px 2px 5px -5px rgba(204, 204, 204, 0.5);}
 
@@ -360,20 +360,20 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 
 /* 생성btn */
 .notice {position:relative;}
-.notice > a:not(.more):not(.aside_btn) {position:absolute; top:50px; right:40px; color:#ffffff; padding:11px 13px 7px 13px; background-color:#0556c0; border-radius:2px;}
+.notice > a:not(.more):not(.aside_btn) {position:absolute; top:50px; right:40px; color:#ffffff; padding:11px 13px 7px 13px; background-color:#0ACF83; border-radius:2px;}
 .notice > a.off {display:none;}
 
 /* btn */
 .btn {margin-top:60px; overflow:hidden; text-align:center; font-family:'Apple SD Gothic Neo L', sans-serif;}
 .btn a {color:#fff; background-color:#bdbfc4; float:left; width:186px; line-height:52px; height:54px; font-size:16px; border-radius:2px;}
-.btn button {width :186px; float:right; background-color:#0950bf; color:#fff; line-height:52px; height:54px; font-size:16px; font-weight:300; border-radius:2px; font-family:'Apple SD Gothic Neo L', sans-serif;}
+.btn button {width :186px; float:right; background-color:#0ACF83; color:#fff; line-height:52px; height:54px; font-size:16px; font-weight:300; border-radius:2px; font-family:'Apple SD Gothic Neo L', sans-serif;}
 
 /* btn02 */
 .btn02 {margin-top:29px; overflow:hidden; text-align:center;  font-family:'Apple SD Gothic Neo L', sans-serif;}
 .btn02 > button {color:#fff; background-color:#bdbfc4; float:left; width:120px; line-height:55px; height:52px; font-size:16px; border-radius:2px;}
 .btn02 div {float:right; overflow:hidden;}
-.btn02 div a {width :120px; float:left; background-color:#0950bf; color:#fff; line-height:55px; height:52px; font-size:16px; font-weight:300; border-radius:2px;}
-.btn02 div button {width :120px; float:left; background-color:#0950bf; color:#fff; line-height:55px; height:52px; font-size:16px; font-weight:300; border-radius:2px; font-family:'Apple SD Gothic Neo L', sans-serif;}
+.btn02 div a {width :120px; float:left; background-color:#0ACF83; color:#fff; line-height:55px; height:52px; font-size:16px; font-weight:300; border-radius:2px;}
+.btn02 div button {width :120px; float:left; background-color:#0ACF83; color:#fff; line-height:55px; height:52px; font-size:16px; font-weight:300; border-radius:2px; font-family:'Apple SD Gothic Neo L', sans-serif;}
 .btn02 div a:first-child {margin-right:6px;}
 .btn02 div button:first-child {margin-right:6px;}
 
@@ -381,8 +381,8 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 .btn04 {margin-top:29px; overflow:hidden; text-align:center;  font-family:'Apple SD Gothic Neo L', sans-serif;}
 .btn04 > button {color:#fff; background-color:#bdbfc4; float:left; width:240px; line-height:55px; height:52px; font-size:16px; border-radius:2px;}
 /*.btn03 div {float:right; overflow:hidden;}
-.btn03 div a {width :120px; float:left; background-color:#0950bf; color:#fff; line-height:55px; height:52px; font-size:16px; font-weight:300; border-radius:2px;}
-.btn03 div button {width :120px; float:left; background-color:#0950bf; color:#fff; line-height:55px; height:52px; font-size:16px; font-weight:300; border-radius:2px; font-family:'Apple SD Gothic Neo L', sans-serif;}
+.btn03 div a {width :120px; float:left; background-color:#0ACF83; color:#fff; line-height:55px; height:52px; font-size:16px; font-weight:300; border-radius:2px;}
+.btn03 div button {width :120px; float:left; background-color:#0ACF83; color:#fff; line-height:55px; height:52px; font-size:16px; font-weight:300; border-radius:2px; font-family:'Apple SD Gothic Neo L', sans-serif;}
 .btn03 div a:first-child {margin-right:6px;}
 .btn03 div button:first-child {margin-right:6px;}*/
 
@@ -390,8 +390,8 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 .btn05 {margin-top:29px; overflow:hidden; text-align:center;  font-family:'Apple SD Gothic Neo L', sans-serif;}
 .btn05 > button {color:#fff; background-color:#bdbfc4; float:left; width:120px; line-height:55px; height:52px; font-size:16px; border-radius:2px;}
 .btn05 div {float:right; overflow:hidden;}
-.btn05 div a {width :90px; float:left; background-color:#0950bf; color:#fff; line-height:45px; height:42px; font-size:16px; font-weight:300; border-radius:2px;}
-.btn05 div button {width :120px; float:left; background-color:#0950bf; color:#fff; line-height:55px; height:52px; font-size:16px; font-weight:300; border-radius:2px; font-family:'Apple SD Gothic Neo L', sans-serif;}
+.btn05 div a {width :90px; float:left; background-color:#0ACF83; color:#fff; line-height:45px; height:42px; font-size:16px; font-weight:300; border-radius:2px;}
+.btn05 div button {width :120px; float:left; background-color:#0ACF83; color:#fff; line-height:55px; height:52px; font-size:16px; font-weight:300; border-radius:2px; font-family:'Apple SD Gothic Neo L', sans-serif;}
 .btn05 div a:first-child {margin-right:6px;}
 .btn05 div button:first-child {margin-right:6px;}
 
@@ -420,7 +420,7 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 .modal dl dd fieldset select {height:50px; line-height:50px; width:100%; padding-left:18px; font-size:18px; color:#47494d; cursor:pointer;}
 .modal dl dd textarea {width:100%; height:250px; overflow-y:scroll; padding:10px; font-size:16px; line-height:25px; letter-spacing:-0.8px; border:1px solid #d1d1d1;}
 .modal .table_style01 {overflow-y:auto; max-height:500px;}
-.modal .confirm {display:block; width:100%; background-color:#0950bf; color:#fff; text-align:center; line-height:54px; height:50px; margin-top:33px; font-size:17px; font-family:'Apple SD Gothic Neo L', sans-serif;}
+.modal .confirm {display:block; width:100%; background-color:#0ACF83; color:#fff; text-align:center; line-height:54px; height:50px; margin-top:33px; font-size:17px; font-family:'Apple SD Gothic Neo L', sans-serif;}
 .modal.wide .confirm {width:250px; margin:33px auto 0;}
 .modal .close {width:30px; height:30px; position:absolute; top:21px; right:21px; text-indent:-9999px;}
 .modal .close:before {content:""; width:2px; height:18px; background-color:#141414; position:absolute; top:6px; left:14px; transform:rotate(45deg);}
@@ -502,7 +502,7 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 .member .login p a {color:#1c77ff; text-decoration:underline; margin-left:10px; font-size:18px;}
 /* btn */
 .btn03 {margin-top:36px; text-align:center;}
-.btn03 button {display:block; width:100%; background-color:#0950bf; color:#fff; line-height:52px; height:54px; font-size:18px; font-weight:300; border-radius:2px; font-family:'Apple SD Gothic Neo L', sans-serif;}
+.btn03 button {display:block; width:100%; background-color:#0ACF83; color:#fff; line-height:52px; height:54px; font-size:18px; font-weight:300; border-radius:2px; font-family:'Apple SD Gothic Neo L', sans-serif;}
 
 
 /*------------------------ // Sub-page -------------------------*/
@@ -694,9 +694,9 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 }
 
 #localeLangDiv{margin: -3px 20px 0 0 !important;}
-#localeLangDiv fieldset {position:relative; display:inline-block; margin-left:1px; width:100%;}
+#localeLangDiv fieldset {position:relative; display:inline-block;}
 #localeLangDiv fieldset:after {content:""; width:10px; height:10px; border-bottom:2px solid #666666; border-left:2px solid #666666; transform:rotate(-45deg); position:absolute; top:13px; right:17px;cursor:pointer;}
-#localeLangDiv fieldset select {height: 40px; line-height:40px; width:100%; padding-left:18px; font-size:18px; color:#47494d; cursor:pointer;}
+#localeLangDiv fieldset select {height: 40px; line-height:40px; width:100%; padding-left:18px; color:#47494d; cursor:pointer;}
 #u_locale_lang{width : 115px;height: 40px;}
 
 .guideButtonDiv{margin: 3px 14px 0 0 !important; cursor:pointer; width:25px;height:25px;}
@@ -745,7 +745,7 @@ header > div > div > div > div > div ul li a.on {background-color:#ff7a0f; color
 .tab-cont-wrap .tab-btn li {margin-left: 10px;}
 .tab-cont-wrap .tab-btn li:first-child {margin-left :0;}
 .tab-cont-wrap .tab-btn a {display: block; font-size: 18px; padding: 15px; background-color: #bdbfc4; color: #fff; min-width: 150px; text-align: center;}
-.tab-cont-wrap .tab-btn li.active a {background-color: #0950bf;}
+.tab-cont-wrap .tab-btn li.active a {background-color: #0ACF83;}
 /*----------------------------- service ingress -----------------------------*/
 .creat-type2 .g-select-wrap .g-select select {height: 50px; line-height: 50px; max-width: 212px; min-width: 212px; border-color: #ebebeb;}
 .creat-type2 .g-select-wrap .g-select:after {top: 17px;}
@@ -865,7 +865,7 @@ header > div > div > div > div > div ul li a.on {background-color:#ff7a0f; color
 
 /* When the checkbox is checked, add a blue background */
 .container input:checked ~ .checkmark {
-	background-color: #0950bf;
+	background-color: #0ACF83;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
