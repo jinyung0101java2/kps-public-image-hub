@@ -7,8 +7,8 @@
     <div id="content" class="sub-page">
         <article class="location">
             <ul>
-                <li><a onclick="movePage(URI_CP_BASE_URL)">Global</a></li>
-                <li><a onclick="movePage(URI_CP_GLOBAL_CLUSTER)">Clusters</a></li>
+                <li><a onclick="movePage(URI_CP_BASE_URL)">Images</a></li>
+                <li><a onclick="movePage(URI_CP_GLOBAL_CLUSTER)">Projects</a></li>
             </ul>
             <!-- Click event class="on" -->
             <fieldset>
@@ -63,7 +63,7 @@
         window.onload = () => {
 
             IS_GLOBAL = true;
-            func.init(ASIDE_DP1.GLOBAL, ASIDE_DP2.CLUSTERS);
+            func.init(ASIDE_DP1.IMAGES, ASIDE_DP2.PROJECTS);
 
             const cluster = {
                 offset : 0, // 로드 페이지 넘버

@@ -27,11 +27,11 @@ public class IntroOverviewController {
      *
      * @return the view
      */
-    @GetMapping(value = {"/", ConstantsUrl.URI_CP_GLOBAL_URL})
+    @GetMapping(value = {"/", ConstantsUrl.URI_CP_BASE_URL})
     public Object baseView() {
         UsersLoginMetaData usersLoginMetaData = loginService.getAuthenticationUserMetaData();
         if (Constants.AUTH_ADMIN_LIST.contains(usersLoginMetaData.getUserType())) {
-            return "global/overview";
+            return "images/overview";
         }
 
         return "index";

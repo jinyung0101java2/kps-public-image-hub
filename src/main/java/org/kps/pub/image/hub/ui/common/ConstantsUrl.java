@@ -41,6 +41,7 @@ public class ConstantsUrl {
     public static final String URI_CP_INFO_PRIVATE_REPOSITORY = "/hub/private_repository";
 
     public static final String URI_CP_GLOBAL_CLUSTERS = "/hub/global/clusters";
+    public static final String URI_CP_IMAGE_PROJECTS = "/hub/image/projects";
     public static final String URI_CP_GLOBAL_CLOUD_ACCOUNTS = "/hub/global/cloudAccounts";
     public static final String URI_CP_GLOBAL_INSTANCE_CODE_TEMPLATES = "/hub/global/templates";
     public static final String URI_CP_GLOBAL_SSH_KEYS = "/hub/global/sshKeys";

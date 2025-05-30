@@ -4,13 +4,10 @@
 <aside th:fragment="asideFragment">
     <nav>
         <ul>
-            <li class="plus" aside_d1="global" sec:authorize="hasAnyAuthority('SUPER_ADMIN', 'CLUSTER_ADMIN')">
-                <a href="javascript:" class="dep01">Projects</a>
+            <li class="plus" aside_d1="images" sec:authorize="hasAnyAuthority('SUPER_ADMIN', 'CLUSTER_ADMIN')">
+                <a href="javascript:" class="dep01">Images</a>
                 <ul class="sub">
-                    <li><a onclick="movePage(URI_CP_GLOBAL_CLUSTER)" aside_d2="clusters">Clusters</a></li>
-                    <li><a onclick="movePage(URI_CP_GLOBAL_CLOUD_ACCOUNTS)" aside_d2="cloud_account">Cloud Accounts</a></li>
-                    <li><a onclick="movePage(URI_CP_GLOBAL_INSTANCE_CODE_TEMPLATES)" aside_d2="instance_code_template">Instance Code Template</a></li>
-                    <li><a onclick="movePage(URI_CP_GLOBAL_SSH_KEYS)" aside_d2="ssh_keys">SSH Keys</a></li>
+                    <li><a onclick="movePage(URI_CP_IMAGE_PROJECTS)" aside_d2="projects">Projects</a></li>
                 </ul>
             </li>
            <li class="plus" aside_d1="catalogs">
