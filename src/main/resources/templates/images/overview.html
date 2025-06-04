@@ -18,7 +18,7 @@
         </article>
         <article class="base">
             <div class="notice">
-                <h3>List</h3>
+                <h3>Projects</h3>
                 <!-- User -->
                 <div class="table_style01">
                     <!-- board -->
@@ -95,8 +95,56 @@
                 },
 
                 draw(data){
-                    alert("data:"+ JSON.stringify(data))
                     console.log(JSON.stringify(data))
+
+                    let html;
+                    if(data.length > 0){
+                        for(var i=0; i<=data.length-1; i++) {
+
+                            let accessLevel;
+                            if (data[i].metadata.public === 'true') {
+                                accessLevel = ACCESS_LEVEL_PUBLIC
+                            } else {
+                                accessLevel = ACCESS_LEVEL_PRIVATE
+                            }
+
+                            let role;
+                            if (data[i].current_user_role_id === 1) {
+                                role = ROLE_PROJECT_ADMIN
+                            } else if (data[i].current_user_role_id === 2) {
+                                role = ROLE_DEVELOPER
+                            } else if (data[i].current_user_role_id === 3) {
+                                role = ROLE_GUEST
+                            } else if (data[i].current_user_role_id === 4) {
+                                role = ROLE_MAINTAINER
+                            } else {
+                                role = ROLE_LIMITED_GUEST
+                            }
+
+                            let time = func.changeTime(data[i].update_time)
+
+
+                            html = `<tr>
+                                        <td class="left"><a class="name" href="javascript:;" data-id="${data[i].name}">${data[i].name}</a></td>
+                                        <td id="access_modifier_${i}"></td>
+                                        <td id="role_id_${i}"></td>
+                                        <td>Project</td>
+                                        <td>${data[i].repo_count}</td>
+                                        <td id="time_${i}"></td>
+                                    </tr>`;
+                            func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
+
+                            document.getElementById("access_modifier_" + i).innerText = accessLevel;
+                            document.getElementById("role_id_" + i).innerText = role;
+                            document.getElementById("time_" + i).innerText = time;
+                        }
+                    }
+
+
+
+                    if(document.getElementById('loading')){
+                        document.getElementById('wrap').removeChild(document.getElementById('loading'));
+                    }
                   /*  if(cluster.offset == 0) cluster.allItemCount = data.itemMetaData.allItemCount;
                     let html;
                     if(data.httpStatusCode == 200){

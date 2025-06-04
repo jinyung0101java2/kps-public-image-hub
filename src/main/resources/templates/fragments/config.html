@@ -186,34 +186,16 @@
      var MSG_SECS =  [[#{M0833}]];
      var MSG_AGO =  [[#{M0834}]];
 
-     // CHAOS
-     const NAMESPACESELECT = [[#{M0869}]];
-     const LABELSELECT = [[#{M0870}]];
-     const CHAOS_NAMESPACE = [[#{M0874}]];
-     const CHAOS_TOKEN = [[${@environment.getProperty('chaos.token')}]];
-     const MSG_ENTER_NAME = [[#{M0879}]];
-     const MSG_INVALID_NAME_ = [[#{M0880}]];
-     const MSG_SELECT_NAMESPACE = [[#{M0881}]];
-     const MSG_SELECT_NAMESPACESELECTOR = [[#{M0882}]];
-     const MSG_SELECT_LABELSELECTOR = [[#{M0883}]];
-     const MSG_SELECT_TARGET_POD = [[#{M0884}]];
-     const MSG_EMPTY_LATENCY = [[#{M0885}]];
-     const MSG_INVALID_LATENCY = [[#{M0886}]];
-     const MSG_EMPTY_DURATION = [[#{M0898}]];
-     const MSG_SELECT_LATENCY_UNIT = [[#{M0887}]];
-     const MSG_INVALID_DURATION = [[#{M0888}]];
-     const MSG_SELECT_DURATION_UNIT = [[#{M0889}]];
-     const MSG_SELECT_DURATION_HOUR_LIMIT = [[#{M0897}]];
-     const MSG_ENTER_STRESSORS = [[#{M0891}]];
-     const MSG_INVALID_CPU_WORKERS = [[#{M0892}]];
-     const MSG_INVALID_MEMORY_WORKERS = [[#{M0893}]];
-     const MSG_INVALID_CPU_LOAD = [[#{M0894}]];
-     const MSG_INVALID_MEMORY_SIZE = [[#{M0895}]];
-     const MSG_SELECT_MEMORY_SIZE_UNIT = [[#{M0896}]];
-     const MSG_OVER_SELECTED_PODS = [[#{M0899}]];
-     const MSG_NO_METRIC_LESS_30SECONDS = [[#{M0922}]];
-     const MSG_NO_METRIC_OVER_6PODS = [[#{M0927}]];
-     const MSG_UNABLE_CHAOS = [[#{M0928}]];
+    // Role
+    var ROLE_PROJECT_ADMIN = "Project Admin"
+    var ROLE_DEVELOPER = "Developer"
+    var ROLE_GUEST = "Guest"
+    var ROLE_MAINTAINER = "Maintainer"
+    var ROLE_LIMITED_GUEST = "Limited Guest"
+
+    // Access Level
+    var ACCESS_LEVEL_PRIVATE = "Private";
+    var ACCESS_LEVEL_PUBLIC = "Public"
 
     // Create Resources
     const MSG_ALLOW_TRAFFIC_BETWEEN_NAMESPACES_CHK =  [[#{M0936}]];

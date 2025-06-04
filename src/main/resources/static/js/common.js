@@ -873,36 +873,6 @@ const func = {
 		};
 	},
 
-	vaultDelAlertPopup(title, text, text2, bull, name, callback){
-		var html = `<div class='modal-wrap' id='alertModal'><div class='modal'><h5>${title}</h5><p>${text}</p><p>${text2}</p>`;
-		if(bull){
-			html += `<a class='confirm' href='javascript:;'>${name}</a>`;
-		};
-		html += `<a class='close' href='javascript:;'>` + MSG_CLOSE + `</a></div></div>`;
-
-		if(document.getElementById('alertModal') !== null) {
-			document.getElementById('wrap').removeChild(document.getElementById('alertModal'));
-		}
-
-		func.appendHtml(document.getElementById('wrap'), html, 'div');
-
-		document.getElementById('alertModal').querySelector('.close').addEventListener('click', (e) => {
-			document.getElementById('wrap').removeChild(document.getElementById('alertModal'));
-		}, false);
-
-		if(callback){
-			document.getElementById('alertModal').querySelector('.confirm').addEventListener('click', (e) => {
-				if(callback != 'closed'){
-					callback();
-				};
-
-				if(!IS_VCHK) {
-					document.getElementById('wrap').removeChild(document.getElementById('alertModal'));
-				}
-			}, false);
-		};
-	},
-
 	moveToMain() {
 		location.href = URI_CP_BASE_URL;
 	},
@@ -1010,6 +980,10 @@ const func = {
 	},
 
 	encodeBase64() {
+		return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse("admin:Harbor12345"))
+	},
+
+	/*encodeBase64() {
 
 		let credential = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse("admin:Harbor12345"))
 		console.log(credential)
@@ -1022,5 +996,25 @@ const func = {
 		let credential = CryptoJS.enc.Base64.parse(data).toString(CryptoJS.enc.Utf8)
 		console.log(credential)
 		return credential;
+	}*/
+
+	changeTime(time) {
+		const create_datetime = time;
+		const date = new Date(create_datetime);
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, "0");
+		const day = String(date.getDate()).padStart(2, "0");
+		const hours = String(date.getHours()).padStart(2, "0");
+		const minutes = String(date.getMinutes()).padStart(2, "0");
+		let hoursPm = ``;
+
+		if (hours > 12) {//13 ~ 23
+			hoursPm = hours - 12
+			return `${year}-${month}-${day}, ${hoursPm}:${minutes} PM`;
+		} else if (hours === 12) {//12
+			return `${year}-${month}-${day}, ${hours}:${minutes} PM`;
+		} else if (hours < 12) { //0 ~ 11
+			return `${year}-${month}-${day}, ${hours}:${minutes} AM`;
+		}
 	}
 }
