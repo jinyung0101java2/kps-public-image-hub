@@ -1021,7 +1021,8 @@ const func = {
 	byteToGib(bytes) {
 
 		let gib = bytes / 1024 / 1024 / 1024;
-		gib.toFixed(2);
-		return gib;
+		let result;
+		result = gib.toFixed(2);
+		return result;
 	}
 }

@@ -59,8 +59,8 @@
                 <li>
                     <div class="quota-statistics" style="border: 1px solid #d3d3d3; border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px; height: 124px; margin-left: 10px; margin-right: 40px">
                         <h3>Quota used</h3>
-                        <div>
-                            <div id="storage_total"></div>
+                        <div style="display: flex; text-align: center;">
+                            <div id="storage_total" style="font-size: 30px; padding: 30px 0px 25px 40px"></div><div style="padding: 34px 25px 25px 0px; width: 35%">Gib</div>
                         </div>
                     </div>
                 </li>
@@ -198,16 +198,15 @@
                 drawStatistics(data) {
 
                     let storage_total;
-                    storage_total = func.byteToGib(data.total_storage_consumption)
-                    alert(storage_total)
+                    storage_total = func.byteToGib(data.total_storage_consumption);
 
                     document.getElementById("pro_pri").innerText = data.private_project_count;
                     document.getElementById("pro_pub").innerText = data.public_project_count;
                     document.getElementById("pro_total").innerText = data.total_project_count;
                     document.getElementById("repo_pri").innerText = data.private_repo_count;
                     document.getElementById("repo_pub").innerText = data.public_repo_count;
-                    document.getElementById("repo-total").innerText = data.total_repo_count;
-                    document.getElementById("storage_total").innerHTML = storage_total;
+                    document.getElementById("repo_total").innerText = data.total_repo_count;
+                    document.getElementById("storage_total").innerText = storage_total;
 
                 },
 
