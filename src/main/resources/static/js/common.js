@@ -1016,5 +1016,12 @@ const func = {
 		} else if (hours < 12) { //0 ~ 11
 			return `${year}-${month}-${day}, ${hours}:${minutes} AM`;
 		}
+	},
+
+	byteToGib(bytes) {
+
+		let gib = bytes / 1024 / 1024 / 1024;
+		gib.toFixed(2);
+		return gib;
 	}
 }

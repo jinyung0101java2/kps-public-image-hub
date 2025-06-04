@@ -202,7 +202,9 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 /*------------------------ Sub-page -------------------------*/
 /* location */
 .location {padding:66px 71px 0px 33px; overflow:hidden; height:167px;}
-.location ul {overflow:hidden; float:left; margin-top:20px; padding-bottom:16px;}
+.location ul {overflow:hidden; margin-top:20px; padding-bottom:16px;}
+.location ul.title {overflow:hidden; float:left; padding-top: 2px; margin-left: 10px}
+.location ul.title span {font-size: 27px}
 .location ul li {float:left; padding-left:18px; margin-left:18px; position:relative; color:#ffffff;}
 .location ul li:first-child {padding-left:0; margin-left:0;}
 .location ul li:after {content:""; width:6px; height:6px; border-top:1px solid #afb5bb; border-right:1px solid #afb5bb; transform:rotate(45deg); position:absolute; top:5px; left:0;}
@@ -227,6 +229,11 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 /*.base {padding:60px 70px 200px 70px;}*/
 .base > div:first-child {background-color:#ffffff; padding:50px 40px 30px 40px; box-shadow:-3px 2px 5px -5px rgba(204, 204, 204, 0.5);}
 .base.tab-cont-wrap > div {background-color:#ffffff; padding:50px 40px 30px 40px; box-shadow:-3px 2px 5px -5px rgba(204, 204, 204, 0.5);}
+
+/* base */
+/*.base {padding:60px 70px 200px 70px;}*/
+.base-pro > div:first-child {background-color:#ffffff; padding:90px 40px 30px 40px; box-shadow:-3px 2px 5px -5px rgba(204, 204, 204, 0.5);}
+.base-pro.tab-cont-wrap > div {background-color:#ffffff; padding:50px 40px 30px 40px; box-shadow:-3px 2px 5px -5px rgba(204, 204, 204, 0.5);}
 
 /* title */
 .notice > h3 {font-family:'Apple SD Gothic Neo B', sans-serif; padding-top:9px; color:#47494d; font-size:26px; line-height:30px;}
@@ -361,6 +368,7 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 /* 생성btn */
 .notice {position:relative;}
 .notice > a:not(.more):not(.aside_btn) {position:absolute; top:50px; right:40px; color:#ffffff; padding:11px 13px 7px 13px; background-color:#0ACF83; border-radius:2px;}
+.notice > a.create:not(.more):not(.aside_btn) {position:absolute; top:35px; right:40px; color:#ffffff; padding:11px 13px 7px 13px; background-color:#0ACF83; border-radius:2px;}
 .notice > a.off {display:none;}
 
 /* btn */

@@ -10,15 +10,66 @@
                 <li><a onclick="movePage(URI_CP_BASE_URL)">Images</a></li>
                 <li><a onclick="movePage(URI_CP_GLOBAL_CLUSTER)">Projects</a></li>
             </ul>
+            <ul class="title">
+                <span>Projects</span>
+            </ul>
             <!-- Click event class="on" -->
             <fieldset>
                 <input type="text" name="keyword" id="searchText" autocomplete="off" th:placeholder="#{M0017}" />
                 <button type="submit" id="search" th:text="#{M0031}"></button>
             </fieldset>
         </article>
-        <article class="base">
+        <article>
+            <fieldset>
+            <ul style="display: flex; float: right;">
+                <li>
+                    <div class="pro-statistics" style="border: 1px solid #d3d3d3; border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px; height: 124px; margin-left: 10px">
+                        <h3>Projects</h3>
+                        <div style="display: flex; margin-top: 5px">
+                            <div class="stat-cont" style="width: 93px">Private</div>
+                            <div id="pro_pri" style="margin-left: 10px"></div>
+                        </div>
+                        <div style="display: flex; margin-top: 5px">
+                            <div class="stat-cont" style="width: 93px">Public</div>
+                            <div id="pro_pub" style="margin-left: 10px"></div>
+                        </div>
+                        <div style="display: flex; margin-top: 5px">
+                            <div class="stat-cont" style="width: 93px">Total</div>
+                            <div id="pro_total" style="margin-left: 10px"></div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="repo-statistics" style="border: 1px solid #d3d3d3; border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px; height: 124px; margin-left: 10px">
+                        <h3>Repositories</h3>
+                        <div style="display: flex; margin-top: 5px" >
+                            <div class="stat-cont" style="width: 93px">Private</div>
+                            <div id="repo_pri" style="margin-left: 10px"></div>
+                        </div>
+                        <div style="display: flex; margin-top: 5px">
+                            <div class="stat-cont" style="width: 93px">Public</div>
+                            <div id="repo_pub" style="margin-left: 10px"></div>
+                        </div>
+                        <div style="display: flex; margin-top: 5px">
+                            <div class="stat-cont" style="width: 93px">Total</div>
+                            <div id="repo_total" style="margin-left: 10px"></div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="quota-statistics" style="border: 1px solid #d3d3d3; border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px; height: 124px; margin-left: 10px; margin-right: 40px">
+                        <h3>Quota used</h3>
+                        <div>
+                            <div id="storage_total"></div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            </fieldset>
+        </article>
+        <article class="base-pro">
             <div class="notice">
-                <h3>Projects</h3>
+<!--                <h3>Projects</h3>-->
                 <!-- User -->
                 <div class="table_style01">
                     <!-- board -->
@@ -49,7 +100,7 @@
                     <a class="more" href="javascript:">more</a>
                 </div>
                 <!-- btn -->
-                <a href="javascript:" class="create" th:text="#{M0024}" sec:authorize="hasAuthority('SUPER_ADMIN')"></a>
+                <a href="javascript:" class="create" th:text="#{M0938}" sec:authorize="hasAuthority('SUPER_ADMIN')"></a>
             </div>
         </article>
     </div>
@@ -66,12 +117,12 @@
             func.init(ASIDE_DP1.IMAGES, ASIDE_DP2.PROJECTS);
 
             const project = {
-                offset : 0, // 로드 페이지 넘버
-                limit : 10, // 로드 게시물 개수
-                allItemCount : 0, //게시물 촐 개수
-                type : 'administrator',
+                offset: 0, // 로드 페이지 넘버
+                limit: 10, // 로드 게시물 개수
+                allItemCount: 0, //게시물 촐 개수
+                type: 'administrator',
 
-                init(){
+                init() {
                     func.nameLoad = project.reset;
 
                     project.load();
@@ -79,27 +130,27 @@
                     project.event();
                 },
 
-                reset(){
+                reset() {
                     func.removeHtml(document.querySelector('.listTable'));
                     project.offset = 0;
                     project.load();
                 },
 
-                load(){
+                load() {
                     func.loading();
 
                     // nameSpace 정보 조회
                     //https://harbor.133.186.219.222.nip.io/api/v2.0/projects?page=1&page_size=15
                     // func.loadData('GET', `${func.harborUrl}/api/v2.0/projects?searchName=${document.getElementById('searchText').value}&limit=${project.limit}&offset=${project.offset}`, 'application/json', project.draw);
-                    func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', project.draw);
+                    func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', project.drawProjects);
+                    func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', project.drawStatistics);
                 },
 
-                draw(data){
-                    console.log(JSON.stringify(data))
+                drawProjects(data) {
 
                     let html;
-                    if(data.length > 0){
-                        for(var i=0; i<=data.length-1; i++) {
+                    if (data.length > 0) {
+                        for (var i = 0; i <= data.length - 1; i++) {
 
                             let accessLevel;
                             if (data[i].metadata.public === 'true') {
@@ -140,46 +191,24 @@
                         }
                     }
 
-
-
-                    if(document.getElementById('loading')){
+                    if (document.getElementById('loading')) {
                         document.getElementById('wrap').removeChild(document.getElementById('loading'));
                     }
-                  /*  if(cluster.offset == 0) cluster.allItemCount = data.itemMetaData.allItemCount;
-                    let html;
-                    if(data.httpStatusCode == 200){
-                        if(data.items.length > 0){
-                            for(var i=0; i<=data.items.length-1; i++){
-                                if(data.items[i].status === 'A' && !data.items[i].isActive) data.items[i].status = 'B';
-                                html = `<tr><td class="left"><a class="name" href="javascript:;" data-id="${data.items[i].clusterId}">${data.items[i].name}</a></td>
-											<td>${data.items[i].providerType}</td>
-											<td><div class="tooltip"><button type="button" class="button_status_${data.items[i].status}" onclick="javascript:;" data-id="${data.items[i].clusterId}"></button><span class="tooltiptext">${document.querySelector('#cluster_status_' + data.items[i].status).value}</span></div></td>
-											</tr>`;
-                                func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
-                            }
-                        } else {
-                            html = `<tr><td colspan="3">No Data.</td></tr>`;
+                },
+                drawStatistics(data) {
 
-                            func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
-                        }
-                    } else {
-                        html = `<tr><td colspan="3">No Data.</td></tr>`;
+                    let storage_total;
+                    storage_total = func.byteToGib(data.total_storage_consumption)
+                    alert(storage_total)
 
-                        func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
-                    }
+                    document.getElementById("pro_pri").innerText = data.private_project_count;
+                    document.getElementById("pro_pub").innerText = data.public_project_count;
+                    document.getElementById("pro_total").innerText = data.total_project_count;
+                    document.getElementById("repo_pri").innerText = data.private_repo_count;
+                    document.getElementById("repo_pub").innerText = data.public_repo_count;
+                    document.getElementById("repo-total").innerText = data.total_repo_count;
+                    document.getElementById("storage_total").innerHTML = storage_total;
 
-                    // more 버튼 활성, 비활성
-                    if(document.querySelector('.listTable').querySelectorAll('tr').length < cluster.allItemCount){
-                        document.querySelector('.more').classList.toggle('on', true);
-                    } else {
-                        document.querySelector('.more').classList.toggle('on', false);
-                    }
-
-                    if(document.getElementById('loading')){
-                        document.getElementById('wrap').removeChild(document.getElementById('loading'));
-                    }
-
-                    cluster.listEvent();*/
                 },
 
                 event(){
