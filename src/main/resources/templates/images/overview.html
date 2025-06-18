@@ -76,15 +76,17 @@
                     <table>
                         <caption>Projects List</caption>
                         <colgroup >
-                            <col width="17%" />
-                            <col width="17%" />
-                            <col width="17%" />
-                            <col width="17%" />
+                            <col width="4%" />
+                            <col width="16%" />
+                            <col width="16%" />
+                            <col width="16%" />
+                            <col width="16%" />
                             <col width="16%" />
                             <col width="16%" />
                         </colgroup>
                         <thead>
                         <tr>
+                            <th scope="col"><input type="checkbox" name="all-projects" id="all-projects"><label for="all-projects" style="padding-left: 27px; position: relative; cursor: pointer;"></label></th>
                             <th scope="col">Name</th>
                             <th scope="col">Access Level</th>
                             <th scope="col">Role</th>
@@ -100,7 +102,9 @@
                     <a class="more" href="javascript:">more</a>
                 </div>
                 <!-- btn -->
-                <a href="javascript:" class="create" th:text="#{M0938}" sec:authorize="hasAuthority('SUPER_ADMIN')"></a>
+                <a href="javascript:" id="create" class="create" style="right: 92%" th:text="#{M0938}" ></a>
+                <!--<a href="javascript:" id="delete" class="delete" style="top: 35px; right: 88%; display: none" th:text="#{M0026}" ></a>-->
+                <a href="javascript:" id="delete" class="delete" style="top: 35px; right: 87%;" th:text="#{M0026}" ></a>
             </div>
         </article>
     </div>
@@ -149,6 +153,7 @@
                 drawProjects(data) {
 
                     let html;
+                    sessionStorage.setItem('projectCnt', data.length);
                     if (data.length > 0) {
                         for (var i = 0; i <= data.length - 1; i++) {
 
@@ -174,8 +179,8 @@
 
                             let time = func.changeTime(data[i].update_time)
 
-
                             html = `<tr>
+                                        <td><input type="checkbox" name="${data[i].name}" id="${data[i].project_id}" class="checkbox_${i}"/><label for="${data[i].project_id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
                                         <td class="left"><a class="name" href="javascript:;" data-id="${data[i].name}">${data[i].name}</a></td>
                                         <td id="access_modifier_${i}"></td>
                                         <td id="role_id_${i}"></td>
@@ -195,6 +200,7 @@
                         document.getElementById('wrap').removeChild(document.getElementById('loading'));
                     }
                 },
+
                 drawStatistics(data) {
 
                     let storage_total;
@@ -222,11 +228,69 @@
 
                     if(document.querySelector('.create')) {
                         document.querySelector('.create').addEventListener('click', () => {
-                            document.location.href = URI_CP_GLOBAL_CLUSTER + URI_CP_CREATE;
+                            func.proCreate(MSG_NEW_PROJECT, 'secrets', MSG_SAVE);
                         }, false);
                     }
 
-                    // logs 버튼 event
+                    document.querySelector('#all-projects').addEventListener('click', () => {
+                        let check = document.getElementById('all-projects').checked
+                        let projectCnt = sessionStorage.getItem('projectCnt')
+                            if (check === true) {
+                                // document.getElementById('delete').style.display = 'block';
+                                for (var i = 0; i <= projectCnt-1; i++) {
+                                    document.querySelector('.checkbox_' + `${i}`).checked = true;
+                                }
+
+                            } else {
+                                // document.getElementById('delete').style.display = 'none';
+                                for (var i = 0; i <= projectCnt-1; i++) {
+                                    document.querySelector('.checkbox_' + `${i}`).checked = false;
+                                }
+                            }
+                    }, false);
+
+                  /*  document.querySelector('.allBox').addEventListener('click', () => {
+                        alert('allbox')
+                    }, false);*/
+
+                    document.getElementById('delete').addEventListener('click', (e) => {
+                        let projectCnt = sessionStorage.getItem('projectCnt')
+
+                        let tr = 0;
+                        // let fal = 0;
+                        for (var i = 0; i <= projectCnt-1; i++) {
+                            // let checkbox = document.querySelector('.checkbox_' + `${i}`).checked
+                            if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
+                                tr+=1;
+                            } /*else {
+                                fal+=1;
+                                // func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
+                            }    */
+                        }
+
+                        if (tr > 0 ) {
+                          func.alertPopup('DELETE', MSG_CHECK_TO_DELETE, true, MSG_CONFIRM, project.delete);
+                        } else if (tr === 0) {
+                          func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
+                        }
+
+                    }, false);
+
+                },
+
+                delete() {
+                    alert('삭제')
+                    let projectCnt = sessionStorage.getItem('projectCnt')
+                    for (var i = 0; i <= projectCnt-1; i++) {
+                        if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
+                            var class_id = $('.checkbox_' + `${i}`).attr('id')
+                            alert(class_id)
+
+                            // func.loadHarborData('GET', `${func.harborUrl}api/v2.0/users/current/permissions?scope=/project/`+ class_id +`&relative=true` + name, 'application/json', project.drawStatistics);
+                            // func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.historyBack);
+                        }
+                    }
+
 
                 },
 

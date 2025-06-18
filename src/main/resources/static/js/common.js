@@ -194,27 +194,27 @@ const func = {
 		};
 	},
 
-	apply(title, url, btnName, name){
-		sessionStorage.setItem('vaultDbName' , name);
+	proCreate(title, url, btnName){
+
 		var html = `<div class="modal-wrap" id="modal">
-			<div class="modal midium" style="width: 600px">
+			<div class="modal midium" style="width: 576px;height: 304px">
 				<h5>${title}</h5>
 					<dl>
-						<dt>Namespace</dt>
+						<dt>
+							<label for="name">Project Name</label>
+						</dt>
 						<dd>
-							<fieldset>
-								<select id="namespaceList" class="namespaceList">
-								</select>
-							</fieldset>
+							<input id="name" type="text" style="width: 90%; border: 1px solid #ebebeb; height: 50px; line-height: 48px; padding-left: 18px; margin-left: 1px; font-size: 18px;">
 						</dd>
 					</dl>
-					<dl>			
-						<dt style="line-height: 50px">Application</dt>
-						<dd>
-							<fieldset>
-								<select id="createApp" class="createApp" disabled>
-								</select>
-							</fieldset>
+					<dl>
+						<dt style="line-height: 50px">
+							<label for="access">Access Level</label>
+						</dt>
+						<dd style="padding: 15px 275px 0 0;">
+							<input id="access" type="checkbox"/>
+							<label for="access" style="padding-left: 27px; position: relative; cursor: pointer;"></label>
+							<span style="padding-left: 5px">Public</span>
 						</dd>
 					</dl>
 				<a class="confirm" href="javascript:;">${btnName}</a>
@@ -224,60 +224,26 @@ const func = {
 
 		func.appendHtml(document.getElementById('wrap'), html, 'div');
 
-		func.loadData('GET', `${func.url}clusters/${sessionStorage.getItem('cluster')}/users/namespacesList`, 'application/json', namespaceDraw);
-
-		function namespaceDraw(data) {
-			for(var i=0; i<=data.items.length-1; i++){
-				var namespace = data.items[i].cpNamespace;
-				var html = `<option value="${namespace}">${namespace}</option>`;
-				func.appendHtml(document.getElementById('namespaceList'), html, 'select');
-			};
-		}
-
-
-		/*if(sessionStorage.getItem('nameSpace') === NAMESPACE_ALL_VALUE) {
-			document.getElementById('createApp').selectedIndex = 0;}
-		else {
-			document.getElementById('createApp').value = sessionStorage.getItem('nameSpace');
-		}*/
-
-		document.getElementById('namespaceList').addEventListener('click', (e) => {
-
-			func.removeHtml(document.querySelector('#createApp'))
-			document.querySelector('#createApp').disabled = false;
-			let namespace = document.getElementById('namespaceList').value;
-			func.loadData('GET', `${func.url}clusters/${sessionStorage.getItem('cluster')}/namespaces/${namespace}/deployments/vaultSecret`, 'application/json', applicationDraw);
-
-			function applicationDraw(data) {
-				for(var i=0; i<=data.items.length-1; i++){
-					var application = data.items[i].name;
-					var html = `<option value="${application}">${application}</option>`;
-					func.appendHtml(document.getElementById('createApp'), html, 'select');
-				};
-			}
-
-		}, false);
-
 		document.getElementById('modal').querySelector('.close').addEventListener('click', (e) => {
 			document.getElementById('wrap').removeChild(document.getElementById('modal'));
 		}, false);
 
-
 		document.getElementById('modal').querySelector('.confirm').addEventListener('click', (e) => {
 
-			document.querySelector('.nameTop').innerHTML = sessionStorage.getItem('nameSpace');
-			sessionStorage.setItem('appNamespace' , document.querySelector('#namespaceList > option:checked').value);
-			sessionStorage.setItem('appName' , document.querySelector('#createApp > option:checked').value);
+			let name = document.getElementById('name').innerText
+			let access = document.getElementById('access').checked
 			document.getElementById('wrap').removeChild(document.getElementById('modal'));
 
-			var sendData = JSON.stringify ({
-				cluster : sessionStorage.getItem('cluster'),
-				namespace : sessionStorage.getItem('appNamespace'),
-				resourceName : sessionStorage.getItem('appName'),
-				dbService : sessionStorage.getItem('vaultDbName')
-			});
+			var sendData =  {
+				"project_name": name,
+				"metadata":{"public": access},
+				"storage_limit": null,
+				"registry_id": null
+			};
 
-			func.saveData('POST', `${func.url}clusters/${sessionStorage.getItem('cluster')}/namespaces/${sessionStorage.getItem('appNamespace')}/${url}/application/apply`, sendData, true, 'application/json', func.historyBack);
+			alert(JSON.stringify(sendData))
+			// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects?q=name%253D` + name, 'application/json', project.drawStatistics);
+			func.saveHarborData('POST', `${func.harborUrl}api/v2.0/projects`, JSON.stringify(sendData), true, 'application/json', func.historyBack);
 		}, false);
 	},
 
@@ -564,6 +530,7 @@ const func = {
 			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
 			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
 
+
 			request.onreadystatechange = () => {
 				if (request.readyState === XMLHttpRequest.DONE){
 					if(request.status === 200 && request.responseText != ''){
@@ -644,6 +611,8 @@ const func = {
 							callbackFunction(JSON.parse(request.responseText), list);
 						}*/
 						callbackFunction(JSON.parse(request.responseText), list);
+						//console.log('X-Harbor-Csrf-Token::: '+ request.getAllResponseHeaders())
+
 					} else if(JSON.parse(request.responseText).httpStatusCode === 500){
 						console.log("500")
 						sessionStorage.clear();
@@ -718,6 +687,67 @@ const func = {
 	// (전송타입, url, 데이터, 분기, 콜백함수)
 	/////////////////////////////////////////////////////////////////////////////////////
 	saveData(method, url, data, bull, header, callFunc){
+		func.loading();
+
+		if(sessionStorage.getItem('token') == null){
+			func.loginCheck();
+		};
+
+
+		var request = new XMLHttpRequest();
+
+		setTimeout(function() {
+			request.open(method, url, false);
+			request.setRequestHeader('Content-type', header);
+			request.setRequestHeader('Authorization', sessionStorage.getItem('token'));
+			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
+			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
+
+			request.onreadystatechange = () => {
+				if (request.readyState === XMLHttpRequest.DONE){
+					if(request.status === 200 && request.responseText != ''){
+
+						//토큰 만료 검사
+						if(JSON.parse(request.responseText).resultMessage == 'TOKEN_EXPIRED') {
+							func.refreshToken();
+							return func.saveData(method, url, data, bull, header, callFunc);
+						}
+						else if(JSON.parse(request.responseText).resultMessage == 'TOKEN_FAILED') {
+							func.loginCheck();
+							return func.loadData(method, url, header, callbackFunction, list);
+						}
+						else {
+							document.getElementById('wrap').removeChild(document.getElementById('loading'));
+							var response = JSON.parse(request.responseText);
+							if (response.httpStatusCode == 200) {
+								if(response.resultCode == RESULT_STATUS_SUCCESS) {
+									func.alertPopup('SUCCESS', response.detailMessage, true, MSG_CONFIRM, callFunc);
+								}
+								else {
+									func.alertPopup('ERROR', response.detailMessage, true, MSG_CONFIRM, 'closed');
+								}
+							}
+							else {
+								func.alertPopup('ERROR', response.detailMessage, true, MSG_CONFIRM, 'closed');
+							}
+
+						}
+					} else {
+						/*
+                        if(method == 'DELETE'){
+                            /func.alertPopup('DELETE', 'DELETE FAILED', func.winReload);
+                        } else {
+                            /func.alertPopup('SAVE', 'SAVE FAILED', func.winReload);
+                        };
+                        */
+					};
+				};
+			};
+
+			request.send(data); }, 0);
+	},
+
+	saveHarborData(method, url, data, bull, header, callFunc){
 		func.loading();
 
 		if(sessionStorage.getItem('token') == null){

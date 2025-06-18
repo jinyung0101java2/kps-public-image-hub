@@ -92,14 +92,15 @@
 					func.loadData('GET', `${func.url}clusters?searchName=${document.getElementById('searchText').value}&limit=${cluster.limit}&offset=${cluster.offset}`, 'application/json', cluster.draw);
 				},
 
-				draw(data){
+				draw(data) {
 					if(cluster.offset == 0) cluster.allItemCount = data.itemMetaData.allItemCount;
                     let html;
 					if(data.httpStatusCode == 200){
 						if(data.items.length > 0){
 							for(var i=0; i<=data.items.length-1; i++){
 								if(data.items[i].status === 'A' && !data.items[i].isActive) data.items[i].status = 'B';
-								html = `<tr><td class="left"><a class="name" href="javascript:;" data-id="${data.items[i].clusterId}">${data.items[i].name}</a></td>
+								html = `<tr><td><input type="checkbox" id="${data.items[i].project_id}"></td>
+											<td class="left"><a class="name" href="javascript:;" data-id="${data.items[i].clusterId}">${data.items[i].name}</a></td>
 											<td>${data.items[i].providerType}</td>
 											<td><div class="tooltip"><button type="button" class="button_status_${data.items[i].status}" onclick="javascript:;" data-id="${data.items[i].clusterId}"></button><span class="tooltiptext">${document.querySelector('#cluster_status_' + data.items[i].status).value}</span></div></td>
 											</tr>`;
@@ -130,7 +131,7 @@
 					cluster.listEvent();
 				},
 
-				event(){
+				event() {
 					// more 버튼 event
 					document.querySelector('.more').addEventListener('click', () => {
 						if(document.querySelector('.listTable').querySelectorAll('tr').length < cluster.allItemCount){
