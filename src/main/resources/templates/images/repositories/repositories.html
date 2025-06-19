@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+<div layout:fragment="content">
+	<div id="content" class="sub-page">
+		<article class="location">
+			<ul>
+				<li><a onclick="movePage(URI_CP_BASE_URL)">Images</a></li>
+				<li><a onclick="movePage(URI_CP_GLOBAL_CLUSTER)">Projects</a></li>
+			</ul>
+			<ul class="title">
+				<span>Repositories</span>
+			</ul>
+			<!-- Click event class="on" -->
+			<fieldset>
+				<input type="text" name="keyword" id="searchText" autocomplete="off" th:placeholder="#{M0017}" />
+				<button type="submit" id="search" th:text="#{M0031}"></button>
+			</fieldset>
+		</article>
+		<article>
+			<fieldset>
+				<ul style="display: flex; float: right;">
+					<li>
+						<div class="pro-statistics" style="border: 1px solid #d3d3d3; border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px; height: 124px; margin-left: 10px">
+							<h3>Projects</h3>
+							<div style="display: flex; margin-top: 5px">
+								<div class="stat-cont" style="width: 93px">Private</div>
+								<div id="pro_pri" style="margin-left: 10px"></div>
+							</div>
+							<div style="display: flex; margin-top: 5px">
+								<div class="stat-cont" style="width: 93px">Public</div>
+								<div id="pro_pub" style="margin-left: 10px"></div>
+							</div>
+							<div style="display: flex; margin-top: 5px">
+								<div class="stat-cont" style="width: 93px">Total</div>
+								<div id="pro_total" style="margin-left: 10px"></div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="repo-statistics" style="border: 1px solid #d3d3d3; border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px; height: 124px; margin-left: 10px">
+							<h3>Repositories</h3>
+							<div style="display: flex; margin-top: 5px" >
+								<div class="stat-cont" style="width: 93px">Private</div>
+								<div id="repo_pri" style="margin-left: 10px"></div>
+							</div>
+							<div style="display: flex; margin-top: 5px">
+								<div class="stat-cont" style="width: 93px">Public</div>
+								<div id="repo_pub" style="margin-left: 10px"></div>
+							</div>
+							<div style="display: flex; margin-top: 5px">
+								<div class="stat-cont" style="width: 93px">Total</div>
+								<div id="repo_total" style="margin-left: 10px"></div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="quota-statistics" style="border: 1px solid #d3d3d3; border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px; height: 124px; margin-left: 10px; margin-right: 40px">
+							<h3>Quota used</h3>
+							<div style="display: flex; text-align: center;">
+								<div id="storage_total" style="font-size: 30px; padding: 30px 0px 25px 40px"></div><div style="padding: 34px 25px 25px 0px; width: 35%">Gib</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</fieldset>
+		</article>
+		<article class="base-pro">
+			<div class="notice">
+				<!--                <h3>Projects</h3>-->
+				<!-- User -->
+				<div class="table_style01">
+					<!-- board -->
+					<table>
+						<caption>Projects List</caption>
+						<colgroup >
+							<col width="4%" />
+							<col width="16%" />
+							<col width="16%" />
+							<col width="16%" />
+							<col width="16%" />
+							<col width="16%" />
+							<col width="16%" />
+						</colgroup>
+						<thead>
+						<tr>
+							<th scope="col"><input type="checkbox" name="all-projects" id="all-projects"><label for="all-projects" style="padding-left: 27px; position: relative; cursor: pointer;"></label></th>
+							<th scope="col">Name</th>
+							<th scope="col">Access Level</th>
+							<th scope="col">Role</th>
+							<th scope="col">Type</th>
+							<th scope="col">Repositories Count</th>
+							<th scope="col">Create Time</th>
+						</tr>
+						</thead>
+						<tbody class="listTable">
+						</tbody>
+					</table>
+					<!-- more btn -->
+					<a class="more" href="javascript:">more</a>
+				</div>
+				<!-- btn -->
+				<a href="javascript:" id="create" class="create" th:text="#{M0938}" ></a>
+				<!--<a href="javascript:" id="delete" class="delete" style="top: 35px; right: 88%; display: none" th:text="#{M0026}" ></a>-->
+				<a href="javascript:" id="delete" class="delete" style="top: 35px; right: 150px;" th:text="#{M0026}" ></a>
+			</div>
+		</article>
+	</div>
+	<input type="hidden" id="cluster_status_A" th:value="#{M0835}"/>
+	<input type="hidden" id="cluster_status_B" th:value="#{M0838}"/>
+	<input type="hidden" id="cluster_status_C" th:value="#{M0837}"/>
+	<input type="hidden" id="cluster_status_D" th:value="#{M0836}"/>
+</div>
+<th:block layout:fragment="script">
+	<script type="text/javascript">
+		window.onload = () => {
+
+			IS_GLOBAL = true;
+			func.init(ASIDE_DP1.IMAGES, ASIDE_DP2.PROJECTS);
+
+			const project = {
+				offset: 0, // 로드 페이지 넘버
+				limit: 10, // 로드 게시물 개수
+				allItemCount: 0, //게시물 촐 개수
+				type: 'administrator',
+
+				init() {
+					func.nameLoad = project.reset;
+
+					project.load();
+
+					project.event();
+				},
+
+				reset() {
+					func.removeHtml(document.querySelector('.listTable'));
+					project.offset = 0;
+					project.load();
+				},
+
+				load() {
+					func.loading();
+
+					// nameSpace 정보 조회
+					//https://harbor.133.186.219.222.nip.io/api/v2.0/projects?page=1&page_size=15
+					// func.loadData('GET', `${func.harborUrl}/api/v2.0/projects?searchName=${document.getElementById('searchText').value}&limit=${project.limit}&offset=${project.offset}`, 'application/json', project.draw);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', project.drawProjects);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', project.drawStatistics);
+				},
+
+				drawProjects(data) {
+
+					let html;
+					sessionStorage.setItem('projectCnt', data.length);
+					if (data.length > 0) {
+						for (var i = 0; i <= data.length - 1; i++) {
+
+							let accessLevel;
+							if (data[i].metadata.public === 'true') {
+								accessLevel = ACCESS_LEVEL_PUBLIC
+							} else {
+								accessLevel = ACCESS_LEVEL_PRIVATE
+							}
+
+							let role;
+							if (data[i].current_user_role_id === 1) {
+								role = ROLE_PROJECT_ADMIN
+							} else if (data[i].current_user_role_id === 2) {
+								role = ROLE_DEVELOPER
+							} else if (data[i].current_user_role_id === 3) {
+								role = ROLE_GUEST
+							} else if (data[i].current_user_role_id === 4) {
+								role = ROLE_MAINTAINER
+							} else {
+								role = ROLE_LIMITED_GUEST
+							}
+
+							let time = func.changeTime(data[i].update_time)
+
+							html = `<tr>
+                                        <td><input type="checkbox" name="${data[i].name}" id="${data[i].project_id}" class="checkbox_${i}"/><label for="${data[i].project_id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
+                                        <td class="left"><a class="name" href="javascript:;" data-id="${data[i].name}">${data[i].name}</a></td>
+                                        <td id="access_modifier_${i}"></td>
+                                        <td id="role_id_${i}"></td>
+                                        <td>Project</td>
+                                        <td>${data[i].repo_count}</td>
+                                        <td id="time_${i}"></td>
+                                    </tr>`;
+							func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
+
+							document.getElementById("access_modifier_" + i).innerText = accessLevel;
+							document.getElementById("role_id_" + i).innerText = role;
+							document.getElementById("time_" + i).innerText = time;
+						}
+					}
+
+					if (document.getElementById('loading')) {
+						document.getElementById('wrap').removeChild(document.getElementById('loading'));
+					}
+
+					project.listEvent()
+				},
+
+				drawStatistics(data) {
+
+					let storage_total;
+					storage_total = func.byteToGib(data.total_storage_consumption);
+
+					document.getElementById("pro_pri").innerText = data.private_project_count;
+					document.getElementById("pro_pub").innerText = data.public_project_count;
+					document.getElementById("pro_total").innerText = data.total_project_count;
+					document.getElementById("repo_pri").innerText = data.private_repo_count;
+					document.getElementById("repo_pub").innerText = data.public_repo_count;
+					document.getElementById("repo_total").innerText = data.total_repo_count;
+					document.getElementById("storage_total").innerText = storage_total;
+
+				},
+
+				event(){
+					// more 버튼 event
+					document.querySelector('.more').addEventListener('click', () => {
+						if(document.querySelector('.listTable').querySelectorAll('tr').length < project.allItemCount){
+							project.offset++;
+
+							project.load();
+						}
+					}, false);
+
+					if(document.querySelector('.create')) {
+						document.querySelector('.create').addEventListener('click', () => {
+							func.proCreate(MSG_NEW_PROJECT, 'secrets', MSG_SAVE);
+						}, false);
+					}
+
+					document.querySelector('#all-projects').addEventListener('click', () => {
+						let check = document.getElementById('all-projects').checked
+						let projectCnt = sessionStorage.getItem('projectCnt')
+						if (check === true) {
+							// document.getElementById('delete').style.display = 'block';
+							for (var i = 0; i <= projectCnt-1; i++) {
+								document.querySelector('.checkbox_' + `${i}`).checked = true;
+							}
+
+						} else {
+							// document.getElementById('delete').style.display = 'none';
+							for (var i = 0; i <= projectCnt-1; i++) {
+								document.querySelector('.checkbox_' + `${i}`).checked = false;
+							}
+						}
+					}, false);
+
+					/*  document.querySelector('.allBox').addEventListener('click', () => {
+                          alert('allbox')
+                      }, false);*/
+
+					document.getElementById('delete').addEventListener('click', (e) => {
+						let projectCnt = sessionStorage.getItem('projectCnt')
+
+						let tr = 0;
+						// let fal = 0;
+						for (var i = 0; i <= projectCnt-1; i++) {
+							// let checkbox = document.querySelector('.checkbox_' + `${i}`).checked
+							if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
+								tr+=1;
+							} /*else {
+                                fal+=1;
+                                // func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
+                            }    */
+						}
+
+						if (tr > 0 ) {
+							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE, true, MSG_CONFIRM, project.delete);
+						} else if (tr === 0) {
+							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
+						}
+
+					}, false);
+
+				},
+
+				delete() {
+					let projectCnt = sessionStorage.getItem('projectCnt')
+					for (var i = 0; i <= projectCnt-1; i++) {
+						if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
+							var class_id = $('.checkbox_' + `${i}`).attr('id')
+
+							// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/users/current/permissions?scope=/project/`+ class_id +`&relative=true` + name, 'application/json', project.drawStatistics);
+							// func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.historyBack);
+						}
+					}
+
+
+				},
+
+				listEvent(){
+					var listAll = document.querySelector('.listTable').querySelectorAll('a.name');
+					for(var i=cluster.offset*10; i<=listAll.length-1; i++){
+						listAll[i].addEventListener('click', (e) => {
+							sessionStorage.setItem('commonName', e.target.getAttribute('data-id'));
+							document.location.href = URI_CP_GLOBAL_CLUSTER + URI_CP_DETAILS;
+						}, true);
+					}
+					listAll = document.querySelectorAll('[class="button_status_D"], [class="button_status_C"]');
+
+					for(var i=cluster.offset*10; i<=listAll.length-1; i++) {
+						listAll[i].addEventListener('click', (e) => {
+							sessionStorage.setItem('commonName', e.target.getAttribute('data-id'));
+							document.location.href = URI_CP_GLOBAL_CLUSTER + URI_CP_LOGS;
+						}, true);
+
+					}
+				},
+			};
+
+			project.init();
+		}
+	</script>
+</th:block>
+</html>

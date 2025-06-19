@@ -102,9 +102,9 @@
                     <a class="more" href="javascript:">more</a>
                 </div>
                 <!-- btn -->
-                <a href="javascript:" id="create" class="create" style="right: 92%" th:text="#{M0938}" ></a>
+                <a href="javascript:" id="create" class="create" th:text="#{M0938}" ></a>
                 <!--<a href="javascript:" id="delete" class="delete" style="top: 35px; right: 88%; display: none" th:text="#{M0026}" ></a>-->
-                <a href="javascript:" id="delete" class="delete" style="top: 35px; right: 87%;" th:text="#{M0026}" ></a>
+                <a href="javascript:" id="delete" class="delete" style="top: 35px; right: 150px;" th:text="#{M0026}" ></a>
             </div>
         </article>
     </div>
@@ -199,6 +199,8 @@
                     if (document.getElementById('loading')) {
                         document.getElementById('wrap').removeChild(document.getElementById('loading'));
                     }
+
+                    project.listEvent()
                 },
 
                 drawStatistics(data) {
@@ -279,12 +281,10 @@
                 },
 
                 delete() {
-                    alert('삭제')
                     let projectCnt = sessionStorage.getItem('projectCnt')
                     for (var i = 0; i <= projectCnt-1; i++) {
                         if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
                             var class_id = $('.checkbox_' + `${i}`).attr('id')
-                            alert(class_id)
 
                             // func.loadHarborData('GET', `${func.harborUrl}api/v2.0/users/current/permissions?scope=/project/`+ class_id +`&relative=true` + name, 'application/json', project.drawStatistics);
                             // func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.historyBack);
@@ -295,21 +295,13 @@
                 },
 
                 listEvent(){
-                    var listAll = document.querySelector('.listTable').querySelectorAll('a.name');
-                    for(var i=cluster.offset*10; i<=listAll.length-1; i++){
+                    var listAll = document.querySelector('.listTable').querySelectorAll('a');
+                    for(var i=0; i<=listAll.length-1; i++){
                         listAll[i].addEventListener('click', (e) => {
                             sessionStorage.setItem('commonName', e.target.getAttribute('data-id'));
-                            document.location.href = URI_CP_GLOBAL_CLUSTER + URI_CP_DETAILS;
-                        }, true);
-                    }
-                    listAll = document.querySelectorAll('[class="button_status_D"], [class="button_status_C"]');
 
-                    for(var i=cluster.offset*10; i<=listAll.length-1; i++) {
-                        listAll[i].addEventListener('click', (e) => {
-                            sessionStorage.setItem('commonName', e.target.getAttribute('data-id'));
-                            document.location.href = URI_CP_GLOBAL_CLUSTER + URI_CP_LOGS;
+                            document.location.href = URI_KPS_HUB_IMAGE_REPOSITORY;
                         }, true);
-
                     }
                 },
             };

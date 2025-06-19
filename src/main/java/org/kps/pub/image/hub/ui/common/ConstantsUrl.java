@@ -55,13 +55,13 @@ public class ConstantsUrl {
 
     public static final String URI_CP_CATALOG_INSTALL = "/hub/install";
 
-    public static final String URI_CP_LIST = "/hub/list";
-    public static final String URI_CP_DETAILS = "/hub/details";
-    public static final String URI_CP_VAULT_DETAILS = "/hub/vault/details";
-    public static final String URI_CP_CREATE = "/hub/create";
-    public static final String URI_CP_UPDATE = "/hub/update";
-    public static final String URI_CP_POPUP = "/hub/popup";
-    public static final String URI_CP_LOGS = "/hub/logs";
+    public static final String URI_CP_LIST = "/list";
+    public static final String URI_CP_DETAILS = "/details";
+    public static final String URI_CP_CREATE = "/create";
+    public static final String URI_CP_UPDATE = "/update";
+    public static final String URI_CP_POPUP = "/popup";
+    public static final String URI_CP_LOGS = "/logs";
+    public static final String URI_KPS_HUB_IMAGE_REPOSITORY = "/hub/repository";
 
     public static final String URI_CP_ADD = "/hub/add";
     public static final String URI_CP_UPGRADE = "/hub/upgrade";
