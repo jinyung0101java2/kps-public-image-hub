@@ -125,7 +125,7 @@
 
 				init() {
 					func.nameLoad = logs.reset;
-					document.getElementById('title').innerHTML = sessionStorage.getItem('commonName');
+					document.getElementById('title').innerHTML = sessionStorage.getItem('repositoryName');
 
 					logs.load();
 
@@ -144,7 +144,7 @@
 					// nameSpace 정보 조회
 					//https://harbor.133.186.219.222.nip.io/api/v2.0/projects?page=1&page_size=15
 					// func.loadData('GET', `${func.harborUrl}/api/v2.0/projects?searchName=${document.getElementById('searchText').value}&limit=${project.limit}&offset=${project.offset}`, 'application/json', project.draw);
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('commonName')}/logs?page_size=100`, 'application/json', logs.drawLogs);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=100`, 'application/json', logs.drawLogs);
 					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', repositories.drawStatistics);
 				},
 
@@ -185,58 +185,11 @@
 					// more 버튼 event
 					document.querySelector('.more').addEventListener('click', () => {
 						if(document.querySelector('.listTable').querySelectorAll('tr').length < project.allItemCount){
-							project.offset++;
+							logs.offset++;
 
-							project.load();
+							logs.load();
 						}
 					}, false);
-
-					if(document.querySelector('.create')) {
-						document.querySelector('.create').addEventListener('click', () => {
-							func.proCreate(MSG_NEW_PROJECT, 'secrets', MSG_SAVE);
-						}, false);
-					}
-
-					/*  document.querySelector('.allBox').addEventListener('click', () => {
-                          alert('allbox')
-                      }, false);*/
-
-					document.getElementById('delete').addEventListener('click', (e) => {
-						let projectCnt = sessionStorage.getItem('LogsCnt')
-
-						let tr = 0;
-						// let fal = 0;
-						for (var i = 0; i <= projectCnt-1; i++) {
-							// let checkbox = document.querySelector('.checkbox_' + `${i}`).checked
-							if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
-								tr+=1;
-							} /*else {
-                                fal+=1;
-                                // func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
-                            }    */
-						}
-
-						if (tr > 0 ) {
-							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE, true, MSG_CONFIRM, logs.delete);
-						} else if (tr === 0) {
-							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
-						}
-
-					}, false);
-
-				},
-
-				delete() {
-					let projectCnt = sessionStorage.getItem('logsCnt')
-					for (var i = 0; i <= projectCnt-1; i++) {
-						if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
-							var class_id = $('.checkbox_' + `${i}`).attr('id')
-
-							// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/users/current/permissions?scope=/project/`+ class_id +`&relative=true` + name, 'application/json', project.drawStatistics);
-							// func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.historyBack);
-						}
-					}
-
 
 				},
 
@@ -244,7 +197,7 @@
 					var listAll = document.querySelector('.listTable').querySelectorAll('a');
 					for(var i=0; i<=listAll.length-1; i++){
 						listAll[i].addEventListener('click', (e) => {
-							sessionStorage.setItem('commonName', e.target.getAttribute('data-id'));
+							sessionStorage.setItem('imageName', e.target.getAttribute('data-id'));
 
 							document.location.href = URI_KPS_HUB_IMAGE_REPOSITORY;
 						}, true);
