@@ -1040,11 +1040,11 @@ const func = {
 
 		if (hours > 12) {//13 ~ 23
 			hoursPm = hours - 12
-			return `${year}-${month}-${day}, ${hoursPm}:${minutes} PM`;
+			return `${year}-${month}-${day} ${hoursPm}:${minutes} PM`;
 		} else if (hours === 12) {//12
-			return `${year}-${month}-${day}, ${hours}:${minutes} PM`;
+			return `${year}-${month}-${day} ${hours}:${minutes} PM`;
 		} else if (hours < 12) { //0 ~ 11
-			return `${year}-${month}-${day}, ${hours}:${minutes} AM`;
+			return `${year}-${month}-${day} ${hours}:${minutes} AM`;
 		}
 	},
 

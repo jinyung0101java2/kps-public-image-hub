@@ -77,27 +77,27 @@
 				<!-- User -->
 				<ul class="tab-btn">
 					<!-- 활성화시 active 클래스 추가 -->
-					<li type="repository" class="active"><a href="javascript:" th:text="#{M0940}"></a></li>
-					<li type="log"><a onclick="movePage(URI_KPS_HUB_IMAGE_LOG)" th:text="#{M0941}"></a></li>
+					<li type="repository" class="active"><a onclick="movePage(URI_KPS_HUB_IMAGE_REPOSITORY)" th:text="#{M0940}"></a></li>
+					<li type="log" class="active"><a th:text="#{M0941}"></a></li>
 				</ul>
 				<div class="table_style01">
 					<!-- board -->
 					<table>
-						<caption>Repositories List</caption>
+						<caption>Logs List</caption>
 						<colgroup >
-							<col width="4%" />
-							<col width="24%" />
-							<col width="24%" />
-							<col width="24%" />
-							<col width="24%" />
+							<col width="33%" />
+							<col width="40%" />
+							<col width="5%" />
+							<col width="5%" />
+							<col width="7%" />
 						</colgroup>
 						<thead>
 						<tr>
-							<th scope="col"><input type="checkbox" name="all-repositories" id="all-repositories"><label for="all-repositories" style="padding-left: 27px; position: relative; cursor: pointer;"></label></th>
-							<th scope="col">Name</th>
-							<th scope="col">Artifacts</th>
-							<th scope="col">Pulls</th>
-							<th scope="col">Last Modified Time</th>
+							<th scope="col">Username</th>
+							<th scope="col">Resource</th>
+							<th scope="col">Resource Type</th>
+							<th scope="col">Operation</th>
+							<th scope="col">Timestamp</th>
 						</tr>
 						</thead>
 						<tbody class="listTable">
@@ -106,8 +106,6 @@
 					<!-- more btn -->
 					<a class="more" href="javascript:">more</a>
 				</div>
-				<!-- btn -->
-				<a href="javascript:" id="delete" class="delete" style="top: 35px;" th:text="#{M0026}" ></a>
 			</div>
 		</article>
 	</div>
@@ -119,25 +117,25 @@
 			IS_GLOBAL = true;
 			func.init(ASIDE_DP1.IMAGES, ASIDE_DP2.PROJECTS);
 
-			const repositories = {
+			const logs = {
 				offset: 0, // 로드 페이지 넘버
 				limit: 10, // 로드 게시물 개수
 				allItemCount: 0, //게시물 촐 개수
 				type: 'administrator',
 
 				init() {
-					func.nameLoad = repositories.reset;
+					func.nameLoad = logs.reset;
 					document.getElementById('title').innerHTML = sessionStorage.getItem('commonName');
 
-					repositories.load();
+					logs.load();
 
-					repositories.event();
+					logs.event();
 				},
 
 				reset() {
 					func.removeHtml(document.querySelector('.listTable'));
-					repositories.offset = 0;
-					repositories.load();
+					logs.offset = 0;
+					logs.load();
 				},
 
 				load() {
@@ -146,24 +144,24 @@
 					// nameSpace 정보 조회
 					//https://harbor.133.186.219.222.nip.io/api/v2.0/projects?page=1&page_size=15
 					// func.loadData('GET', `${func.harborUrl}/api/v2.0/projects?searchName=${document.getElementById('searchText').value}&limit=${project.limit}&offset=${project.offset}`, 'application/json', project.draw);
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('commonName')}/repositories?page_size=100`, 'application/json', repositories.drawRepositories);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('commonName')}/logs?page_size=100`, 'application/json', logs.drawLogs);
 					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', repositories.drawStatistics);
 				},
 
-				drawRepositories(data) {
+				drawLogs(data) {
 
 					let html;
-					sessionStorage.setItem('repositoriesCnt', data.length);
+					sessionStorage.setItem('logsCnt', data.length);
 					if (data.length > 0) {
 						for (var i = 0; i <= data.length - 1; i++) {
 
-							let time = func.changeTime(data[i].update_time)
+							let time = func.changeTime(data[i].op_time)
 
 							html = `<tr>
-                                        <td><input type="checkbox" name="${data[i].name}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
-                                        <td class="left"><a class="name" href="javascript:;" data-id="${data[i].name}">${data[i].name}</a></td>
-                                        <td>${data[i].artifact_count}</td>
-                                        <td>${data[i].pull_count}</td>
+                                        <td class="left">${data[i].username}</td>
+                                        <td class="left">${data[i].resource}</td>
+                                        <td>${data[i].resource_type}</td>
+                                        <td>${data[i].operation}</td>
                                         <td id="time_${i}">time</td>
                                     </tr>`;
 							func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
@@ -180,7 +178,7 @@
 						document.getElementById('wrap').removeChild(document.getElementById('loading'));
 					}
 
-					repositories.listEvent()
+					logs.listEvent()
 				},
 
 				event(){
@@ -199,29 +197,12 @@
 						}, false);
 					}
 
-					document.querySelector('#all-repositories').addEventListener('click', () => {
-						let check = document.getElementById('all-repositories').checked
-						let projectCnt = sessionStorage.getItem('repositoriesCnt')
-						if (check === true) {
-							// document.getElementById('delete').style.display = 'block';
-							for (var i = 0; i <= projectCnt-1; i++) {
-								document.querySelector('.checkbox_' + `${i}`).checked = true;
-							}
-
-						} else {
-							// document.getElementById('delete').style.display = 'none';
-							for (var i = 0; i <= projectCnt-1; i++) {
-								document.querySelector('.checkbox_' + `${i}`).checked = false;
-							}
-						}
-					}, false);
-
 					/*  document.querySelector('.allBox').addEventListener('click', () => {
                           alert('allbox')
                       }, false);*/
 
 					document.getElementById('delete').addEventListener('click', (e) => {
-						let projectCnt = sessionStorage.getItem('repositoriesCnt')
+						let projectCnt = sessionStorage.getItem('LogsCnt')
 
 						let tr = 0;
 						// let fal = 0;
@@ -236,7 +217,7 @@
 						}
 
 						if (tr > 0 ) {
-							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE, true, MSG_CONFIRM, repositories.delete);
+							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE, true, MSG_CONFIRM, logs.delete);
 						} else if (tr === 0) {
 							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
 						}
@@ -246,7 +227,7 @@
 				},
 
 				delete() {
-					let projectCnt = sessionStorage.getItem('repositoriesCnt')
+					let projectCnt = sessionStorage.getItem('logsCnt')
 					for (var i = 0; i <= projectCnt-1; i++) {
 						if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
 							var class_id = $('.checkbox_' + `${i}`).attr('id')
@@ -271,7 +252,7 @@
 				},
 			};
 
-			repositories.init();
+			logs.init();
 		}
 	</script>
 </th:block>

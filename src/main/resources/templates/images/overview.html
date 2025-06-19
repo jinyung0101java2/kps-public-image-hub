@@ -23,44 +23,45 @@
             <fieldset>
             <ul style="display: flex; float: right;">
                 <li>
-                    <div class="pro-statistics" style="border: 1px solid #d3d3d3; border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px; height: 124px; margin-left: 10px">
+                    <div class="statistics">
                         <h3>Projects</h3>
-                        <div style="display: flex; margin-top: 5px">
-                            <div class="stat-cont" style="width: 93px">Private</div>
-                            <div id="pro_pri" style="margin-left: 10px"></div>
+                        <div class="statistics-box">
+                            <div class="stat-cont">Private</div>
+                            <div class="stat-cnt" id="pro_pri"></div>
                         </div>
-                        <div style="display: flex; margin-top: 5px">
-                            <div class="stat-cont" style="width: 93px">Public</div>
-                            <div id="pro_pub" style="margin-left: 10px"></div>
+                        <div class="statistics-box">
+                            <div class="stat-cont">Public</div>
+                            <div class="stat-cnt" id="pro_pub"></div>
                         </div>
-                        <div style="display: flex; margin-top: 5px">
-                            <div class="stat-cont" style="width: 93px">Total</div>
-                            <div id="pro_total" style="margin-left: 10px"></div>
+                        <div class="statistics-box">
+                            <div class="stat-cont">Total</div>
+                            <div class="stat-cnt" id="pro_total"></div>
                         </div>
                     </div>
                 </li>
                 <li>
-                    <div class="repo-statistics" style="border: 1px solid #d3d3d3; border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px; height: 124px; margin-left: 10px">
+                    <div class="statistics">
                         <h3>Repositories</h3>
-                        <div style="display: flex; margin-top: 5px" >
-                            <div class="stat-cont" style="width: 93px">Private</div>
-                            <div id="repo_pri" style="margin-left: 10px"></div>
+                        <div class="statistics-box">
+                            <div class="stat-cont">Private</div>
+                            <div class="stat-cnt" id="repo_pri"></div>
                         </div>
-                        <div style="display: flex; margin-top: 5px">
-                            <div class="stat-cont" style="width: 93px">Public</div>
-                            <div id="repo_pub" style="margin-left: 10px"></div>
+                        <div class="statistics-box">
+                            <div class="stat-cont">Public</div>
+                            <div class="stat-cnt" id="repo_pub"></div>
                         </div>
-                        <div style="display: flex; margin-top: 5px">
-                            <div class="stat-cont" style="width: 93px">Total</div>
-                            <div id="repo_total" style="margin-left: 10px"></div>
+                        <div class="statistics-box">
+                            <div class="stat-cont">Total</div>
+                            <div class="stat-cnt" id="repo_total"></div>
                         </div>
                     </div>
                 </li>
                 <li>
-                    <div class="quota-statistics" style="border: 1px solid #d3d3d3; border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px; height: 124px; margin-left: 10px; margin-right: 40px">
+                    <div class="last-statistics">
                         <h3>Quota used</h3>
-                        <div style="display: flex; text-align: center;">
-                            <div id="storage_total" style="font-size: 30px; padding: 30px 0px 25px 40px"></div><div style="padding: 34px 25px 25px 0px; width: 35%">Gib</div>
+                        <div class="stat-box">
+                            <div class="total-cnt" id="storage_total" style="font-size: 30px; padding: 30px 0px 25px 40px; margin: 0px 0px 0px 0px;"></div>
+                            <div class="total-unit" style="padding: 34px 25px 25px 0px; width: 35%">Gib</div>
                         </div>
                     </div>
                 </li>
@@ -194,6 +195,9 @@
                             document.getElementById("role_id_" + i).innerText = role;
                             document.getElementById("time_" + i).innerText = time;
                         }
+                    } else if (data.length === 0) {
+                            let html = '<tr><td colspan="7">No Data.</td></tr>';
+                            func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
                     }
 
                     if (document.getElementById('loading')) {

@@ -749,10 +749,11 @@ header > div > div > div > div > div ul li a.on {background-color:#ff7a0f; color
 .creat dl dd .temp-txt {margin-top: 0;}
 .add-btn {width :100px; text-align: center; background-color:#bdbfc4; color:#fff; line-height:52px; height:50px; font-size:16px; font-weight:400; border-radius:2px; margin-left: 15px; cursor: pointer;}
 /* tab */
-.tab-cont-wrap .tab-btn {display: flex; border-bottom: 2px solid #000;}
+.tab-cont-wrap .tab-btn {display: flex;}
+/*.tab-cont-wrap .tab-btn {display: flex; border-bottom: 2px solid #000;}*/
 .tab-cont-wrap .tab-btn li {margin-left: 10px;}
 .tab-cont-wrap .tab-btn li:first-child {margin-left :0;}
-.tab-cont-wrap .tab-btn a {display: block; font-size: 18px; padding: 15px; background-color: #bdbfc4; color: #fff; min-width: 150px; text-align: center;}
+.tab-cont-wrap .tab-btn a {display: block; font-size: 16px; padding: 10px; background-color: #bdbfc4; color: #fff; min-width: 90px; text-align: center;}
 .tab-cont-wrap .tab-btn li.active a {background-color: #0ACF83;}
 /*----------------------------- service ingress -----------------------------*/
 .creat-type2 .g-select-wrap .g-select select {height: 50px; line-height: 50px; max-width: 212px; min-width: 212px; border-color: #ebebeb;}
@@ -776,6 +777,21 @@ header > div > div > div > div > div ul li a.on {background-color:#ff7a0f; color
 .custom-access-button {cursor:pointer;}
 #out_a {margin: -80px 0 0 0;}
 .tdbg {background-color: #f7f7f7; !important; }
+
+.statistics {border: 1px solid #d3d3d3;	border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px;	height: 124px; margin-left: 10px;}
+.statistics > h3.stat-title {margin-bottom: 35px}
+.statistics > div.statistics-box {display: flex; margin-top: 5px}
+.statistics > div.statistics-box > div.stat-cont {width: 93px}
+.statistics > div.statistics-box > div.stat-cnt {margin-left: 10px}
+.statistics > div.stat-box {display: flex}
+.statistics > div.stat-box > div.total-cnt {font-size: 30px; margin: -7px 0px 0px 22px}
+.last-statistics {border: 1px solid #d3d3d3;	border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px;	height: 124px; margin-left: 10px; margin-right: 40px}
+.last-statistics > h4.stat-title {margin-bottom: 35px}
+.last-statistics > div.stat-box {display: flex; text-align: center}
+.last-statistics > div.stat-box > div.total-cnt {font-size: 30px; margin: -7px 0px 0px 22px}
+.last-statistics > div.stat-box {display: flex}
+.last-statistics > div.stat-box > div.total-cnt > div.total-unit {padding: 34px 25px 25px 0px; width: 35%}
+.stat-img {margin-left: 20px;}
 
 
 .labels::-webkit-scrollbar {
