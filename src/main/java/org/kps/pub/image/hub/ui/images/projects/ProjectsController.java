@@ -23,7 +23,7 @@ public class ProjectsController {
      *
      * @return the view
      */
-    @GetMapping(value = ConstantsUrl.URI_CP_IMAGE_PROJECTS)
+    @GetMapping(value = ConstantsUrl.URI_KPS_HUB_IMAGE_PROJECT)
     public String getProjectsList() {
         return BASE_URL + "projects";
     }
@@ -33,7 +33,7 @@ public class ProjectsController {
      *
      * @return the view
      */
-    @GetMapping(value = ConstantsUrl.URI_CP_IMAGE_PROJECTS + ConstantsUrl.URI_CP_DETAILS)
+    @GetMapping(value = ConstantsUrl.URI_KPS_HUB_IMAGE_PROJECT + ConstantsUrl.URI_CP_DETAILS)
     public String getProjectsDetail() {
         return BASE_URL + "projectsDetail";
     }
@@ -44,7 +44,7 @@ public class ProjectsController {
      * @return the view
      */
     @PreAuthorize("@authSecurity.checkIsSuperAdmin()")
-    @GetMapping(value = ConstantsUrl.URI_CP_IMAGE_PROJECTS + ConstantsUrl.URI_CP_CREATE)
+    @GetMapping(value = ConstantsUrl.URI_KPS_HUB_IMAGE_PROJECT + ConstantsUrl.URI_CP_CREATE)
     public String getProjectsCreate() {
         return BASE_URL + "projectsCreate";
     }
