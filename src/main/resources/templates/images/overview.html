@@ -115,7 +115,8 @@
     <input type="hidden" id="cluster_status_D" th:value="#{M0836}"/>
 </div>
 <th:block layout:fragment="script">
-    <script type="text/javascript">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/10.2.0/jsrsasign-all-min.js"></script>
+    <script type="text/javascript" th:inline="javascript">
         window.onload = () => {
 
             IS_GLOBAL = true;
@@ -128,6 +129,7 @@
                 type: 'administrator',
 
                 init() {
+                    sessionStorage.setItem('accessToken' , 'Bearer ' + [[${accessToken}]]);
                     func.nameLoad = project.reset;
 
                     project.load();

@@ -5,10 +5,17 @@ import org.kps.pub.image.hub.ui.common.model.CommonStatusCode;
 import org.kps.pub.image.hub.ui.common.model.ResultStatus;
 import org.kps.pub.image.hub.ui.login.LoginService;
 import org.kps.pub.image.hub.ui.login.model.UsersLoginMetaData;
+import org.kps.pub.image.hub.ui.security.model.OAuthTokens;
+import org.kps.pub.image.hub.ui.security.model.PortalOAuth2User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
@@ -33,25 +40,28 @@ public class RestTemplateService {
 
     private String base64Authorization;
     private String baseUrl;
+    private final OAuth2AuthorizedClientService authorizedClientService;
     private HttpServletRequest request;
 
 
     /**
      * Instantiates a new Rest template service
      *
-     * @param restTemplate                   the rest template
-     * @param propertyService                the property service
-     * @param loginService                the login service
-     * @param request                        the HttpServletRequest
+     * @param restTemplate            the rest template
+     * @param propertyService         the property service
+     * @param loginService            the login service
+     * @param authorizedClientService the authorized client service
+     * @param request                 the HttpServletRequest
      */
     @Autowired
     public RestTemplateService(RestTemplate restTemplate,
                                PropertyService propertyService,
                                LoginService loginService,
-                               HttpServletRequest request) {
+                               OAuth2AuthorizedClientService authorizedClientService, HttpServletRequest request) {
         this.restTemplate = restTemplate;
         this.propertyService = propertyService;
         this.loginService = loginService;
+        this.authorizedClientService = authorizedClientService;
         this.request = request ;
         cpApiBase64Authorization = "Bearer ";
     }
@@ -322,6 +332,28 @@ public class RestTemplateService {
     }
 
 
+    /**
+     * KeyCloak Token 값 조회 (Get KeyCloak Token)
+     *
+     * @return the OAuthTokens
+     */
+    public OAuthTokens getKeyCloakToken () {
+        OAuthTokens oAuthTokens = null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            OAuth2AuthenticationToken oauth2Auth = (OAuth2AuthenticationToken) authentication;
+            String registrationId = oauth2Auth.getAuthorizedClientRegistrationId();
+            OAuth2AuthorizedClient authorizedClient = authorizedClientService.loadAuthorizedClient(registrationId, oauth2Auth.getName());
 
+            if (authorizedClient != null) {
+                PortalOAuth2User user = (PortalOAuth2User) oauth2Auth.getPrincipal();
+                oAuthTokens = new OAuthTokens(authorizedClient.getAccessToken().getTokenValue(), authorizedClient.getRefreshToken().getTokenValue(),
+                        user.getUsersLoginMetaData().getUserId(), user.getUsersLoginMetaData().getUserAuthId());
+            }
+
+        }
+
+        return oAuthTokens;
+    }
 
 }
