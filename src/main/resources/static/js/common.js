@@ -1054,5 +1054,13 @@ const func = {
 		let result;
 		result = gib.toFixed(2);
 		return result;
+	},
+
+	byteToMib(bytes) {
+
+		let mib = bytes / 1024 / 1024;
+		let result;
+		result = mib.toFixed(2);
+		return result;
 	}
 }

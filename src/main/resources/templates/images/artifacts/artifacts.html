@@ -75,15 +75,15 @@
 			<div class="notice">
 				<!--                <h3>Projects</h3>-->
 				<!-- User -->
-				<ul class="tab-btn">
-					<!-- 활성화시 active 클래스 추가 -->
+				<!--<ul class="tab-btn">
+					&lt;!&ndash; 활성화시 active 클래스 추가 &ndash;&gt;
 					<li type="repository" class="active"><a href="javascript:" th:text="#{M0940}"></a></li>
 					<li type="log"><a onclick="movePage(URI_KPS_HUB_IMAGE_LOG)" th:text="#{M0941}"></a></li>
-				</ul>
+				</ul>-->
 				<div class="table_style01">
 					<!-- board -->
 					<table>
-						<caption>Repositories List</caption>
+						<caption>Artifacts List</caption>
 						<colgroup >
 							<col width="4%" />
 							<col width="12%" />
@@ -98,7 +98,7 @@
 						</colgroup>
 						<thead>
 						<tr>
-							<th scope="col"><input type="checkbox" name="all-artifacts" id="all-repositories"><label for="all-repositories" style="padding-left: 27px; position: relative; cursor: pointer;"></label></th>
+							<th scope="col"><input type="checkbox" name="all-artifacts" id="all-artifacts"><label for="all-artifacts" style="padding-left: 27px; position: relative; cursor: pointer;"></label></th>
 							<th scope="col">Artifacts</th>
 							<th scope="col">Tags</th>
 							<th scope="col">Signed</th>
@@ -117,7 +117,7 @@
 					<a class="more" href="javascript:">more</a>
 				</div>
 				<!-- btn -->
-				<a href="javascript:" id="delete" class="delete" style="top: 35px;" th:text="#{M0026}" ></a>
+				<a href="javascript:" id="delete" class="delete" style="top: -4px;" th:text="#{M0026}" ></a>
 			</div>
 		</article>
 	</div>
@@ -137,11 +137,11 @@
 
 				init() {
 					func.nameLoad = artifacts.reset;
-					document.getElementById('title').innerHTML = sessionStorage.getItem('commonName');
+					document.getElementById('title').innerHTML = sessionStorage.getItem('imageName');
 
 					artifacts.load();
 
-					repositories.event();
+					artifacts.event();
 				},
 
 				reset() {
@@ -156,27 +156,37 @@
 					// nameSpace 정보 조회
 					//https://harbor.133.186.219.222.nip.io/api/v2.0/projects?page=1&page_size=15
 					// func.loadData('GET', `${func.harborUrl}/api/v2.0/projects?searchName=${document.getElementById('searchText').value}&limit=${project.limit}&offset=${project.offset}`, 'application/json', project.draw);
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts?&with_scan_overview=true&with_sbom_overview=true&with_label=true&with_accessory=false&page_size=100`, 'application/json', artifacts.drawRepositories);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts?with_tag=true&with_scan_overview=true&with_sbom_overview=true&with_label=true&with_accessory=true&&page_size=100`, 'application/json', artifacts.drawArtifacts);
+					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts?&with_scan_overview=true&with_sbom_overview=true&with_label=true&with_accessory=false&page_size=100`, 'application/json', artifacts.drawArtifacts);
 					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', repositories.drawStatistics);
 				},
 
-				drawRepositories(data) {
+				drawArtifacts(data) {
 
 					let html;
 					sessionStorage.setItem('artifactsCnt', data.length);
 					if (data.length > 0) {
 						for (var i = 0; i <= data.length - 1; i++) {
 
+							let digest = data[i].digest.substr(0,15)
 							let pull_time = func.changeTime(data[i].pull_time)
 							let push_time = func.changeTime(data[i].push_time)
+							let size = func.byteToMib(data[i].size)
+
+							/*if (data[i].scan_overview) {
+
+							}*/
+							let scan_overview = data[i].scan_overview;
+							console.log(JSON.stringify(scan_overview))
+
 
 							html = `<tr>
                                         <td><input type="checkbox" name="${data[i].digest}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
-                                        <td class="left"><a class="name" href="javascript:;" data-id="${data[i].digest}">${data[i].digest}</a></td>
-                                        <td>${data[i].tags}</td>
+                                        <td class="left"><img src="../../../static/img/artifact.png" alt="artifact image"> <a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}"></a></td>
+                                        <td>${data[i].tags[0].name}</td>
                                         <td></td>
-                                        <td>${data[i].size}</td>
-                                        <td>${data[i].pull_count}</td>
+                                        <td id="size_id_${i}"></td>
+                                        <td id="scan_overview_id_${i}">${data[i].scan_overview}</td>
                                         <td>${data[i].pull_count}</td>
                                         <td>${data[i].pull_count}</td>
                                         <td id="push_time_${i}">push_time</td>
@@ -184,8 +194,10 @@
                                     </tr>`;
 							func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 
+							document.getElementById("digest_name_" + i).innerText = digest;
 							document.getElementById("pull_time_" + i).innerText = pull_time;
 							document.getElementById("push_time_" + i).innerText = push_time;
+							document.getElementById("size_id_" + i).innerText = size +' MiB';
 
 						}
 					} else if (data.length === 0) {
@@ -216,8 +228,8 @@
 						}, false);
 					}
 
-					document.querySelector('#all-repositories').addEventListener('click', () => {
-						let check = document.getElementById('all-repositories').checked
+					document.querySelector('#all-artifacts').addEventListener('click', () => {
+						let check = document.getElementById('all-artifacts').checked
 						let artifactsCnt = sessionStorage.getItem('artifactsCnt')
 						if (check === true) {
 							// document.getElementById('delete').style.display = 'block';
@@ -280,9 +292,9 @@
 					var listAll = document.querySelector('.listTable').querySelectorAll('a');
 					for(var i=0; i<=listAll.length-1; i++){
 						listAll[i].addEventListener('click', (e) => {
-							sessionStorage.setItem('commonName', e.target.getAttribute('data-id'));
+							sessionStorage.setItem('artifactsName', e.target.getAttribute('data-id'));
 
-							document.location.href = URI_KPS_HUB_IMAGE_REPOSITORY;
+							document.location.href = URI_KPS_HUB_IMAGE_ARTIFACT_DETAIL;
 						}, true);
 					}
 				},

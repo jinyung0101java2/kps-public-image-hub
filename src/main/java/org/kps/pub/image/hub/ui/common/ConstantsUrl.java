@@ -61,9 +61,11 @@ public class ConstantsUrl {
     public static final String URI_CP_UPDATE = "/update";
     public static final String URI_CP_POPUP = "/popup";
     public static final String URI_CP_LOGS = "/logs";
+    public static final String URI_KPS_HUB_IMAGE_PROJECT = "/hub/image/projects";
     public static final String URI_KPS_HUB_IMAGE_REPOSITORY = "/hub/image/projects/repositories";
     public static final String URI_KPS_HUB_IMAGE_LOG = "/hub/image/projects/logs";
-    public static final String URI_KPS_HUB_IMAGE_PROJECT = "/hub/image/projects";
+    public static final String URI_KPS_HUB_IMAGE_ARTIFACT = "/hub/image/projects/repositories/artifacts";
+    public static final String URI_KPS_HUB_IMAGE_ARTIFACT_DETAIL = "/hub/image/projects/repositories/artifacts/details";
 
     public static final String URI_CP_ADD = "/hub/add";
     public static final String URI_CP_UPGRADE = "/hub/upgrade";

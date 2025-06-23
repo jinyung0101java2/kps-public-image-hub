@@ -24,7 +24,7 @@ public class LogsController {
      * @return the view
      */
     @GetMapping(value = ConstantsUrl.URI_KPS_HUB_IMAGE_LOG)
-    public String getImageLogsList() {
+    public String getLogsList() {
         return BASE_URL + "logs";
     }
 
@@ -34,7 +34,7 @@ public class LogsController {
      * @return the view
      */
     @GetMapping(value = ConstantsUrl.URI_KPS_HUB_IMAGE_LOG + ConstantsUrl.URI_CP_DETAILS)
-    public String getImageLogsDetail() {
+    public String getLogsDetail() {
         return BASE_URL + "logsDetail";
     }
 
@@ -45,7 +45,7 @@ public class LogsController {
      */
     @PreAuthorize("@authSecurity.checkIsSuperAdmin()")
     @GetMapping(value = ConstantsUrl.URI_KPS_HUB_IMAGE_LOG + ConstantsUrl.URI_CP_CREATE)
-    public String getImageLogsCreate() {
+    public String getLogsCreate() {
         return BASE_URL + "logsCreate";
     }
 

@@ -19,7 +19,7 @@
 				<button type="submit" id="search" th:text="#{M0031}"></button>
 			</fieldset>
 		</article>
-		<article>
+		<!--<article>
 			<fieldset>
 				<ul style="display: flex; float: right;">
 					<li>
@@ -69,35 +69,33 @@
 					</li>
 				</ul>
 			</fieldset>
-		</article>
+		</article>-->
 		<article class="base-pro base tab-cont-wrap">
 
 			<div class="notice">
 				<!--                <h3>Projects</h3>-->
 				<!-- User -->
-				<ul class="tab-btn">
-					<!-- 활성화시 active 클래스 추가 -->
+				<!--<ul class="tab-btn">
+					&lt;!&ndash; 활성화시 active 클래스 추가 &ndash;&gt;
 					<li type="repository" class="active"><a href="javascript:" th:text="#{M0940}"></a></li>
 					<li type="log"><a onclick="movePage(URI_KPS_HUB_IMAGE_LOG)" th:text="#{M0941}"></a></li>
-				</ul>
+				</ul>-->
 				<div class="table_style01">
 					<!-- board -->
 					<table>
-						<caption>Repositories List</caption>
+						<caption>Artifacts List</caption>
 						<colgroup >
 							<col width="4%" />
-							<col width="24%" />
-							<col width="24%" />
-							<col width="24%" />
-							<col width="24%" />
+							<col width="32%" />
+							<col width="32%" />
+							<col width="32%" />
 						</colgroup>
 						<thead>
 						<tr>
-							<th scope="col"><input type="checkbox" name="all-repositories" id="all-repositories"><label for="all-repositories" style="padding-left: 27px; position: relative; cursor: pointer;"></label></th>
+							<th scope="col"><input type="checkbox" name="all-artifacts" id="all-artifacts"><label for="all-artifacts" style="padding-left: 27px; position: relative; cursor: pointer;"></label></th>
 							<th scope="col">Name</th>
-							<th scope="col">Artifacts</th>
-							<th scope="col">Pulls</th>
-							<th scope="col">Last Modified Time</th>
+							<th scope="col">Push Time</th>
+							<th scope="col">Pull Time</th>
 						</tr>
 						</thead>
 						<tbody class="listTable">
@@ -107,7 +105,7 @@
 					<a class="more" href="javascript:">more</a>
 				</div>
 				<!-- btn -->
-				<a href="javascript:" id="delete" class="delete" style="top: 35px;" th:text="#{M0026}" ></a>
+				<a href="javascript:" id="delete" class="delete" style="top: -4px;" th:text="#{M0026}" ></a>
 			</div>
 		</article>
 	</div>
@@ -119,25 +117,27 @@
 			IS_GLOBAL = true;
 			func.init(ASIDE_DP1.IMAGES, ASIDE_DP2.PROJECTS);
 
-			const repositories = {
+			const artifacts = {
 				offset: 0, // 로드 페이지 넘버
 				limit: 10, // 로드 게시물 개수
 				allItemCount: 0, //게시물 촐 개수
 				type: 'administrator',
 
 				init() {
-					func.nameLoad = repositories.reset;
-					document.getElementById('title').innerHTML = sessionStorage.getItem('repositoryName');
+					func.nameLoad = artifacts.reset;
 
-					repositories.load();
+					let artifactsName = sessionStorage.getItem('artifactsName');
+					document.getElementById('title').innerHTML = artifactsName.substr(0,15)
 
-					repositories.event();
+					artifacts.load();
+
+					artifacts.event();
 				},
 
 				reset() {
 					func.removeHtml(document.querySelector('.listTable'));
-					repositories.offset = 0;
-					repositories.load();
+					artifacts.offset = 0;
+					artifacts.load();
 				},
 
 				load() {
@@ -146,29 +146,31 @@
 					// nameSpace 정보 조회
 					//https://harbor.133.186.219.222.nip.io/api/v2.0/projects?page=1&page_size=15
 					// func.loadData('GET', `${func.harborUrl}/api/v2.0/projects?searchName=${document.getElementById('searchText').value}&limit=${project.limit}&offset=${project.offset}`, 'application/json', project.draw);
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=100`, 'application/json', repositories.drawRepositories);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}/tags?with_signature=true&with_immutable_status=true&page_size=100`, 'application/json', artifacts.drawTags);
+					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts?&with_scan_overview=true&with_sbom_overview=true&with_label=true&with_accessory=false&page_size=100`, 'application/json', artifacts.drawArtifacts);
 					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', repositories.drawStatistics);
 				},
 
-				drawRepositories(data) {
+				drawTags(data) {
 
 					let html;
-					sessionStorage.setItem('repositoriesCnt', data.length);
+					sessionStorage.setItem('tagsCnt', data.length);
 					if (data.length > 0) {
 						for (var i = 0; i <= data.length - 1; i++) {
 
-							let time = func.changeTime(data[i].update_time)
+							let pull_time = func.changeTime(data[i].pull_time)
+							let push_time = func.changeTime(data[i].push_time)
 
 							html = `<tr>
-                                        <td><input type="checkbox" name="${data[i].name}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
-                                        <td class="left"><a class="name" href="javascript:;" data-id="${data[i].name}">${data[i].name}</a></td>
-                                        <td>${data[i].artifact_count}</td>
-                                        <td>${data[i].pull_count}</td>
-                                        <td id="time_${i}">time</td>
+                                        <td><input type="checkbox" name="${data[i].digest}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
+                                        <td id="name">${data[i].name}</td>
+                                        <td id="push_time_${i}">push_time</td>
+                                        <td id="pull_time_${i}">pull_time</td>
                                     </tr>`;
 							func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 
-							document.getElementById("time_" + i).innerText = time;
+							document.getElementById("pull_time_" + i).innerText = pull_time;
+							document.getElementById("push_time_" + i).innerText = push_time;
 
 						}
 					} else if (data.length === 0) {
@@ -180,16 +182,16 @@
 						document.getElementById('wrap').removeChild(document.getElementById('loading'));
 					}
 
-					repositories.listEvent()
+					artifacts.listEvent()
 				},
 
 				event(){
 					// more 버튼 event
 					document.querySelector('.more').addEventListener('click', () => {
-						if(document.querySelector('.listTable').querySelectorAll('tr').length < repositories.allItemCount){
-							repositories.offset++;
+						if(document.querySelector('.listTable').querySelectorAll('tr').length < project.allItemCount){
+							artifacts.offset++;
 
-							repositories.load();
+							artifacts.load();
 						}
 					}, false);
 
@@ -199,18 +201,18 @@
 						}, false);
 					}
 
-					document.querySelector('#all-repositories').addEventListener('click', () => {
-						let check = document.getElementById('all-repositories').checked
-						let repositoriesCnt = sessionStorage.getItem('repositoriesCnt')
+					document.querySelector('#all-artifacts').addEventListener('click', () => {
+						let check = document.getElementById('all-artifacts').checked
+						let artifactsCnt = sessionStorage.getItem('artifactsCnt')
 						if (check === true) {
 							// document.getElementById('delete').style.display = 'block';
-							for (var i = 0; i <= repositoriesCnt-1; i++) {
+							for (var i = 0; i <= artifactsCnt-1; i++) {
 								document.querySelector('.checkbox_' + `${i}`).checked = true;
 							}
 
 						} else {
 							// document.getElementById('delete').style.display = 'none';
-							for (var i = 0; i <= repositoriesCnt-1; i++) {
+							for (var i = 0; i <= artifactsCnt-1; i++) {
 								document.querySelector('.checkbox_' + `${i}`).checked = false;
 							}
 						}
@@ -221,11 +223,11 @@
                       }, false);*/
 
 					document.getElementById('delete').addEventListener('click', (e) => {
-						let repositoriesCnt = sessionStorage.getItem('repositoriesCnt')
+						let artifactsCnt = sessionStorage.getItem('artifactsCnt')
 
 						let tr = 0;
 						// let fal = 0;
-						for (var i = 0; i <= repositoriesCnt-1; i++) {
+						for (var i = 0; i <= artifactsCnt-1; i++) {
 							// let checkbox = document.querySelector('.checkbox_' + `${i}`).checked
 							if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
 								tr+=1;
@@ -236,7 +238,7 @@
 						}
 
 						if (tr > 0 ) {
-							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE, true, MSG_CONFIRM, repositories.delete);
+							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE, true, MSG_CONFIRM, artifacts.delete);
 						} else if (tr === 0) {
 							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
 						}
@@ -246,8 +248,8 @@
 				},
 
 				delete() {
-					let repositoriesCnt = sessionStorage.getItem('repositoriesCnt')
-					for (var i = 0; i <= repositoriesCnt-1; i++) {
+					let artifactsCnt = sessionStorage.getItem('artifactsCnt')
+					for (var i = 0; i <= artifactsCnt-1; i++) {
 						if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
 							var class_id = $('.checkbox_' + `${i}`).attr('id')
 
@@ -263,19 +265,15 @@
 					var listAll = document.querySelector('.listTable').querySelectorAll('a');
 					for(var i=0; i<=listAll.length-1; i++){
 						listAll[i].addEventListener('click', (e) => {
+							sessionStorage.setItem('commonName', e.target.getAttribute('data-id'));
 
-							let imageName = e.target.getAttribute('data-id');
-							imageName = imageName.split('/')[1]
-
-							sessionStorage.setItem('imageName', imageName);
-
-							document.location.href = URI_KPS_HUB_IMAGE_ARTIFACT;
+							document.location.href = URI_KPS_HUB_IMAGE_REPOSITORY;
 						}, true);
 					}
 				},
 			};
 
-			repositories.init();
+			artifacts.init();
 		}
 	</script>
 </th:block>

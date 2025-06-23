@@ -47,7 +47,7 @@ input[type="checkbox"] + label {padding-left:27px; position:relative; cursor:poi
 input[type="checkbox"] + label:after {content:""; position:absolute; top:0; left:0; display:inline-block; overflow:hidden; width:20px; height:20px; vertical-align:middle; cursor:pointer; border:1px solid #ebebeb;}/*
 input[type="checkbox"] + label:before {content:''; position:absolute; top:3px; left:6px; width:7px; height:11px; border-right:2px solid #ffffff; border-bottom:2px solid #ffffff; transform:rotate(45deg);}*/
 
-input[type="checkbox"]:checked + label:after {content:""; position:absolute; top:0; left:0; display:inline-block; overflow:hidden; width:20px; height:20px; vertical-align:middle; cursor:pointer;background-color:#376bcd; border:0;}
+input[type="checkbox"]:checked + label:after {content:""; position:absolute; top:0; left:0; display:inline-block; overflow:hidden; width:20px; height:20px; vertical-align:middle; cursor:pointer;background-color:#0ACF83; border:0;}
 input[type="checkbox"]:checked + label:before {content:''; position:absolute; top:3px; left:6px; width:7px; height:11px; border-right:2px solid #f5f7fa; border-bottom:2px solid #f5f7fa; transform:rotate(45deg); z-index:2;}
 
 input[type="radio"] + label {position:relative; display:inline-block; overflow:hidden; height:18px; padding-left:22px; color:#444; font-size:14px; line-height:18px; vertical-align:middle; cursor:pointer;}
@@ -203,7 +203,7 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 /* location */
 .location {padding:66px 71px 0px 33px; overflow:hidden; height:167px;}
 .location ul {overflow:hidden; margin-top:20px; padding-bottom:16px;}
-.location ul.title {overflow:hidden; float:left; padding-top: 2px; margin-left: 10px}
+.location ul.title {overflow:hidden; float:left; padding-top: 4px; margin-left: 10px}
 .location ul.title span {font-size: 27px}
 .location ul li {float:left; padding-left:18px; margin-left:18px; position:relative; color:#ffffff;}
 .location ul li:first-child {padding-left:0; margin-left:0;}
