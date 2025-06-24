@@ -579,13 +579,14 @@ const func = {
 
 		var request = new XMLHttpRequest();
 
-		setTimeout(function() {
+		setTimeout(function (name, value) {
 			request.open(method, url, false);
 			request.setRequestHeader('Content-type', header);
 			/*request.setRequestHeader('Authorization','Basic ' + credential);*/
 			request.setRequestHeader('Authorization', sessionStorage.getItem('accessToken'));
 			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
 			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
+			request.setRequestHeader('X-Harbor-CSRF-Token', 'X3NruP6OZrDCyXR2cn3e69VtHJj7PuLFCiC3xkKcrexy6DiWy4CmrhsaPKxB/7ZDE6vpDN+YKWGOoZ7NIVNN8w==');
 
 			request.onreadystatechange = () => {
 				if (request.readyState === XMLHttpRequest.DONE){
@@ -612,7 +613,7 @@ const func = {
 							callbackFunction(JSON.parse(request.responseText), list);
 						}*/
 						callbackFunction(JSON.parse(request.responseText), list);
-						//console.log('X-Harbor-Csrf-Token::: '+ request.getAllResponseHeaders())
+						console.log('AllResponseHeaders::: '+ request.getAllResponseHeaders())
 
 					} else if(JSON.parse(request.responseText).httpStatusCode === 500){
 						console.log("500")
@@ -1066,20 +1067,32 @@ const func = {
 		return result;
 	},
 
-	cvss3(data) {
+	vulnerabilitiesData(data) {
+		console.log("vulnerabilitiesData:::" + JSON.stringify(data))
 
-		console.log("cvss3:: " + JSON.stringify(data))
-		let cvss3Keys = Object.keys(data)
-		let cvss3Values = Object.values(data)
-		let cvssData = "";
+		let vulnerabilitiesData = "";
+		let severity = data.severity;
+		let total = data.summary.total;
+		let fixable = data.summary.fixable;
 
-		for (var i = 0; i <= cvss3Keys.length - 1; i++) {
-			// console.log("cvss3Keys:::" + cvss3Keys[i])
-			// console.log("cvss3Values:::" + JSON.stringify(cvss3Values[i].V3Score))
-			cvssData += cvss3Keys[i] + ": " + cvss3Values[i].V3Score + "\\n";
+		vulnerabilitiesData
+
+		return {
+			"severity" : severity,
+			"total" : total + " Total - " + fixable + " Fixable"
 		}
 
-		console.log("cvssData:::" + cvssData)
+	},
+
+	cvss3Data(data) {
+
+		let cvssData = "";
+		let cvss3Keys = Object.keys(data)
+		let cvss3Values = Object.values(data)
+
+		for (var i = 0; i <= cvss3Keys.length - 1; i++) {
+			cvssData += cvss3Keys[i] + ": " + cvss3Values[i].V3Score + " ";
+		}
 
 		return cvssData;
 	}

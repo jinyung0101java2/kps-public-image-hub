@@ -164,29 +164,31 @@
 				drawArtifacts(data) {
 
 					let html;
+					let changeScanOverview3;
+
 					sessionStorage.setItem('artifactsCnt', data.length);
 					if (data.length > 0) {
 						for (var i = 0; i <= data.length - 1; i++) {
+
+							if (data[i].scan_overview != null) {
+								let originScanOverview = JSON.stringify(data[i].scan_overview)
+								let changeScanOverview1 = originScanOverview.replace('{"application/vnd.security.vulnerability.report; version=1.1":','')
+								let changeScanOverview2 = changeScanOverview1.slice(0, -1)
+								changeScanOverview3 = JSON.parse(changeScanOverview2)
+							}
 
 							let digest = data[i].digest.substr(0,15)
 							let pull_time = func.changeTime(data[i].pull_time)
 							let push_time = func.changeTime(data[i].push_time)
 							let size = func.byteToMib(data[i].size)
 
-							/*if (data[i].scan_overview) {
-
-							}*/
-							let scan_overview = data[i].scan_overview;
-							console.log(JSON.stringify(scan_overview))
-
-
 							html = `<tr>
                                         <td><input type="checkbox" name="${data[i].digest}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
-                                        <td class="left"><img src="../../../static/img/artifact.png" alt="artifact image"> <a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}"></a></td>
+                                        <td class="left"><img src="/img/artifact.png" alt="artifact image" style="width: 15%; margin-right: 5px;"><a id="digest_name_${i}" class="name" style="background: url(../../../static/img/artifact.png);" href="javascript:;" data-id="${data[i].digest}"></a></td>
                                         <td>${data[i].tags[0].name}</td>
                                         <td></td>
                                         <td id="size_id_${i}"></td>
-                                        <td id="scan_overview_id_${i}">${data[i].scan_overview}</td>
+                                        <td id="scan_overview_id_${i}"></td>
                                         <td>${data[i].pull_count}</td>
                                         <td>${data[i].pull_count}</td>
                                         <td id="push_time_${i}">push_time</td>
@@ -198,6 +200,13 @@
 							document.getElementById("pull_time_" + i).innerText = pull_time;
 							document.getElementById("push_time_" + i).innerText = push_time;
 							document.getElementById("size_id_" + i).innerText = size +' MiB';
+
+							if (data[i].scan_overview != null) {
+								let vulnerabilitiesData = func.vulnerabilitiesData(changeScanOverview3)
+								document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.severity + "  " + vulnerabilitiesData.total;
+							} else {
+								document.getElementById("scan_overview_id_" + i).innerText = "No Scanned";
+							}
 
 						}
 					} else if (data.length === 0) {

@@ -56,24 +56,24 @@
 						</colgroup>
 						<tbody class="overviewListTable">
 						<tr>
-							<th scope="row" class="left">architecture</th>
+							<th scope="row">architecture</th>
 							<td class="left" id="architecture"></td>
 						</tr>
 						<tr>
-							<th scope="row" class="left">author</th>
+							<th scope="row">author</th>
 							<td class="left" id="author"></td>
 						</tr>
 						<tr>
-							<th scope="row" class="left">config</th>
+							<th scope="row">config</th>
 							<td class="left" id="config"></td>
 						</tr>
 						<tr>
-							<th scope="row" class="left">created</th>
+							<th scope="row">created</th>
 							<td class="left" id="created">
 							</td>
 						</tr>
 						<tr>
-							<th scope="row" class="left">os</th>
+							<th scope="row">os</th>
 							<td class="left" id="os"></td>
 						</tr>
 						</tbody>
@@ -85,9 +85,9 @@
 						<caption>Additions List</caption>
 						<colgroup >
 							<col width="18%" />
-							<col width="5%" />
-							<col width="13%" />
-							<col width="16%" />
+							<col width="6%" />
+							<col width="6%" />
+							<col width="22%" />
 							<col width="16%" />
 							<col width="16%" />
 							<col width="16%" />
@@ -152,14 +152,9 @@
 				load() {
 					func.loading();
 
-					// nameSpace 정보 조회
-					//https://harbor.133.186.219.222.nip.io/api/v2.0/projects?page=1&page_size=15
-					// func.loadData('GET', `${func.harborUrl}/api/v2.0/projects?searchName=${document.getElementById('searchText').value}&limit=${project.limit}&offset=${project.offset}`, 'application/json', project.draw);
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}/tags?with_signature=true&with_immutable_status=true&page_size=100`, 'application/json', artifacts.drawTags);
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}?with_tag=false&with_scan_overview=true&with_sbom_overview=true&with_label=true&with_immutable_status=true`, 'application/json', artifacts.drawOverview);
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}/additions/vulnerabilities`, 'application/json', artifacts.drawAdditions);
-					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts?&with_scan_overview=true&with_sbom_overview=true&with_label=true&with_accessory=false&page_size=100`, 'application/json', artifacts.drawArtifacts);
-					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', repositories.drawStatistics);
 				},
 
 				drawTags(data) {
@@ -211,13 +206,10 @@
 
 				drawAdditions(data) {
 
-					console.log(JSON.stringify(data))
 					let originData = JSON.stringify(data)
 					let changeData1 = originData.replace('{"application/vnd.security.vulnerability.report; version=1.1":','')
 					let changeData2 = changeData1.slice(0, -1)
 					let changeData3 = JSON.parse(changeData2)
-
-					console.log(JSON.stringify(changeData3))
 
 					let html;
 					sessionStorage.setItem('additionsCnt', changeData3.vulnerabilities.length);
@@ -225,22 +217,22 @@
 					if (changeData3.vulnerabilities.length > 0) {
 						for (var i = 0; i <= changeData3.vulnerabilities.length - 1; i++) {
 
+							let cvss3 = changeData3.vulnerabilities[i].vendor_attributes.CVSS;
+							let cvsseData = func.cvss3Data(cvss3)
+
 							html = `<tr>
-										<td class="left"><a class="name" href="${changeData3.vulnerabilities[i].links[0]}" target='_blank' data-id="${changeData3.vulnerabilities[i].id}">${changeData3.vulnerabilities[i].id}</a></td>
+										<td><a class="name" href="${changeData3.vulnerabilities[i].links[0]}" target='_blank' data-id="${changeData3.vulnerabilities[i].id}">${changeData3.vulnerabilities[i].id}</a></td>
                                         <td>${changeData3.vulnerabilities[i].severity}</td>
-                                        <td class="left" id="cvss3_${i}"></td>
+                                        <td id="cvss3_${i}"></td>
                                         <td class="left">${changeData3.vulnerabilities[i].package}</td>
                                         <td>${changeData3.vulnerabilities[i].version}</td>
                                         <td class="left">${changeData3.vulnerabilities[i].fix_version}</td>
                                         <td>No</td>
                                     </tr>`;
 
-							let cvss3 = changeData3.vulnerabilities[i].vendor_attributes.CVSS;
-							let cvsseData = func.cvss3(cvss3)
+							func.appendHtml(document.querySelector('.additionListTable'), html, 'tbody');
 
 							document.getElementById("cvss3_" + i).innerText = cvsseData;
-
-							func.appendHtml(document.querySelector('.additionListTable'), html, 'tbody');
 
 						}
 					} else if (changeData3.vulnerabilities.length === 0) {
@@ -252,7 +244,6 @@
 						document.getElementById('wrap').removeChild(document.getElementById('loading'));
 					}
 
-					artifacts.additionListEvent()
 				},
 
 				event(){
@@ -331,27 +322,6 @@
 
 				},
 
-				/*tagListEvent(){
-					var listAll = document.querySelector('.tagListTable').querySelectorAll('a');
-					for(var i=0; i<=listAll.length-1; i++){
-						listAll[i].addEventListener('click', (e) => {
-							sessionStorage.setItem('commonName', e.target.getAttribute('data-id'));
-
-							document.location.href = URI_KPS_HUB_IMAGE_REPOSITORY;
-						}, true);
-					}
-				},
-
-				additionListEvent(){
-					var listAll = document.querySelector('.additionListTable').querySelectorAll('a');
-					for(var i=0; i<=listAll.length-1; i++){
-						listAll[i].addEventListener('click', (e) => {
-							sessionStorage.setItem('commonName', e.target.getAttribute('data-id'));
-
-							document.location.href = URI_KPS_HUB_IMAGE_REPOSITORY;
-						}, true);
-					}
-				},*/
 			};
 
 			artifacts.init();
