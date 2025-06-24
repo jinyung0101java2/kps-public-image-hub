@@ -187,8 +187,6 @@
 					if (document.getElementById('loading')) {
 						document.getElementById('wrap').removeChild(document.getElementById('loading'));
 					}
-
-					artifacts.tagListEvent()
 				},
 
 				drawOverview(data) {
@@ -222,7 +220,7 @@
 
 							html = `<tr>
 										<td><a class="name" href="${changeData3.vulnerabilities[i].links[0]}" target='_blank' data-id="${changeData3.vulnerabilities[i].id}">${changeData3.vulnerabilities[i].id}</a></td>
-                                        <td>${changeData3.vulnerabilities[i].severity}</td>
+                                        <td><div id="severity_${i}"><span style="color: #ffffff">${changeData3.vulnerabilities[i].severity}</span></div></td>
                                         <td id="cvss3_${i}"></td>
                                         <td class="left">${changeData3.vulnerabilities[i].package}</td>
                                         <td>${changeData3.vulnerabilities[i].version}</td>
@@ -231,6 +229,14 @@
                                     </tr>`;
 
 							func.appendHtml(document.querySelector('.additionListTable'), html, 'tbody');
+
+							if (changeData3.vulnerabilities[i].severity === 'High') {
+								document.getElementById("severity_" + i).setAttribute('style',"background-color: #ff8f3d; border-radius: 10px;");
+							} else if (changeData3.vulnerabilities[i].severity === 'Medium') {
+								document.getElementById("severity_" + i).setAttribute('style',"background-color: #ffce66; border-radius: 10px;");
+							} else if (changeData3.vulnerabilities[i].severity === 'Low') {
+								document.getElementById("severity_" + i).setAttribute('style',"background-color: #fff1ad; border-radius: 10px;");
+							}
 
 							document.getElementById("cvss3_" + i).innerText = cvsseData;
 
