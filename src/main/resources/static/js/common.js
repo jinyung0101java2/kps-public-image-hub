@@ -1064,5 +1064,23 @@ const func = {
 		let result;
 		result = mib.toFixed(2);
 		return result;
+	},
+
+	cvss3(data) {
+
+		console.log("cvss3:: " + JSON.stringify(data))
+		let cvss3Keys = Object.keys(data)
+		let cvss3Values = Object.values(data)
+		let cvssData = "";
+
+		for (var i = 0; i <= cvss3Keys.length - 1; i++) {
+			// console.log("cvss3Keys:::" + cvss3Keys[i])
+			// console.log("cvss3Values:::" + JSON.stringify(cvss3Values[i].V3Score))
+			cvssData += cvss3Keys[i] + ": " + cvss3Values[i].V3Score + "\\n";
+		}
+
+		console.log("cvssData:::" + cvssData)
+
+		return cvssData;
 	}
 }
