@@ -1051,12 +1051,27 @@ const func = {
 		}
 	},
 
-	byteToGib(bytes) {
+	formatBytes(bytes, decimals) {
+	if (bytes === 0) return '0 Bytes';
 
-		let gib = bytes / 1024 / 1024 / 1024;
+	const k = 1024;
+	const dm = decimals < 0 ? 0 : decimals;
+	const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+	const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+	return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+	},
+
+	byteToKib(bytes) {
+
+		let mib = bytes / 1024;
 		let result;
-		result = gib.toFixed(2);
-		return result;
+		result = mib.toFixed(2);
+		return {
+			'number': result,
+			'unit': 'Kib'
+		};
 	},
 
 	byteToMib(bytes) {
@@ -1064,18 +1079,30 @@ const func = {
 		let mib = bytes / 1024 / 1024;
 		let result;
 		result = mib.toFixed(2);
-		return result;
+		return {
+			'number': result,
+			'unit': 'Mib'
+		};
 	},
 
-	vulnerabilitiesData(data) {
-		console.log("vulnerabilitiesData:::" + JSON.stringify(data))
+	byteToGib(bytes) {
 
-		let vulnerabilitiesData = "";
+		let gib = bytes / 1024 / 1024 / 1024;
+		let result;
+		result = gib.toFixed(2);
+		return {
+			'number': result,
+			'unit': 'Gib'
+		};
+	},
+
+
+
+	vulnerabilitiesData(data) {
+
 		let severity = data.severity;
 		let total = data.summary.total;
 		let fixable = data.summary.fixable;
-
-		vulnerabilitiesData
 
 		return {
 			"severity" : severity,

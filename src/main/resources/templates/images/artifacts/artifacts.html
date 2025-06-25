@@ -103,15 +103,45 @@
 
 							let digest = data[i].digest.substr(0,15)
 							let push_time = func.changeTime(data[i].push_time)
-							let size = func.byteToMib(data[i].size)
+
+
+							/*if (Math.floor(data[i].size / 1024) > 0) {
+								size = func.byteToKib(data[i].size)
+							} else if (Math.floor(data[i].size / 1024 / 1024) > 0) {
+								size = func.byteToMib(data[i].size)
+							} else if (Math.floor(data[i].size / 1024 / 1024 / 1024) > 0) {
+								size = func.byteToGib(data[i].size)
+							}*/
+							let size = func.formatBytes(data[i].size, 2);
+							/*for (var i = 0; i <= 2 ; i++) {
+								if (i === 0) {
+									if (Math.floor(data[i].size / 1024) > 0) {
+										size = func.byteToKib(data[i].size)
+									}
+								} else if (i === 1) {
+									if (Math.floor(data[i].size / 1024 / 1024) > 0) {
+										size = func.byteToMib(data[i].size)
+									} else if (Math.floor(data[i].size / 1024 / 1024) < 0) {
+										size = func.byteToKib(data[i].size)
+									}
+								} else if (i === 2) {
+									if (Math.floor(data[i].size / 1024 / 1024 / 1024) > 0) {
+										size = func.byteToGib(data[i].size)
+									} else if (Math.floor(data[i].size / 1024 / 1024 / 1024) < 0) {
+										size = func.byteToMib(data[i].size)
+									}
+								}
+							}*/
+
+
 
 							html = `<tr>
                                         <td><input type="checkbox" name="${data[i].digest}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
-                                        <td class="left"><img src="/img/artifact.png" alt="artifact image" style="width: 10%; margin-right: 5px;"><a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}"></a></td>
+                                        <td class="left"><img id="digest_img_${i}" src="/img/artifact.png" alt="artifact image" style="width: 10%; margin-right: 5px;"><a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}"></a></td>
                                         <td>${data[i].tags[0].name}</td>
-                                        <td></td>
+                                        <td><i class="fa-solid fa-circle-xmark" style="color: #e70000"></i></td>
                                         <td id="size_id_${i}"></td>
-                                        <td id="scan_overview_id_${i}"></td>
+                                        <td><div id="scan_overview_id_${i}"></div></td>
                                         <td>${data[i].pull_count}</td>
                                         <td id="push_time_${i}">push_time</td>
                                     </tr>`;
@@ -119,13 +149,18 @@
 
 							document.getElementById("digest_name_" + i).innerText = digest;
 							document.getElementById("push_time_" + i).innerText = push_time;
-							document.getElementById("size_id_" + i).innerText = size +' MiB';
+							// document.getElementById("size_id_" + i).innerText = size.number + ' ' + size.unit;
+							document.getElementById("size_id_" + i).innerText = size;
 
 							if (data[i].scan_overview != null) {
 								let vulnerabilitiesData = func.vulnerabilitiesData(changeScanOverview3)
 								document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.severity + "  " + vulnerabilitiesData.total;
-							} else {
+							} else if (data[i].type === 'IMAGE') {
 								document.getElementById("scan_overview_id_" + i).innerText = "No Scanned";
+								document.getElementById("scan_overview_id_" + i).setAttribute('style',' text-align: center; border-radius: 15px; border: 2px solid #5a8cff; width: 100px; height: 23px; margin: 0 auto;')
+							} else if (data[i].type === 'CHART') {
+								document.getElementById("scan_overview_id_" + i).innerText = "Unsupported";
+								document.getElementById("scan_overview_id_" + i).setAttribute('style',' text-align: center; border-radius: 15px; border: 2px solid #e70000; width: 100px; height: 23px; margin: 0 auto;')
 							}
 
 						}

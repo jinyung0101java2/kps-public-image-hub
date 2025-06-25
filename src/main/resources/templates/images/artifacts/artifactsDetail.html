@@ -195,46 +195,48 @@
 				},
 
 				drawAdditions(data) {
+					if (data !== null) {
+						let originData = JSON.stringify(data)
+						let changeData1 = originData.replace('{"application/vnd.security.vulnerability.report; version=1.1":','')
+						let changeData2 = changeData1.slice(0, -1)
+						let changeData3 = JSON.parse(changeData2)
 
-					let originData = JSON.stringify(data)
-					let changeData1 = originData.replace('{"application/vnd.security.vulnerability.report; version=1.1":','')
-					let changeData2 = changeData1.slice(0, -1)
-					let changeData3 = JSON.parse(changeData2)
+						let html;
+						sessionStorage.setItem('additionsCnt', changeData3.vulnerabilities.length);
 
-					let html;
-					sessionStorage.setItem('additionsCnt', changeData3.vulnerabilities.length);
+						if (changeData3.vulnerabilities.length > 0) {
+							for (var i = 0; i <= changeData3.vulnerabilities.length - 1; i++) {
 
-					if (changeData3.vulnerabilities.length > 0) {
-						for (var i = 0; i <= changeData3.vulnerabilities.length - 1; i++) {
+								let cvss3 = changeData3.vulnerabilities[i].vendor_attributes.CVSS;
+								let cvsseData = func.cvss3Data(cvss3)
 
-							let cvss3 = changeData3.vulnerabilities[i].vendor_attributes.CVSS;
-							let cvsseData = func.cvss3Data(cvss3)
+								html = `<tr>
+											<td><a class="name" href="${changeData3.vulnerabilities[i].links[0]}" target='_blank' data-id="${changeData3.vulnerabilities[i].id}">${changeData3.vulnerabilities[i].id}</a></td>
+											<td><div id="severity_${i}"><span style="color: #ffffff">${changeData3.vulnerabilities[i].severity}</span></div></td>
+											<td id="cvss3_${i}"></td>
+											<td class="left">${changeData3.vulnerabilities[i].package}</td>
+											<td>${changeData3.vulnerabilities[i].version}</td>
+											<td class="left"><i class="fa-solid fa-wrench" style="color: #00b92a; margin-right: 7px;"></i>${changeData3.vulnerabilities[i].fix_version}</td>
+											<td>No</td>
+										</tr>`;
 
-							html = `<tr>
-										<td><a class="name" href="${changeData3.vulnerabilities[i].links[0]}" target='_blank' data-id="${changeData3.vulnerabilities[i].id}">${changeData3.vulnerabilities[i].id}</a></td>
-                                        <td><div id="severity_${i}"><span style="color: #ffffff">${changeData3.vulnerabilities[i].severity}</span></div></td>
-                                        <td id="cvss3_${i}"></td>
-                                        <td class="left">${changeData3.vulnerabilities[i].package}</td>
-                                        <td>${changeData3.vulnerabilities[i].version}</td>
-                                        <td class="left"><i class="fa-solid fa-wrench" style="color: #00b92a; margin-right: 7px;"></i>${changeData3.vulnerabilities[i].fix_version}</td>
-                                        <td>No</td>
-                                    </tr>`;
+								func.appendHtml(document.querySelector('.additionListTable'), html, 'tbody');
 
-							func.appendHtml(document.querySelector('.additionListTable'), html, 'tbody');
+								if (changeData3.vulnerabilities[i].severity === 'High') {
+									document.getElementById("severity_" + i).setAttribute('style',"background-color: #ff8f3d; border-radius: 10px;");
+								} else if (changeData3.vulnerabilities[i].severity === 'Medium') {
+									document.getElementById("severity_" + i).setAttribute('style',"background-color: #ffce66; border-radius: 10px;");
+								} else if (changeData3.vulnerabilities[i].severity === 'Low') {
+									document.getElementById("severity_" + i).setAttribute('style',"background-color: #fff1ad; border-radius: 10px;");
+								}
 
-							if (changeData3.vulnerabilities[i].severity === 'High') {
-								document.getElementById("severity_" + i).setAttribute('style',"background-color: #ff8f3d; border-radius: 10px;");
-							} else if (changeData3.vulnerabilities[i].severity === 'Medium') {
-								document.getElementById("severity_" + i).setAttribute('style',"background-color: #ffce66; border-radius: 10px;");
-							} else if (changeData3.vulnerabilities[i].severity === 'Low') {
-								document.getElementById("severity_" + i).setAttribute('style',"background-color: #fff1ad; border-radius: 10px;");
+								document.getElementById("cvss3_" + i).innerText = cvsseData;
+
 							}
-
-							document.getElementById("cvss3_" + i).innerText = cvsseData;
-
 						}
-					} else if (changeData3.vulnerabilities.length === 0) {
-						let html = '<tr><td colspan="5">No Data.</td></tr>';
+					} else if (data.length === null) {
+						alert('null')
+						let html = '<tr><td colspan="7">No Data.</td></tr>';
 						func.appendHtml(document.querySelector('.additionListTable'), html, 'tbody');
 					}
 
