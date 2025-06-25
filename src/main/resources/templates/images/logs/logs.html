@@ -13,11 +13,6 @@
 			<ul class="title">
 				<span id="title"></span>
 			</ul>
-			<!-- Click event class="on" -->
-			<fieldset>
-				<input type="text" name="keyword" id="searchText" autocomplete="off" th:placeholder="#{M0017}" />
-				<button type="submit" id="search" th:text="#{M0031}"></button>
-			</fieldset>
 		</article>
 		<article>
 			<fieldset>
@@ -73,15 +68,11 @@
 		<article class="base-pro base tab-cont-wrap">
 
 			<div class="notice">
-				<!--                <h3>Projects</h3>-->
-				<!-- User -->
 				<ul class="tab-btn">
-					<!-- 활성화시 active 클래스 추가 -->
 					<li type="repository"><a onclick="movePage(URI_KPS_HUB_IMAGE_REPOSITORY)" th:text="#{M0940}"></a></li>
 					<li type="log" class="active"><a th:text="#{M0941}"></a></li>
 				</ul>
 				<div class="table_style01">
-					<!-- board -->
 					<table>
 						<caption>Logs List</caption>
 						<colgroup >
@@ -103,7 +94,6 @@
 						<tbody class="listTable">
 						</tbody>
 					</table>
-					<!-- more btn -->
 					<a class="more" href="javascript:">more</a>
 				</div>
 			</div>
@@ -141,11 +131,7 @@
 				load() {
 					func.loading();
 
-					// nameSpace 정보 조회
-					//https://harbor.133.186.219.222.nip.io/api/v2.0/projects?page=1&page_size=15
-					// func.loadData('GET', `${func.harborUrl}/api/v2.0/projects?searchName=${document.getElementById('searchText').value}&limit=${project.limit}&offset=${project.offset}`, 'application/json', project.draw);
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=100`, 'application/json', logs.drawLogs);
-					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', repositories.drawStatistics);
 				},
 
 				drawLogs(data) {
@@ -182,7 +168,6 @@
 				},
 
 				event(){
-					// more 버튼 event
 					document.querySelector('.more').addEventListener('click', () => {
 						if(document.querySelector('.listTable').querySelectorAll('tr').length < project.allItemCount){
 							logs.offset++;

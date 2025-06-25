@@ -13,11 +13,6 @@
 			<ul class="title">
 				<span id="title"></span>
 			</ul>
-			<!-- Click event class="on" -->
-			<fieldset>
-				<input type="text" name="keyword" id="searchText" autocomplete="off" th:placeholder="#{M0017}" />
-				<button type="submit" id="search" th:text="#{M0031}"></button>
-			</fieldset>
 		</article>
 		<article>
 			<fieldset>
@@ -73,15 +68,11 @@
 		<article class="base-pro base tab-cont-wrap">
 
 			<div class="notice">
-				<!--                <h3>Projects</h3>-->
-				<!-- User -->
 				<ul class="tab-btn">
-					<!-- 활성화시 active 클래스 추가 -->
 					<li type="repository" class="active"><a href="javascript:" th:text="#{M0940}"></a></li>
 					<li type="log"><a onclick="movePage(URI_KPS_HUB_IMAGE_LOG)" th:text="#{M0941}"></a></li>
 				</ul>
 				<div class="table_style01">
-					<!-- board -->
 					<table>
 						<caption>Repositories List</caption>
 						<colgroup >
@@ -103,10 +94,8 @@
 						<tbody class="listTable">
 						</tbody>
 					</table>
-					<!-- more btn -->
 					<a class="more" href="javascript:">more</a>
 				</div>
-				<!-- btn -->
 				<a href="javascript:" id="delete" class="delete" style="top: 35px;" th:text="#{M0026}" ></a>
 			</div>
 		</article>
@@ -143,11 +132,7 @@
 				load() {
 					func.loading();
 
-					// nameSpace 정보 조회
-					//https://harbor.133.186.219.222.nip.io/api/v2.0/projects?page=1&page_size=15
-					// func.loadData('GET', `${func.harborUrl}/api/v2.0/projects?searchName=${document.getElementById('searchText').value}&limit=${project.limit}&offset=${project.offset}`, 'application/json', project.draw);
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=100`, 'application/json', repositories.drawRepositories);
-					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', repositories.drawStatistics);
 				},
 
 				drawRepositories(data) {
@@ -184,7 +169,6 @@
 				},
 
 				event(){
-					// more 버튼 event
 					document.querySelector('.more').addEventListener('click', () => {
 						if(document.querySelector('.listTable').querySelectorAll('tr').length < repositories.allItemCount){
 							repositories.offset++;
@@ -203,36 +187,25 @@
 						let check = document.getElementById('all-repositories').checked
 						let repositoriesCnt = sessionStorage.getItem('repositoriesCnt')
 						if (check === true) {
-							// document.getElementById('delete').style.display = 'block';
 							for (var i = 0; i <= repositoriesCnt-1; i++) {
 								document.querySelector('.checkbox_' + `${i}`).checked = true;
 							}
 
 						} else {
-							// document.getElementById('delete').style.display = 'none';
 							for (var i = 0; i <= repositoriesCnt-1; i++) {
 								document.querySelector('.checkbox_' + `${i}`).checked = false;
 							}
 						}
 					}, false);
 
-					/*  document.querySelector('.allBox').addEventListener('click', () => {
-                          alert('allbox')
-                      }, false);*/
-
 					document.getElementById('delete').addEventListener('click', (e) => {
 						let repositoriesCnt = sessionStorage.getItem('repositoriesCnt')
 
 						let tr = 0;
-						// let fal = 0;
 						for (var i = 0; i <= repositoriesCnt-1; i++) {
-							// let checkbox = document.querySelector('.checkbox_' + `${i}`).checked
 							if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
 								tr+=1;
-							} /*else {
-                                fal+=1;
-                                // func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
-                            }    */
+							}
 						}
 
 						if (tr > 0 ) {

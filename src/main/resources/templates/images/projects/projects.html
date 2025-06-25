@@ -13,11 +13,6 @@
 			<ul class="title">
 				<span>Projects</span>
 			</ul>
-			<!-- Click event class="on" -->
-			<fieldset>
-				<input type="text" name="keyword" id="searchText" autocomplete="off" th:placeholder="#{M0017}" />
-				<button type="submit" id="search" th:text="#{M0031}"></button>
-			</fieldset>
 		</article>
 		<article>
 			<fieldset>
@@ -40,7 +35,7 @@
 						</div>
 					</li>
 					<li>
-						<div class="statistics">
+						<div class="last-statistics">
 							<h3>Repositories</h3>
 							<div class="statistics-box">
 								<div class="stat-cont">Private</div>
@@ -56,24 +51,12 @@
 							</div>
 						</div>
 					</li>
-					<li>
-						<div class="last-statistics">
-							<h3>Quota used</h3>
-							<div class="stat-box">
-								<div class="total-cnt" id="storage_total" style="font-size: 30px; padding: 30px 0px 25px 40px; margin: 0px 0px 0px 0px;"></div>
-								<div class="total-unit" style="padding: 34px 25px 25px 0px; width: 35%">Gib</div>
-							</div>
-						</div>
-					</li>
 				</ul>
 			</fieldset>
 		</article>
 		<article class="base-pro">
 			<div class="notice">
-				<!--                <h3>Projects</h3>-->
-				<!-- User -->
 				<div class="table_style01">
-					<!-- board -->
 					<table>
 						<caption>Projects List</caption>
 						<colgroup >
@@ -99,20 +82,13 @@
 						<tbody class="listTable">
 						</tbody>
 					</table>
-					<!-- more btn -->
 					<a class="more" href="javascript:">more</a>
 				</div>
-				<!-- btn -->
 				<a href="javascript:" id="create" class="create" th:text="#{M0938}" ></a>
-				<!--<a href="javascript:" id="delete" class="delete" style="top: 35px; right: 88%; display: none" th:text="#{M0026}" ></a>-->
 				<a href="javascript:" id="delete" class="delete" style="top: 35px; right: 150px;" th:text="#{M0026}" ></a>
 			</div>
 		</article>
 	</div>
-	<input type="hidden" id="cluster_status_A" th:value="#{M0835}"/>
-	<input type="hidden" id="cluster_status_B" th:value="#{M0838}"/>
-	<input type="hidden" id="cluster_status_C" th:value="#{M0837}"/>
-	<input type="hidden" id="cluster_status_D" th:value="#{M0836}"/>
 </div>
 <th:block layout:fragment="script">
 	<script type="text/javascript">
@@ -121,34 +97,31 @@
 			IS_GLOBAL = true;
 			func.init(ASIDE_DP1.IMAGES, ASIDE_DP2.PROJECTS);
 
-			const project = {
+			const projects = {
 				offset: 0, // 로드 페이지 넘버
 				limit: 10, // 로드 게시물 개수
 				allItemCount: 0, //게시물 촐 개수
 				type: 'administrator',
 
 				init() {
-					func.nameLoad = project.reset;
+					func.nameLoad = projects.reset;
 
-					project.load();
+					projects.load();
 
-					project.event();
+					projects.event();
 				},
 
 				reset() {
 					func.removeHtml(document.querySelector('.listTable'));
-					project.offset = 0;
-					project.load();
+					projects.offset = 0;
+					projects.load();
 				},
 
 				load() {
 					func.loading();
 
-					// nameSpace 정보 조회
-					//https://harbor.133.186.219.222.nip.io/api/v2.0/projects?page=1&page_size=15
-					// func.loadData('GET', `${func.harborUrl}/api/v2.0/projects?searchName=${document.getElementById('searchText').value}&limit=${project.limit}&offset=${project.offset}`, 'application/json', project.draw);
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', project.drawProjects);
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', project.drawStatistics);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', projects.drawProjects);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', projects.drawStatistics);
 				},
 
 				drawProjects(data) {
@@ -204,13 +177,10 @@
 						document.getElementById('wrap').removeChild(document.getElementById('loading'));
 					}
 
-					project.listEvent()
+					projects.listEvent()
 				},
 
 				drawStatistics(data) {
-
-					let storage_total;
-					storage_total = func.byteToGib(data.total_storage_consumption);
 
 					document.getElementById("pro_pri").innerText = data.private_project_count;
 					document.getElementById("pro_pub").innerText = data.public_project_count;
@@ -218,17 +188,15 @@
 					document.getElementById("repo_pri").innerText = data.private_repo_count;
 					document.getElementById("repo_pub").innerText = data.public_repo_count;
 					document.getElementById("repo_total").innerText = data.total_repo_count;
-					document.getElementById("storage_total").innerText = storage_total;
 
 				},
 
 				event(){
-					// more 버튼 event
 					document.querySelector('.more').addEventListener('click', () => {
-						if(document.querySelector('.listTable').querySelectorAll('tr').length < project.allItemCount){
-							project.offset++;
+						if(document.querySelector('.listTable').querySelectorAll('tr').length < projects.allItemCount){
+							projects.offset++;
 
-							project.load();
+							projects.load();
 						}
 					}, false);
 
@@ -242,40 +210,29 @@
 						let check = document.getElementById('all-projects').checked
 						let projectCnt = sessionStorage.getItem('projectCnt')
 						if (check === true) {
-							// document.getElementById('delete').style.display = 'block';
 							for (var i = 0; i <= projectCnt-1; i++) {
 								document.querySelector('.checkbox_' + `${i}`).checked = true;
 							}
 
 						} else {
-							// document.getElementById('delete').style.display = 'none';
 							for (var i = 0; i <= projectCnt-1; i++) {
 								document.querySelector('.checkbox_' + `${i}`).checked = false;
 							}
 						}
 					}, false);
 
-					/*  document.querySelector('.allBox').addEventListener('click', () => {
-                          alert('allbox')
-                      }, false);*/
-
 					document.getElementById('delete').addEventListener('click', (e) => {
 						let projectCnt = sessionStorage.getItem('projectCnt')
 
 						let tr = 0;
-						// let fal = 0;
 						for (var i = 0; i <= projectCnt-1; i++) {
-							// let checkbox = document.querySelector('.checkbox_' + `${i}`).checked
 							if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
 								tr+=1;
-							} /*else {
-                                fal+=1;
-                                // func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
-                            }    */
+							}
 						}
 
 						if (tr > 0 ) {
-							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE, true, MSG_CONFIRM, project.delete);
+							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE, true, MSG_CONFIRM, projects.delete);
 						} else if (tr === 0) {
 							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
 						}
@@ -290,12 +247,10 @@
 						if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
 							var class_id = $('.checkbox_' + `${i}`).attr('id')
 
-							// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/users/current/permissions?scope=/project/`+ class_id +`&relative=true` + name, 'application/json', project.drawStatistics);
+							// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/users/current/permissions?scope=/project/`+ class_id +`&relative=true` + name, 'application/json', projects.drawStatistics);
 							func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.historyBack);
 						}
 					}
-
-
 				},
 
 				listEvent(){
@@ -310,7 +265,7 @@
 				},
 			};
 
-			project.init();
+			projects.init();
 		}
 	</script>
 </th:block>

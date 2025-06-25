@@ -13,11 +13,6 @@
 			<ul class="title">
 				<span id="title"></span>
 			</ul>
-			<!-- Click event class="on" -->
-			<fieldset>
-				<input type="text" name="keyword" id="searchText" autocomplete="off" th:placeholder="#{M0017}" />
-				<button type="submit" id="search" th:text="#{M0031}"></button>
-			</fieldset>
 		</article>
 		<article class="base-pro base tab-cont-wrap">
 
@@ -43,7 +38,6 @@
 						<tbody class="tagListTable">
 						</tbody>
 					</table>
-					<!-- more btn -->
 					<a class="more" href="javascript:">more</a>
 				</div>
 				<h4>Overview</h4>
@@ -106,10 +100,8 @@
 						<tbody class="additionListTable">
 						</tbody>
 					</table>
-					<!-- more btn -->
 					<a class="more" href="javascript:">more</a>
 				</div>
-				<!-- btn -->
 				<a href="javascript:" id="delete" class="delete" style="top: -4px;" th:text="#{M0026}" ></a>
 			</div>
 		</article>
@@ -224,7 +216,7 @@
                                         <td id="cvss3_${i}"></td>
                                         <td class="left">${changeData3.vulnerabilities[i].package}</td>
                                         <td>${changeData3.vulnerabilities[i].version}</td>
-                                        <td class="left">${changeData3.vulnerabilities[i].fix_version}</td>
+                                        <td class="left"><i class="fa-solid fa-wrench" style="color: #00b92a; margin-right: 7px;"></i>${changeData3.vulnerabilities[i].fix_version}</td>
                                         <td>No</td>
                                     </tr>`;
 
@@ -253,7 +245,6 @@
 				},
 
 				event(){
-					// more 버튼 event
 					document.querySelector('.more').addEventListener('click', () => {
 						if(document.querySelector('.TagListTable').querySelectorAll('tr').length < project.allItemCount){
 							artifacts.offset++;
@@ -272,36 +263,25 @@
 						let check = document.getElementById('all-artifacts').checked
 						let artifactsCnt = sessionStorage.getItem('artifactsCnt')
 						if (check === true) {
-							// document.getElementById('delete').style.display = 'block';
 							for (var i = 0; i <= artifactsCnt-1; i++) {
 								document.querySelector('.checkbox_' + `${i}`).checked = true;
 							}
 
 						} else {
-							// document.getElementById('delete').style.display = 'none';
 							for (var i = 0; i <= artifactsCnt-1; i++) {
 								document.querySelector('.checkbox_' + `${i}`).checked = false;
 							}
 						}
 					}, false);
 
-					/*  document.querySelector('.allBox').addEventListener('click', () => {
-                          alert('allbox')
-                      }, false);*/
-
 					document.getElementById('delete').addEventListener('click', (e) => {
 						let artifactsCnt = sessionStorage.getItem('artifactsCnt')
 
 						let tr = 0;
-						// let fal = 0;
 						for (var i = 0; i <= artifactsCnt-1; i++) {
-							// let checkbox = document.querySelector('.checkbox_' + `${i}`).checked
 							if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
 								tr+=1;
-							} /*else {
-                                fal+=1;
-                                // func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
-                            }    */
+							}
 						}
 
 						if (tr > 0 ) {
@@ -311,7 +291,6 @@
 						}
 
 					}, false);
-
 				},
 
 				delete() {
@@ -324,8 +303,6 @@
 							// func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.historyBack);
 						}
 					}
-
-
 				},
 
 			};

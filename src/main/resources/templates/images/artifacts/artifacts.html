@@ -13,110 +13,39 @@
 			<ul class="title">
 				<span id="title"></span>
 			</ul>
-			<!-- Click event class="on" -->
-			<fieldset>
-				<input type="text" name="keyword" id="searchText" autocomplete="off" th:placeholder="#{M0017}" />
-				<button type="submit" id="search" th:text="#{M0031}"></button>
-			</fieldset>
 		</article>
-		<!--<article>
-			<fieldset>
-				<ul style="display: flex; float: right;">
-					<li>
-						<div class="statistics">
-							<h3 class="stat-title">Total Images</h3>
-							<div class="stat-box">
-								<i class="fa-solid fa-file fa-2xl stat-img"></i>
-								<div class="total-cnt">50</div>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="statistics">
-							<h3 class="stat-title">Total Artifacts</h3>
-							<div class="stat-box">
-								<i class="fa-solid fa-box-archive fa-2xl stat-img"></i>
-								<div class="total-cnt">50</div>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="statistics">
-							<h3 class="stat-title">Total Pulls</h3>
-							<div class="stat-box">
-								<i class="fa-solid fa-download fa-2xl stat-img"></i>
-								<div class="total-cnt">50</div>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="statistics">
-							<h3 class="stat-title">Storage Used</h3>
-							<div class="stat-box">
-								<i class="fa-solid fa-database fa-2xl stat-img"></i>
-								<div class="total-cnt">50</div>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="last-statistics">
-							<h4 class="stat-title">Critical Vulnerabilities</h4>
-							<div class="stat-box">
-								<i class="fa-solid fa-shield-halved fa-2xl stat-img"></i>
-								<div class="total-cnt">50</div>
-							</div>
-						</div>
-					</li>
-				</ul>
-			</fieldset>
-		</article>-->
 		<article class="base-pro base tab-cont-wrap">
-
 			<div class="notice">
-				<!--                <h3>Projects</h3>-->
-				<!-- User -->
-				<!--<ul class="tab-btn">
-					&lt;!&ndash; 활성화시 active 클래스 추가 &ndash;&gt;
-					<li type="repository" class="active"><a href="javascript:" th:text="#{M0940}"></a></li>
-					<li type="log"><a onclick="movePage(URI_KPS_HUB_IMAGE_LOG)" th:text="#{M0941}"></a></li>
-				</ul>-->
 				<div class="table_style01">
-					<!-- board -->
 					<table>
 						<caption>Artifacts List</caption>
-						<colgroup >
-							<col width="4%" />
-							<col width="12%" />
-							<col width="10%" />
-							<col width="10%" />
-							<col width="10%" />
-							<col width="10%" />
-							<col width="10%" />
-							<col width="10%" />
-							<col width="12%" />
-							<col width="12%" />
-						</colgroup>
+							<colgroup >
+								<col width="4%" />
+								<col width="16%" />
+								<col width="13%" />
+								<col width="13%" />
+								<col width="13%" />
+								<col width="13%" />
+								<col width="13%" />
+								<col width="15%" />
+							</colgroup>
 						<thead>
-						<tr>
-							<th scope="col"><input type="checkbox" name="all-artifacts" id="all-artifacts"><label for="all-artifacts" style="padding-left: 27px; position: relative; cursor: pointer;"></label></th>
-							<th scope="col">Artifacts</th>
-							<th scope="col">Tags</th>
-							<th scope="col">Signed</th>
-							<th scope="col">Size</th>
-							<th scope="col">Vulnerabilities</th>
-							<th scope="col">SBOM</th>
-							<th scope="col">Labels</th>
-							<th scope="col">Push Time</th>
-							<th scope="col">Pull Time</th>
-						</tr>
+							<tr>
+								<th scope="col"><input type="checkbox" name="all-artifacts" id="all-artifacts"><label for="all-artifacts" style="padding-left: 27px; position: relative; cursor: pointer;"></label></th>
+								<th scope="col">Artifacts</th>
+								<th scope="col">Tags</th>
+								<th scope="col">Signed</th>
+								<th scope="col">Size</th>
+								<th scope="col">Vulnerabilities</th>
+								<th scope="col">Labels</th>
+								<th scope="col">Push Time</th>
+							</tr>
 						</thead>
 						<tbody class="listTable">
 						</tbody>
 					</table>
-					<!-- more btn -->
 					<a class="more" href="javascript:">more</a>
 				</div>
-				<!-- btn -->
 				<a href="javascript:" id="delete" class="delete" style="top: -4px;" th:text="#{M0026}" ></a>
 			</div>
 		</article>
@@ -153,12 +82,7 @@
 				load() {
 					func.loading();
 
-					// nameSpace 정보 조회
-					//https://harbor.133.186.219.222.nip.io/api/v2.0/projects?page=1&page_size=15
-					// func.loadData('GET', `${func.harborUrl}/api/v2.0/projects?searchName=${document.getElementById('searchText').value}&limit=${project.limit}&offset=${project.offset}`, 'application/json', project.draw);
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts?with_tag=true&with_scan_overview=true&with_sbom_overview=true&with_label=true&with_accessory=true&&page_size=100`, 'application/json', artifacts.drawArtifacts);
-					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts?&with_scan_overview=true&with_sbom_overview=true&with_label=true&with_accessory=false&page_size=100`, 'application/json', artifacts.drawArtifacts);
-					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', repositories.drawStatistics);
 				},
 
 				drawArtifacts(data) {
@@ -178,26 +102,22 @@
 							}
 
 							let digest = data[i].digest.substr(0,15)
-							let pull_time = func.changeTime(data[i].pull_time)
 							let push_time = func.changeTime(data[i].push_time)
 							let size = func.byteToMib(data[i].size)
 
 							html = `<tr>
                                         <td><input type="checkbox" name="${data[i].digest}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
-                                        <td class="left"><img src="/img/artifact.png" alt="artifact image" style="width: 15%; margin-right: 5px;"><a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}"></a></td>
+                                        <td class="left"><img src="/img/artifact.png" alt="artifact image" style="width: 10%; margin-right: 5px;"><a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}"></a></td>
                                         <td>${data[i].tags[0].name}</td>
                                         <td></td>
                                         <td id="size_id_${i}"></td>
                                         <td id="scan_overview_id_${i}"></td>
                                         <td>${data[i].pull_count}</td>
-                                        <td>${data[i].pull_count}</td>
                                         <td id="push_time_${i}">push_time</td>
-                                        <td id="pull_time_${i}">pull_time</td>
                                     </tr>`;
 							func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 
 							document.getElementById("digest_name_" + i).innerText = digest;
-							document.getElementById("pull_time_" + i).innerText = pull_time;
 							document.getElementById("push_time_" + i).innerText = push_time;
 							document.getElementById("size_id_" + i).innerText = size +' MiB';
 
@@ -222,7 +142,6 @@
 				},
 
 				event(){
-					// more 버튼 event
 					document.querySelector('.more').addEventListener('click', () => {
 						if(document.querySelector('.listTable').querySelectorAll('tr').length < project.allItemCount){
 							artifacts.offset++;
@@ -241,36 +160,25 @@
 						let check = document.getElementById('all-artifacts').checked
 						let artifactsCnt = sessionStorage.getItem('artifactsCnt')
 						if (check === true) {
-							// document.getElementById('delete').style.display = 'block';
 							for (var i = 0; i <= artifactsCnt-1; i++) {
 								document.querySelector('.checkbox_' + `${i}`).checked = true;
 							}
 
 						} else {
-							// document.getElementById('delete').style.display = 'none';
 							for (var i = 0; i <= artifactsCnt-1; i++) {
 								document.querySelector('.checkbox_' + `${i}`).checked = false;
 							}
 						}
 					}, false);
 
-					/*  document.querySelector('.allBox').addEventListener('click', () => {
-                          alert('allbox')
-                      }, false);*/
-
 					document.getElementById('delete').addEventListener('click', (e) => {
 						let artifactsCnt = sessionStorage.getItem('artifactsCnt')
 
 						let tr = 0;
-						// let fal = 0;
 						for (var i = 0; i <= artifactsCnt-1; i++) {
-							// let checkbox = document.querySelector('.checkbox_' + `${i}`).checked
 							if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
 								tr+=1;
-							} /*else {
-                                fal+=1;
-                                // func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
-                            }    */
+							}
 						}
 
 						if (tr > 0 ) {
@@ -293,8 +201,6 @@
 							// func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.historyBack);
 						}
 					}
-
-
 				},
 
 				listEvent(){
