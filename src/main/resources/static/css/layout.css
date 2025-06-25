@@ -207,7 +207,7 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 .location ul.title span {font-size: 27px}
 .location ul li {float:left; padding-left:18px; margin-left:18px; position:relative; color:#ffffff;}
 .location ul li:first-child {padding-left:0; margin-left:0;}
-.location ul li:after {content:""; width:6px; height:6px; border-top:1px solid #afb5bb; border-right:1px solid #afb5bb; transform:rotate(45deg); position:absolute; top:5px; left:0;}
+.location ul li:after {content:""; width:6px; height:6px; border-top:1px solid #afb5bb; border-right:1px solid #afb5bb; transform:rotate(225deg); position:absolute; top:5px; left:0;}
 .location ul li:first-child:after {content:""; display:none;}
 .location ul li a {color:#0ca583; display:block;}
 .location ul li a:hover {border-bottom:1px solid #0ca583;}

@@ -9,6 +9,7 @@
 			<ul>
 				<li><a onclick="movePage(URI_CP_BASE_URL)">Images</a></li>
 				<li><a onclick="movePage(URI_KPS_HUB_IMAGE_PROJECT)">Projects</a></li>
+				<li><a id="moveRepository"></a></li>
 			</ul>
 			<ul class="title">
 				<span id="title"></span>
@@ -67,6 +68,7 @@
 				init() {
 					func.nameLoad = artifacts.reset;
 					document.getElementById('title').innerHTML = sessionStorage.getItem('imageName');
+					document.getElementById('moveRepository').innerHTML = sessionStorage.getItem('repositoryName');
 
 					artifacts.load();
 
@@ -103,45 +105,15 @@
 
 							let digest = data[i].digest.substr(0,15)
 							let push_time = func.changeTime(data[i].push_time)
-
-
-							/*if (Math.floor(data[i].size / 1024) > 0) {
-								size = func.byteToKib(data[i].size)
-							} else if (Math.floor(data[i].size / 1024 / 1024) > 0) {
-								size = func.byteToMib(data[i].size)
-							} else if (Math.floor(data[i].size / 1024 / 1024 / 1024) > 0) {
-								size = func.byteToGib(data[i].size)
-							}*/
 							let size = func.formatBytes(data[i].size, 2);
-							/*for (var i = 0; i <= 2 ; i++) {
-								if (i === 0) {
-									if (Math.floor(data[i].size / 1024) > 0) {
-										size = func.byteToKib(data[i].size)
-									}
-								} else if (i === 1) {
-									if (Math.floor(data[i].size / 1024 / 1024) > 0) {
-										size = func.byteToMib(data[i].size)
-									} else if (Math.floor(data[i].size / 1024 / 1024) < 0) {
-										size = func.byteToKib(data[i].size)
-									}
-								} else if (i === 2) {
-									if (Math.floor(data[i].size / 1024 / 1024 / 1024) > 0) {
-										size = func.byteToGib(data[i].size)
-									} else if (Math.floor(data[i].size / 1024 / 1024 / 1024) < 0) {
-										size = func.byteToMib(data[i].size)
-									}
-								}
-							}*/
-
-
 
 							html = `<tr>
                                         <td><input type="checkbox" name="${data[i].digest}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
-                                        <td class="left"><img id="digest_img_${i}" src="/img/artifact.png" alt="artifact image" style="width: 10%; margin-right: 5px;"><a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}"></a></td>
+                                        <td class="left"><img id="digest_img_${i}" alt="artifact image" style="width: 8%; margin-right: 5px;"><a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}"></a></td>
                                         <td>${data[i].tags[0].name}</td>
                                         <td><i class="fa-solid fa-circle-xmark" style="color: #e70000"></i></td>
                                         <td id="size_id_${i}"></td>
-                                        <td><div id="scan_overview_id_${i}"></div></td>
+                                        <td><div id="scan_overview_severity_id_${i}"></div><div id="scan_overview_id_${i}"></div></td>
                                         <td>${data[i].pull_count}</td>
                                         <td id="push_time_${i}">push_time</td>
                                     </tr>`;
@@ -149,18 +121,33 @@
 
 							document.getElementById("digest_name_" + i).innerText = digest;
 							document.getElementById("push_time_" + i).innerText = push_time;
-							// document.getElementById("size_id_" + i).innerText = size.number + ' ' + size.unit;
 							document.getElementById("size_id_" + i).innerText = size;
 
 							if (data[i].scan_overview != null) {
 								let vulnerabilitiesData = func.vulnerabilitiesData(changeScanOverview3)
-								document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.severity + "  " + vulnerabilitiesData.total;
+								if (vulnerabilitiesData.severity === 'High') {
+									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #ff8f3d; float: left; margin-left: 10px; width: 50px; color: #ffffff;')
+								} else if (vulnerabilitiesData.severity === 'Medium') {
+									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #ffce66; float: left; margin-left: 10px; width: 50px; color: #ffffff;')
+								} else if (vulnerabilitiesData.severity === 'Low') {
+									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #fff1ad; float: left; margin-left: 10px; width: 50px; color: #ffffff;')
+								}
+								document.getElementById("scan_overview_severity_id_" + i).innerText = vulnerabilitiesData.severity;
+								document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.total;
+								// document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.severity + "  " + vulnerabilitiesData.total;
+								sessionStorage.setItem('additions', 'Y');
 							} else if (data[i].type === 'IMAGE') {
 								document.getElementById("scan_overview_id_" + i).innerText = "No Scanned";
-								document.getElementById("scan_overview_id_" + i).setAttribute('style',' text-align: center; border-radius: 15px; border: 2px solid #5a8cff; width: 100px; height: 23px; margin: 0 auto;')
+								document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #5a8cff; width: 100px; height: 23px; margin: 0 auto;')
+								document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-image.png')
+								document.getElementById("digest_img_" + i).setAttribute('style','width: 10%; margin-right: 5px;')
+								sessionStorage.setItem('additions', 'N');
 							} else if (data[i].type === 'CHART') {
 								document.getElementById("scan_overview_id_" + i).innerText = "Unsupported";
-								document.getElementById("scan_overview_id_" + i).setAttribute('style',' text-align: center; border-radius: 15px; border: 2px solid #e70000; width: 100px; height: 23px; margin: 0 auto;')
+								document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #e70000; width: 100px; height: 23px; margin: 0 auto;')
+								document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-chart.png')
+								document.getElementById("digest_img_" + i).setAttribute('style','width: 8%; margin-right: 5px;')
+								sessionStorage.setItem('additions', 'N');
 							}
 
 						}
@@ -222,6 +209,10 @@
 							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
 						}
 
+					}, false);
+
+					document.querySelector('#moveRepository').addEventListener('click', () => {
+						document.location.href = URI_KPS_HUB_IMAGE_REPOSITORY;
 					}, false);
 
 				},
