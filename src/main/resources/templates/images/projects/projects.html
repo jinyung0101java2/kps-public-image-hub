@@ -154,7 +154,7 @@
 							let time = func.changeTime(data[i].update_time)
 
 							html = `<tr>
-                                        <td><input type="checkbox" name="${data[i].name}" id="${data[i].project_id}" class="checkbox_${i}"/><label for="${data[i].project_id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
+                                        <td style="border-right:1px solid #ebebeb"><input type="checkbox" name="${data[i].name}" id="${data[i].project_id}" class="checkbox_${i}"/><label for="${data[i].project_id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
                                         <td class="left"><a class="name" href="javascript:;" data-id="${data[i].name}">${data[i].name}</a></td>
                                         <td id="access_modifier_${i}"></td>
                                         <td id="role_id_${i}"></td>

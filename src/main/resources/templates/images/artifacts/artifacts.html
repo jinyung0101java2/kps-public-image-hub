@@ -108,7 +108,7 @@
 							let size = func.formatBytes(data[i].size, 2);
 
 							html = `<tr>
-                                        <td><input type="checkbox" name="${data[i].digest}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
+                                        <td style="border-right:1px solid #ebebeb"><input type="checkbox" name="${data[i].digest}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
                                         <td class="left"><img id="digest_img_${i}" alt="artifact image" style="width: 8%; margin-right: 5px;"><a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}"></a></td>
                                         <td>${data[i].tags[0].name}</td>
                                         <td><i class="fa-solid fa-circle-xmark" style="color: #e70000"></i></td>
