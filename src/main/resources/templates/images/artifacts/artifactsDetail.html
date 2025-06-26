@@ -171,17 +171,7 @@
 
 				drawOverview(data) {
 
-					console.log('DDDDDDDD:::::' + JSON.stringify(data))
 					let extraAttrs = data.extra_attrs;
-					console.log('AAAAAAAAA:::::' + JSON.stringify(extraAttrs))
-					// let time = data.extra_attrs.created;
-					// let changeTime = func.changeTime(time)
-
-					/*document.getElementById("architecture").innerText = data.extra_attrs.architecture;
-					document.getElementById("author").innerText = data.extra_attrs.author;
-					document.getElementById("config").innerText = JSON.stringify(data.extra_attrs.config);
-					document.getElementById("created").innerText = changeTime;
-					document.getElementById("os").innerText = data.extra_attrs.os;*/
 
 					let keysArr = Object.keys(extraAttrs)
 					let valuesArr = Object.values(extraAttrs)
@@ -189,8 +179,6 @@
 					let html;
 					if (keysArr.length > 0) {
 						for (var i = 0; i <= keysArr.length - 1; i++) {
-							console.log(keysArr[i])
-							console.log(valuesArr[i])
 
 							html = `<tr>
 										<td id="keys_id_${i}" style="background-color: #f7f7f7; font-size: 18px; color: #47494D"></td>
@@ -198,8 +186,19 @@
 									</tr>`;
 							func.appendHtml(document.querySelector('.overviewListTable'), html, 'tbody');
 
-							document.getElementById("keys_id_" + i).innerText = keysArr[i];
-							document.getElementById("values_id_" + i).innerText = JSON.stringify(valuesArr[i]);
+							if (keysArr[i] === 'created') {
+								let time = func.changeTime(valuesArr[i])
+
+								document.getElementById("keys_id_" + i).innerText = keysArr[i];
+								document.getElementById("values_id_" + i).innerText = time;
+							} else if(typeof valuesArr[i] === 'object') {
+								document.getElementById("keys_id_" + i).innerText = keysArr[i];
+								document.getElementById("values_id_" + i).innerText = JSON.stringify(valuesArr[i]);
+							} else {
+								document.getElementById("keys_id_" + i).innerText = keysArr[i];
+								document.getElementById("values_id_" + i).innerText = valuesArr[i];
+							}
+
 						}
 					} else if (extraAttrs.length === 0) {
 						let html = '<tr><td colspan="2">No Data.</td></tr>';
@@ -230,7 +229,7 @@
 								for (var i = 0; i <= changeData3.vulnerabilities.length - 1; i++) {
 
 									let cvss3 = changeData3.vulnerabilities[i].vendor_attributes.CVSS;
-									let cvsseData = func.cvss3Data(cvss3)
+									let cvssData = func.cvss3Data(cvss3)
 
 									html = `<tr>
 											<td><a class="name" href="${changeData3.vulnerabilities[i].links[0]}" target='_blank' data-id="${changeData3.vulnerabilities[i].id}">${changeData3.vulnerabilities[i].id}</a></td>
@@ -252,7 +251,7 @@
 										document.getElementById("severity_" + i).setAttribute('style',"background-color: #fff1ad; border-radius: 10px;");
 									}
 
-									document.getElementById("cvss3_" + i).innerText = cvsseData;
+									document.getElementById("cvss3_" + i).innerText = cvssData;
 
 								}
 							}
@@ -267,7 +266,7 @@
 
 				event() {
 					document.querySelector('.more').addEventListener('click', () => {
-						if(document.querySelector('.TagListTable').querySelectorAll('tr').length < project.allItemCount){
+						if(document.querySelector('.TagListTable').querySelectorAll('tr').length < artifacts.allItemCount){
 							artifacts.offset++;
 
 							artifacts.load();
