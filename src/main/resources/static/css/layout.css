@@ -294,7 +294,6 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 .table_style01 table tr th:first-child {border-left:0;}
 .table_style01 table tr th.left {text-align:left;}
 .table_style01 table tr td {text-align:center; border-bottom:1px solid #ebebeb; border-left:0; padding:7px 7px 7px 7px; color:#818894; font-size:15px; white-space:normal; letter-spacing:-0.2px;}
-/*.table_style01 table tr td.additions {text-align:center; border-left:0; padding:7px 7px 7px 7px; color:#818894; font-size:15px; white-space:normal; letter-spacing:-0.2px; border-bottom: 0px}*/
 .table_style01 table tr td:last-child {border-right:0;}
 .table_style01 table tr td.active,
 .table_style01 table tr td.running,
@@ -785,7 +784,7 @@ header > div > div > div > div > div ul li a.on {background-color:#ff7a0f; color
 .statistics > div.statistics-box > div.stat-cont {width: 93px}
 .statistics > div.statistics-box > div.stat-cnt {margin-left: 10px}
 .statistics > div.stat-box {display: flex}
-.statistics > div.stat-box > div.total-cnt {font-size: 30px; margin: -7px 0px 0px 22px}
+.statistics > div.stat-box > div.total-cnt {font-size: 29px; margin: -7px 0px 0px 22px}
 .last-statistics {border: 1px solid #d3d3d3;	border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px;	height: 124px; margin-left: 10px; margin-right: 40px}
 .last-statistics > h4.stat-title {margin-bottom: 35px}
 .last-statistics > div.stat-box {display: flex; text-align: center}

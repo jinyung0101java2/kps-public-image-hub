@@ -89,73 +89,9 @@
 			</div>
 		</article>
 	</div>
-<!--	<h2>접기/펴기 테스트</h2>-->
-<!--	<button type="button" class="collapsible" onclick="collapse(this);">제목 1</button>-->
-<!--	<div class="content">-->
-<!--		<p>내용 1 입니다.</p>-->
-<!--	</div>-->
-<!--	<button type="button" class="collapsible" onclick="collapse(this);">제목 2</button>-->
-<!--	<div class="content">-->
-<!--		<p>내용 2 입니다.</p>-->
-<!--	</div>-->
-<!--	<button type="button" class="collapsible" onclick="collapse(this);">제목 3</button>-->
-<!--	<div class="content">-->
-<!--		<p>내용 3 입니다.</p>-->
-<!--	</div>-->
 </div>
 <th:block layout:fragment="script">
-	<!--<style>
-		.collapsible {
-			background-color: #777;
-			color: white;
-			cursor: pointer;
-			padding: 18px;
-			width: 100%;
-			border: none;
-			text-align: left;
-			outline: none;
-			font-size: 15px;
-		}
-		.active,
-		.collapsible:hover {
-			background-color: #555;
-		}
-		.content {
-			padding: 0 18px;
-			max-height: 0;
-			overflow: hidden;
-			transition: max-height 0.2s ease-out;
-			background-color: #f1f1f1;
-		}
-		.collapsible:after {
-			content: '\002B';
-			color: white;
-			font-weight: bold;
-			float: right;
-			margin-left: 5px;
-		}
-		.active:after {
-			content: "\2212";
-		}
-	</style>-->
 
-	<script>
-		/*function collapse(element) {
-			var before = document.getElementsByClassName("active")[0]               // 기존에 활성화된 버튼
-			if (before && document.getElementsByClassName("active")[0] != element) {  // 자신 이외에 이미 활성화된 버튼이 있으면
-				before.nextElementSibling.style.maxHeight = null;   // 기존에 펼쳐진 내용 접고
-				before.classList.remove("active");                  // 버튼 비활성화
-			}
-			element.classList.toggle("active");         // 활성화 여부 toggle
-
-			var content = element.nextElementSibling;
-			if (content.style.maxHeight != 0) {         // 버튼 다음 요소가 펼쳐져 있으면
-				content.style.maxHeight = null;         // 접기
-			} else {
-				content.style.maxHeight = content.scrollHeight + "px";  // 접혀있는 경우 펼치기
-			}
-		}*/
-	</script>
 	<script type="text/javascript">
 		window.onload = () => {
 
@@ -299,7 +235,6 @@
 									let cvssData = func.cvss3Data(cvss3)
 
 									html = `<tr>
-<!--											<td style="border-right:1px solid #ebebeb"><i id="arcoBtn_${i}" class="fa-solid fa-v fa-xs"></i></td>-->
 											<td id="col0_${i}"><div id="arcoBtn_${i}" style="width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px;"></div></td>
 											<td id="col1_${i}"><a class="name" href="${changeData3.vulnerabilities[i].links[0]}" target='_blank' data-id="${changeData3.vulnerabilities[i].id}">${changeData3.vulnerabilities[i].id}</a></td>
 											<td id="col2_${i}"><div id="severity_${i}"><span style="color: #ffffff">${changeData3.vulnerabilities[i].severity}</span></div></td>
@@ -338,6 +273,7 @@
 								if (document.getElementById("desc_" + `${i}`).getAttribute('name') === 'off') {
 									document.getElementById("desc_" + `${i}`).setAttribute('style', 'text-align: left');
 									document.getElementById("desc_" + `${i}`).setAttribute('name', 'on');
+									document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(315deg); position: absolute; left: 12px; padding: 4px;');
 									for (let j = 0; j <= 7; j++) {
 										if (j === 4 || j === 6) {
 											document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'text-align: left; border-bottom: 0px; border-left: 0; padding: 7px 7px 7px 7px; color: #818894; font-size: 15px; white-space: normal; letter-spacing: -0.2px;');
@@ -348,6 +284,7 @@
 								} else if (document.getElementById("desc_" + `${i}`).getAttribute('name') === 'on') {
 									document.getElementById("desc_" + `${i}`).setAttribute('style', 'display: none;');
 									document.getElementById("desc_" + `${i}`).setAttribute('name', 'off')
+									document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px;');
 									for (let j = 0; j <= 7; j++) {
 										if (j === 4 || j === 6) {
 											document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'text-align: left; border-bottom: 1px solid #ebebeb;; border-left: 0; padding: 7px 7px 7px 7px; color: #818894; font-size: 15px; white-space: normal; letter-spacing: -0.2px;');

@@ -22,7 +22,7 @@
 							<h3 class="stat-title">Total Images</h3>
 							<div class="stat-box">
 								<i class="fa-solid fa-file fa-2xl stat-img"></i>
-								<div class="total-cnt">50</div>
+								<div id="total-images" class="total-cnt"></div>
 							</div>
 						</div>
 					</li>
@@ -31,7 +31,7 @@
 							<h3 class="stat-title">Total Artifacts</h3>
 							<div class="stat-box">
 								<i class="fa-solid fa-box-archive fa-2xl stat-img"></i>
-								<div class="total-cnt">50</div>
+								<div id="total-artifacts" class="total-cnt"></div>
 							</div>
 						</div>
 					</li>
@@ -40,7 +40,7 @@
 							<h3 class="stat-title">Total Pulls</h3>
 							<div class="stat-box">
 								<i class="fa-solid fa-download fa-2xl stat-img"></i>
-								<div class="total-cnt">50</div>
+								<div id="total-pulls" class="total-cnt"></div>
 							</div>
 						</div>
 					</li>
@@ -49,7 +49,7 @@
 							<h3 class="stat-title">Storage Used</h3>
 							<div class="stat-box">
 								<i class="fa-solid fa-database fa-2xl stat-img"></i>
-								<div class="total-cnt">50</div>
+								<div id="total-storages" class="total-cnt"></div>
 							</div>
 						</div>
 					</li>
@@ -58,7 +58,7 @@
 							<h4 class="stat-title">Critical Vulnerabilities</h4>
 							<div class="stat-box">
 								<i class="fa-solid fa-shield-halved fa-2xl stat-img"></i>
-								<div class="total-cnt">50</div>
+								<div id="total-Vulnerabilities" class="total-cnt"></div>
 							</div>
 						</div>
 					</li>
@@ -132,6 +132,9 @@
 					func.loading();
 
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=100`, 'application/json', logs.drawLogs);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=100`, 'application/json', logs.drawRepositories);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', logs.drawStorage);
+
 				},
 
 				drawLogs(data) {
@@ -167,6 +170,42 @@
 					logs.listEvent()
 				},
 
+				drawRepositories(data) {
+
+					let totalArtifacts = 0;
+					let totalPulls = 0;
+
+					if (data.length > 0) {
+						for (var i = 0; i <= data.length - 1; i++) {
+
+							totalArtifacts += data[i].artifact_count;
+							totalPulls += data[i].pull_count;
+
+						}
+					}
+
+					document.getElementById('total-images').innerText = data.length
+					document.getElementById('total-artifacts').innerText = totalArtifacts
+					document.getElementById('total-pulls').innerText = totalPulls
+
+					if (document.getElementById('loading')) {
+						document.getElementById('wrap').removeChild(document.getElementById('loading'));
+					}
+
+					logs.listEvent()
+				},
+
+				drawStorage(data) {
+
+					for (var i = 0; i <= data.length - 1; i++) {
+						if(data[i].name === sessionStorage.getItem('repositoryName')) {
+							func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${data[i].project_id}/summary`, 'application/json', (e) => {
+								document.getElementById('total-storages').innerText = func.formatBytes(e.quota.used.storage)
+							});
+						}
+					}
+				},
+
 				event(){
 					document.querySelector('.more').addEventListener('click', () => {
 						if(document.querySelector('.listTable').querySelectorAll('tr').length < project.allItemCount){
@@ -178,16 +217,6 @@
 
 				},
 
-				listEvent(){
-					var listAll = document.querySelector('.listTable').querySelectorAll('a');
-					for(var i=0; i<=listAll.length-1; i++){
-						listAll[i].addEventListener('click', (e) => {
-							sessionStorage.setItem('imageName', e.target.getAttribute('data-id'));
-
-							document.location.href = URI_KPS_HUB_IMAGE_REPOSITORY;
-						}, true);
-					}
-				},
 			};
 
 			logs.init();

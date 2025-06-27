@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layouts/layout}">
 <div layout:fragment="content">
@@ -22,7 +21,7 @@
 							<h3 class="stat-title">Total Images</h3>
 							<div class="stat-box">
 								<i class="fa-solid fa-file fa-2xl stat-img"></i>
-								<div class="total-cnt">50</div>
+								<div id="total-images" class="total-cnt"></div>
 							</div>
 						</div>
 					</li>
@@ -31,7 +30,7 @@
 							<h3 class="stat-title">Total Artifacts</h3>
 							<div class="stat-box">
 								<i class="fa-solid fa-box-archive fa-2xl stat-img"></i>
-								<div class="total-cnt">50</div>
+								<div id="total-artifacts" class="total-cnt"></div>
 							</div>
 						</div>
 					</li>
@@ -40,7 +39,7 @@
 							<h3 class="stat-title">Total Pulls</h3>
 							<div class="stat-box">
 								<i class="fa-solid fa-download fa-2xl stat-img"></i>
-								<div class="total-cnt">50</div>
+								<div id="total-pulls" class="total-cnt"></div>
 							</div>
 						</div>
 					</li>
@@ -49,7 +48,7 @@
 							<h3 class="stat-title">Storage Used</h3>
 							<div class="stat-box">
 								<i class="fa-solid fa-database fa-2xl stat-img"></i>
-								<div class="total-cnt">50</div>
+								<div id="total-storages" class="total-cnt"></div>
 							</div>
 						</div>
 					</li>
@@ -58,7 +57,7 @@
 							<h4 class="stat-title">Critical Vulnerabilities</h4>
 							<div class="stat-box">
 								<i class="fa-solid fa-shield-halved fa-2xl stat-img"></i>
-								<div class="total-cnt">50</div>
+								<div id="total-Vulnerabilities" class="total-cnt"></div>
 							</div>
 						</div>
 					</li>
@@ -133,14 +132,21 @@
 					func.loading();
 
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=100`, 'application/json', repositories.drawRepositories);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', repositories.drawStorage);
 				},
 
 				drawRepositories(data) {
 
 					let html;
+					let totalArtifacts = 0;
+					let totalPulls = 0;
+
 					sessionStorage.setItem('repositoriesCnt', data.length);
 					if (data.length > 0) {
 						for (var i = 0; i <= data.length - 1; i++) {
+
+							totalArtifacts += data[i].artifact_count;
+							totalPulls += data[i].pull_count;
 
 							let time = func.changeTime(data[i].update_time)
 
@@ -161,11 +167,26 @@
 						func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 					}
 
+					document.getElementById('total-images').innerText = data.length
+					document.getElementById('total-artifacts').innerText = totalArtifacts
+					document.getElementById('total-pulls').innerText = totalPulls
+
 					if (document.getElementById('loading')) {
 						document.getElementById('wrap').removeChild(document.getElementById('loading'));
 					}
 
 					repositories.listEvent()
+				},
+
+				drawStorage(data) {
+
+					for (var i = 0; i <= data.length - 1; i++) {
+						if(data[i].name === sessionStorage.getItem('repositoryName')) {
+							func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${data[i].project_id}/summary`, 'application/json', (e) => {
+								document.getElementById('total-storages').innerText = func.formatBytes(e.quota.used.storage)
+							});
+						}
+					}
 				},
 
 				event(){
@@ -204,7 +225,7 @@
 						let tr = 0;
 						for (var i = 0; i <= repositoriesCnt-1; i++) {
 							if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
-								tr+=1;
+								tr += 1;
 							}
 						}
 
@@ -228,8 +249,6 @@
 							// func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.historyBack);
 						}
 					}
-
-
 				},
 
 				listEvent(){
