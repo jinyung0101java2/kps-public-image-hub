@@ -131,10 +131,24 @@
 				load() {
 					func.loading();
 
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=100`, 'application/json', logs.drawLogs);
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=100`, 'application/json', logs.drawRepositories);
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', logs.drawStorage);
+					if (sessionStorage.getItem('repositoriesCnt') > 0) {
+						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=100`, 'application/json', logs.drawLogs);
+						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=100`, 'application/json', logs.drawRepositories);
+						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', logs.drawStorage);
+					} else if (sessionStorage.getItem('repositoriesCnt') == 0) {
 
+						document.getElementById('total-images').innerText = '0';
+						document.getElementById('total-artifacts').innerText = '0';
+						document.getElementById('total-pulls').innerText = '0';
+						document.getElementById('total-storages').innerText = '0 Byte';
+
+						let html = '<tr><td colspan="5">No Data.</td></tr>';
+						func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
+
+						if (document.getElementById('loading')) {
+							document.getElementById('wrap').removeChild(document.getElementById('loading'));
+						}
+					}
 				},
 
 				drawLogs(data) {
@@ -167,7 +181,6 @@
 						document.getElementById('wrap').removeChild(document.getElementById('loading'));
 					}
 
-					logs.listEvent()
 				},
 
 				drawRepositories(data) {
@@ -192,7 +205,6 @@
 						document.getElementById('wrap').removeChild(document.getElementById('loading'));
 					}
 
-					logs.listEvent()
 				},
 
 				drawStorage(data) {
@@ -204,6 +216,7 @@
 							});
 						}
 					}
+
 				},
 
 				event(){

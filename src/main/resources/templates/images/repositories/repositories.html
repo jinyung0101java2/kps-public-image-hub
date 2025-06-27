@@ -180,13 +180,18 @@
 
 				drawStorage(data) {
 
-					for (var i = 0; i <= data.length - 1; i++) {
-						if(data[i].name === sessionStorage.getItem('repositoryName')) {
-							func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${data[i].project_id}/summary`, 'application/json', (e) => {
-								document.getElementById('total-storages').innerText = func.formatBytes(e.quota.used.storage)
-							});
+					if (sessionStorage.getItem('repositoriesCnt') > 0) {
+						for (var i = 0; i <= data.length - 1; i++) {
+							if(data[i].name === sessionStorage.getItem('repositoryName')) {
+								func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${data[i].project_id}/summary`, 'application/json', (e) => {
+									document.getElementById('total-storages').innerText = func.formatBytes(e.quota.used.storage)
+								});
+							}
 						}
+					} else if (sessionStorage.getItem('repositoriesCnt') == 0) {
+						document.getElementById('total-storages').innerText = '0 Byte';
 					}
+
 				},
 
 				event(){

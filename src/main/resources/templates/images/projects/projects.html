@@ -253,11 +253,23 @@
 					}
 				},
 
-				listEvent(){
+				listEvent() {
 					var listAll = document.querySelector('.listTable').querySelectorAll('a');
 					for(var i=0; i<=listAll.length-1; i++){
 						listAll[i].addEventListener('click', (e) => {
 							sessionStorage.setItem('repositoryName', e.target.getAttribute('data-id'));
+							func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', (e) => {
+								for (var i = 0; i <= e.length - 1; i++) {
+									if (sessionStorage.getItem('repositoryName') === e[i].name) {
+										if (e[i].metadata.public === 'true') {
+											accessLevel = ACCESS_LEVEL_PUBLIC
+										} else {
+											accessLevel = ACCESS_LEVEL_PRIVATE
+										}
+										sessionStorage.setItem('accessLevel', accessLevel);
+									}
+								}
+							});
 
 							document.location.href = URI_KPS_HUB_IMAGE_REPOSITORY;
 						}, true);

@@ -583,7 +583,6 @@ const func = {
 			request.open(method, url, false);
 			request.setRequestHeader('Content-type', header);
 			// request.setRequestHeader('Authorization','Basic ' + credential);
-			console.log("credential:: " + credential)
 			request.setRequestHeader('Authorization', sessionStorage.getItem('accessToken'));
 			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
 			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
