@@ -235,7 +235,7 @@
 									let cvssData = func.cvss3Data(cvss3)
 
 									html = `<tr>
-											<td id="col0_${i}"><div id="arcoBtn_${i}" style="width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px;"></div></td>
+											<td id="col0_${i}"><div id="arcoBtn_${i}" style="width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;"></div></td>
 											<td id="col1_${i}"><a class="name" href="${changeData3.vulnerabilities[i].links[0]}" target='_blank' data-id="${changeData3.vulnerabilities[i].id}">${changeData3.vulnerabilities[i].id}</a></td>
 											<td id="col2_${i}"><div id="severity_${i}"><span style="color: #ffffff">${changeData3.vulnerabilities[i].severity}</span></div></td>
 											<td id="col3_${i}" class="addtions"></td>
@@ -273,7 +273,7 @@
 								if (document.getElementById("desc_" + `${i}`).getAttribute('name') === 'off') {
 									document.getElementById("desc_" + `${i}`).setAttribute('style', 'text-align: left');
 									document.getElementById("desc_" + `${i}`).setAttribute('name', 'on');
-									document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(315deg); position: absolute; left: 12px; padding: 4px;');
+									document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(315deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;');
 									for (let j = 0; j <= 7; j++) {
 										if (j === 4 || j === 6) {
 											document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'text-align: left; border-bottom: 0px; border-left: 0; padding: 7px 7px 7px 7px; color: #818894; font-size: 15px; white-space: normal; letter-spacing: -0.2px;');
@@ -284,7 +284,7 @@
 								} else if (document.getElementById("desc_" + `${i}`).getAttribute('name') === 'on') {
 									document.getElementById("desc_" + `${i}`).setAttribute('style', 'display: none;');
 									document.getElementById("desc_" + `${i}`).setAttribute('name', 'off')
-									document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px;');
+									document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;');
 									for (let j = 0; j <= 7; j++) {
 										if (j === 4 || j === 6) {
 											document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'text-align: left; border-bottom: 1px solid #ebebeb;; border-left: 0; padding: 7px 7px 7px 7px; color: #818894; font-size: 15px; white-space: normal; letter-spacing: -0.2px;');

@@ -91,9 +91,19 @@
 						</tr>
 						</thead>
 						<tbody class="listTable">
-						</tbody>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="5">
+								<i class="fa-solid fa-angles-left"></i>
+								<i class="fa-solid fa-angle-left"></i>
+								<span>1</span><span>/</span><span>2</span>
+								<i class="fa-solid fa-angle-right"></i>
+								<i class="fa-solid fa-angles-right"></i>
+							</td>
+						</tr>
+					</tfoot>
 					</table>
-					<a class="more" href="javascript:">more</a>
 				</div>
 				<a href="javascript:" id="delete" class="delete" style="top: 35px;" th:text="#{M0026}" ></a>
 			</div>
@@ -131,8 +141,10 @@
 				load() {
 					func.loading();
 
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=100`, 'application/json', repositories.drawRepositories);
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', repositories.drawStorage);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=15&page=1`, 'application/json', repositories.drawRepositories);
+					//func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', repositories.drawStorage);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryId')}/summary`, 'application/json', repositories.drawPage);
+
 				},
 
 				drawRepositories(data) {
@@ -157,6 +169,7 @@
                                         <td>${data[i].pull_count}</td>
                                         <td id="time_${i}">time</td>
                                     </tr>`;
+
 							func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 
 							document.getElementById("time_" + i).innerText = time;
@@ -167,7 +180,6 @@
 						func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 					}
 
-					document.getElementById('total-images').innerText = data.length
 					document.getElementById('total-artifacts').innerText = totalArtifacts
 					document.getElementById('total-pulls').innerText = totalPulls
 
@@ -178,30 +190,28 @@
 					repositories.listEvent()
 				},
 
-				drawStorage(data) {
-
-					if (sessionStorage.getItem('repositoriesCnt') > 0) {
-						for (var i = 0; i <= data.length - 1; i++) {
-							if(data[i].name === sessionStorage.getItem('repositoryName')) {
-								func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${data[i].project_id}/summary`, 'application/json', (e) => {
-									document.getElementById('total-storages').innerText = func.formatBytes(e.quota.used.storage)
-								});
-							}
-						}
-					} else if (sessionStorage.getItem('repositoriesCnt') == 0) {
-						document.getElementById('total-storages').innerText = '0 Byte';
-					}
-
+				drawPage(data) {
+					document.getElementById('total-storages').innerText = func.formatBytes(data.quota.used.storage);
+					document.getElementById('total-images').innerText = data.repo_count;
 				},
 
-				event(){
-					document.querySelector('.more').addEventListener('click', () => {
-						if(document.querySelector('.listTable').querySelectorAll('tr').length < repositories.allItemCount){
-							repositories.offset++;
+				// drawStorage(data) {
+				//
+				// 	if (sessionStorage.getItem('repositoriesCnt') > 0) {
+				// 		for (var i = 0; i <= data.length - 1; i++) {
+				// 			if(data[i].name === sessionStorage.getItem('repositoryName')) {
+				// 				func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${data[i].project_id}/summary`, 'application/json', (e) => {
+				// 					document.getElementById('total-storages').innerText = func.formatBytes(e.quota.used.storage)
+				// 				});
+				// 			}
+				// 		}
+				// 	} else if (sessionStorage.getItem('repositoriesCnt') == 0) {
+				// 		document.getElementById('total-storages').innerText = '0 Byte';
+				// 	}
+				//
+				// },
 
-							repositories.load();
-						}
-					}, false);
+				event(){
 
 					if(document.querySelector('.create')) {
 						document.querySelector('.create').addEventListener('click', () => {

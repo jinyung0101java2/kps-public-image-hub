@@ -134,7 +134,8 @@
 					if (sessionStorage.getItem('repositoriesCnt') > 0) {
 						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=100`, 'application/json', logs.drawLogs);
 						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=100`, 'application/json', logs.drawRepositories);
-						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', logs.drawStorage);
+						// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', logs.drawStorage);
+						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryId')}/summary`, 'application/json', logs.drawPage);
 					} else if (sessionStorage.getItem('repositoriesCnt') == 0) {
 
 						document.getElementById('total-images').innerText = '0';
@@ -197,7 +198,6 @@
 						}
 					}
 
-					document.getElementById('total-images').innerText = data.length
 					document.getElementById('total-artifacts').innerText = totalArtifacts
 					document.getElementById('total-pulls').innerText = totalPulls
 
@@ -207,7 +207,12 @@
 
 				},
 
-				drawStorage(data) {
+				drawPage(data) {
+					document.getElementById('total-storages').innerText = func.formatBytes(data.quota.used.storage);
+					document.getElementById('total-images').innerText = data.repo_count;
+				},
+
+				/*drawStorage(data) {
 
 					for (var i = 0; i <= data.length - 1; i++) {
 						if(data[i].name === sessionStorage.getItem('repositoryName')) {
@@ -217,7 +222,7 @@
 						}
 					}
 
-				},
+				},*/
 
 				event(){
 					document.querySelector('.more').addEventListener('click', () => {
