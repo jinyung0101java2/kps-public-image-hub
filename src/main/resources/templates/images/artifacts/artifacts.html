@@ -45,7 +45,6 @@
 						<tbody class="listTable">
 						</tbody>
 					</table>
-					<a class="more" href="javascript:">more</a>
 				</div>
 				<a href="javascript:" id="delete" class="delete" style="top: -4px;" th:text="#{M0026}" ></a>
 			</div>
@@ -164,13 +163,6 @@
 				},
 
 				event(){
-					document.querySelector('.more').addEventListener('click', () => {
-						if(document.querySelector('.listTable').querySelectorAll('tr').length < project.allItemCount){
-							artifacts.offset++;
-
-							artifacts.load();
-						}
-					}, false);
 
 					if(document.querySelector('.create')) {
 						document.querySelector('.create').addEventListener('click', () => {

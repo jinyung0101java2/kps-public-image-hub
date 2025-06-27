@@ -92,7 +92,7 @@
 						</thead>
 						<tbody class="listTable">
 					</tbody>
-					<tfoot>
+					<!--<tfoot>
 						<tr>
 							<td colspan="5">
 								<i id="angles-left-end" class="fa-solid fa-angles-left" style="cursor: pointer; margin: 0 5px 0 5px;"></i>
@@ -102,7 +102,7 @@
 								<i id="angles-right-end" class="fa-solid fa-angles-right" style="cursor: pointer; margin: 0 5px 0 5px;"></i>
 							</td>
 						</tr>
-					</tfoot>
+					</tfoot>-->
 					</table>
 				</div>
 				<a href="javascript:" id="delete" class="delete" style="top: 35px;" th:text="#{M0026}" ></a>
@@ -142,7 +142,8 @@
 				load() {
 					func.loading();
 
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=${repositories.limit}&page=${repositories.page}`, 'application/json', repositories.drawRepositories);
+					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=${repositories.limit}&page=${repositories.page}`, 'application/json', repositories.drawRepositories);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=100`, 'application/json', repositories.drawRepositories);
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryId')}/summary`, 'application/json', repositories.drawPage);
 
 				},

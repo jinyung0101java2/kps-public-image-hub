@@ -93,7 +93,7 @@
 						</thead>
 						<tbody class="listTable">
 						</tbody>
-						<tfoot>
+						<!--<tfoot>
 						<tr>
 							<td colspan="5">
 								<i id="angles-left-end" class="fa-solid fa-angles-left" style="cursor: pointer; margin: 0 5px 0 5px;"></i>
@@ -103,7 +103,7 @@
 								<i id="angles-right-end" class="fa-solid fa-angles-right" style="cursor: pointer; margin: 0 5px 0 5px;"></i>
 							</td>
 						</tr>
-						</tfoot>
+						</tfoot>-->
 					</table>
 					<a class="more" href="javascript:">more</a>
 				</div>
@@ -144,7 +144,8 @@
 					func.loading();
 
 					if (sessionStorage.getItem('repositoriesCnt') > 0) {
-						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${logs.limit}&page=${logs.page}`, 'application/json', logs.drawLogs);
+						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=100`, 'application/json', logs.drawLogs);
+						//func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${logs.limit}&page=${logs.page}`, 'application/json', logs.drawLogs);
 						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=${logs.limit}&page=${logs.page}`, 'application/json', logs.drawRepositories);
 						// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', logs.drawStorage);
 						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryId')}/summary`, 'application/json', logs.drawPage);

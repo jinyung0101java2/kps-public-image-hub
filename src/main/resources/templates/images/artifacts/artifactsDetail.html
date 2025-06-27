@@ -40,7 +40,6 @@
 						<tbody class="tagListTable">
 						</tbody>
 					</table>
-					<a class="more" href="javascript:">more</a>
 				</div>
 				<h4>Overview</h4>
 				<div class="table_style01">
@@ -83,7 +82,6 @@
 						<tbody class="additionListTable">
 						</tbody>
 					</table>
-					<a class="more" href="javascript:">more</a>
 				</div>
 				<a href="javascript:" id="delete" class="delete" style="top: -4px;" th:text="#{M0026}" ></a>
 			</div>
@@ -299,13 +297,6 @@
 				},
 
 				event() {
-					document.querySelector('.more').addEventListener('click', () => {
-						if(document.querySelector('.TagListTable').querySelectorAll('tr').length < artifacts.allItemCount){
-							artifacts.offset++;
-
-							artifacts.load();
-						}
-					}, false);
 
 					if(document.querySelector('.create')) {
 						document.querySelector('.create').addEventListener('click', () => {
