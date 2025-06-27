@@ -16,42 +16,42 @@
         </article>
         <article>
             <fieldset>
-            <ul style="display: flex; float: right;">
-                <li>
-                    <div class="statistics">
-                        <h3>Projects</h3>
-                        <div class="statistics-box">
-                            <div class="stat-cont">Private</div>
-                            <div class="stat-cnt" id="pro_pri"></div>
+                <ul style="display: flex; float: right;">
+                    <li>
+                        <div class="statistics">
+                            <h3>Projects</h3>
+                            <div class="statistics-box">
+                                <div class="stat-cont">Private</div>
+                                <div class="stat-cnt" id="pro_pri"></div>
+                            </div>
+                            <div class="statistics-box">
+                                <div class="stat-cont">Public</div>
+                                <div class="stat-cnt" id="pro_pub"></div>
+                            </div>
+                            <div class="statistics-box">
+                                <div class="stat-cont">Total</div>
+                                <div class="stat-cnt" id="pro_total"></div>
+                            </div>
                         </div>
-                        <div class="statistics-box">
-                            <div class="stat-cont">Public</div>
-                            <div class="stat-cnt" id="pro_pub"></div>
+                    </li>
+                    <li>
+                        <div class="last-statistics">
+                            <h3>Repositories</h3>
+                            <div class="statistics-box">
+                                <div class="stat-cont">Private</div>
+                                <div class="stat-cnt" id="repo_pri"></div>
+                            </div>
+                            <div class="statistics-box">
+                                <div class="stat-cont">Public</div>
+                                <div class="stat-cnt" id="repo_pub"></div>
+                            </div>
+                            <div class="statistics-box">
+                                <div class="stat-cont">Total</div>
+                                <div class="stat-cnt" id="repo_total"></div>
+                            </div>
                         </div>
-                        <div class="statistics-box">
-                            <div class="stat-cont">Total</div>
-                            <div class="stat-cnt" id="pro_total"></div>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="last-statistics">
-                        <h3>Repositories</h3>
-                        <div class="statistics-box">
-                            <div class="stat-cont">Private</div>
-                            <div class="stat-cnt" id="repo_pri"></div>
-                        </div>
-                        <div class="statistics-box">
-                            <div class="stat-cont">Public</div>
-                            <div class="stat-cnt" id="repo_pub"></div>
-                        </div>
-                        <div class="statistics-box">
-                            <div class="stat-cont">Total</div>
-                            <div class="stat-cnt" id="repo_total"></div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                </ul>
             </fieldset>
         </article>
         <article class="base-pro">
@@ -170,8 +170,8 @@
                             document.getElementById("time_" + i).innerText = time;
                         }
                     } else if (data.length === 0) {
-                            let html = '<tr><td colspan="7">No Data.</td></tr>';
-                            func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
+                        let html = '<tr><td colspan="7">No Data.</td></tr>';
+                        func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
                     }
 
                     if (document.getElementById('loading')) {
@@ -192,7 +192,7 @@
 
                 },
 
-                event(){
+                event() {
 
                     if(document.querySelector('.create')) {
                         document.querySelector('.create').addEventListener('click', () => {
@@ -203,16 +203,16 @@
                     document.querySelector('#all-projects').addEventListener('click', () => {
                         let check = document.getElementById('all-projects').checked
                         let projectCnt = sessionStorage.getItem('projectCnt')
-                            if (check === true) {
-                                for (var i = 0; i <= projectCnt-1; i++) {
-                                    document.querySelector('.checkbox_' + `${i}`).checked = true;
-                                }
-
-                            } else {
-                                for (var i = 0; i <= projectCnt-1; i++) {
-                                    document.querySelector('.checkbox_' + `${i}`).checked = false;
-                                }
+                        if (check === true) {
+                            for (var i = 0; i <= projectCnt-1; i++) {
+                                document.querySelector('.checkbox_' + `${i}`).checked = true;
                             }
+
+                        } else {
+                            for (var i = 0; i <= projectCnt-1; i++) {
+                                document.querySelector('.checkbox_' + `${i}`).checked = false;
+                            }
+                        }
                     }, false);
 
                     document.getElementById('delete').addEventListener('click', (e) => {
@@ -226,9 +226,9 @@
                         }
 
                         if (tr > 0 ) {
-                          func.alertPopup('DELETE', MSG_CHECK_TO_DELETE, true, MSG_CONFIRM, projects.delete);
+                            func.alertPopup('DELETE', MSG_CHECK_TO_DELETE, true, MSG_CONFIRM, projects.delete);
                         } else if (tr === 0) {
-                          func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
+                            func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
                         }
 
                     }, false);
@@ -240,9 +240,7 @@
                     for (var i = 0; i <= projectCnt-1; i++) {
                         if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
                             var class_id = $('.checkbox_' + `${i}`).attr('id')
-
-                            // func.loadHarborData('GET', `${func.harborUrl}api/v2.0/users/current/permissions?scope=/project/`+ class_id +`&relative=true` + name, 'application/json', projects.drawStatistics);
-                            // func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.historyBack);
+                            func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.historyBack);
                         }
                     }
 

@@ -230,19 +230,12 @@ const func = {
 
 		document.getElementById('modal').querySelector('.confirm').addEventListener('click', (e) => {
 
-			let name = document.getElementById('name').innerText
+			let name = document.getElementById('name').value
 			let access = document.getElementById('access').checked
 			document.getElementById('wrap').removeChild(document.getElementById('modal'));
 
-			var sendData =  {
-				"project_name": name,
-				"metadata":{"public": access},
-				"storage_limit": null,
-				"registry_id": null
-			};
+			var sendData =  {"project_name":name,"metadata":{"public":JSON.stringify(access)},"storage_limit": null,"registry_id": null};
 
-			alert(JSON.stringify(sendData))
-			// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects?q=name%253D` + name, 'application/json', project.drawStatistics);
 			func.saveHarborData('POST', `${func.harborUrl}api/v2.0/projects`, JSON.stringify(sendData), true, 'application/json', func.historyBack);
 		}, false);
 	},
@@ -769,42 +762,15 @@ const func = {
 
 			request.onreadystatechange = () => {
 				if (request.readyState === XMLHttpRequest.DONE){
-					if(request.status === 200 && request.responseText != ''){
-
-						//토큰 만료 검사
-						if(JSON.parse(request.responseText).resultMessage == 'TOKEN_EXPIRED') {
-							func.refreshToken();
-							return func.saveData(method, url, data, bull, header, callFunc);
-						}
-						else if(JSON.parse(request.responseText).resultMessage == 'TOKEN_FAILED') {
-							func.loginCheck();
-							return func.loadData(method, url, header, callbackFunction, list);
-						}
-						else {
-							document.getElementById('wrap').removeChild(document.getElementById('loading'));
-							var response = JSON.parse(request.responseText);
-							if (response.httpStatusCode == 200) {
-								if(response.resultCode == RESULT_STATUS_SUCCESS) {
-									func.alertPopup('SUCCESS', response.detailMessage, true, MSG_CONFIRM, callFunc);
-								}
-								else {
-									func.alertPopup('ERROR', response.detailMessage, true, MSG_CONFIRM, 'closed');
-								}
-							}
-							else {
-								func.alertPopup('ERROR', response.detailMessage, true, MSG_CONFIRM, 'closed');
-							}
-
+					if(request.status === 200 || request.status === 201) {
+						if (method === 'DELETE') {
+							func.alertPopup('SUCCESS', MSG_DELETE_COMPLETED, true, MSG_CONFIRM, callFunc);
+						} else if (method === 'POST') {
+							func.alertPopup('SUCCESS', MSG_CREATION_COMPLETED, true, MSG_CONFIRM, callFunc);
 						}
 					} else {
-						/*
-                        if(method == 'DELETE'){
-                            /func.alertPopup('DELETE', 'DELETE FAILED', func.winReload);
-                        } else {
-                            /func.alertPopup('SAVE', 'SAVE FAILED', func.winReload);
-                        };
-                        */
-					};
+						func.alertPopup('ERROR', MSG_ERROR, true, MSG_CONFIRM, 'closed');
+					}
 				};
 			};
 
