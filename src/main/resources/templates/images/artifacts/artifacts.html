@@ -213,10 +213,9 @@
 					let artifactsCnt = sessionStorage.getItem('artifactsCnt')
 					for (var i = 0; i <= artifactsCnt-1; i++) {
 						if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
-							var class_id = $('.checkbox_' + `${i}`).attr('id')
+							var class_name = $('.checkbox_' + `${i}`).attr('name')
 
-							// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/users/current/permissions?scope=/project/`+ class_id +`&relative=true` + name, 'application/json', project.drawStatistics);
-							// func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.historyBack);
+							func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ sessionStorage.getItem('repositoryName') + '/repositories/' + sessionStorage.getItem('imageName') + '/artifacts/' + class_name, '', true, 'application/json', func.refresh());
 						}
 					}
 				},

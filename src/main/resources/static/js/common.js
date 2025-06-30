@@ -236,7 +236,7 @@ const func = {
 
 			var sendData =  {"project_name":name,"metadata":{"public":JSON.stringify(access)},"storage_limit": null,"registry_id": null};
 
-			func.saveHarborData('POST', `${func.harborUrl}api/v2.0/projects`, JSON.stringify(sendData), true, 'application/json', func.historyBack);
+			func.saveHarborData('POST', `${func.harborUrl}api/v2.0/projects`, JSON.stringify(sendData), true, 'application/json', func.refresh());
 		}, false);
 	},
 
@@ -767,6 +767,39 @@ const func = {
 							func.alertPopup('SUCCESS', MSG_DELETE_COMPLETED, true, MSG_CONFIRM, callFunc);
 						} else if (method === 'POST') {
 							func.alertPopup('SUCCESS', MSG_CREATION_COMPLETED, true, MSG_CONFIRM, callFunc);
+						}
+					} else {
+						func.alertPopup('ERROR', MSG_ERROR, true, MSG_CONFIRM, 'closed');
+					}
+				};
+			};
+
+			request.send(data); }, 0);
+	},
+
+	deleteHarborData(method, url, data, bull, header){
+		func.loading();
+
+		if(sessionStorage.getItem('token') == null){
+			func.loginCheck();
+		};
+
+
+		var request = new XMLHttpRequest();
+
+		setTimeout(function() {
+			request.open(method, url, false);
+			request.setRequestHeader('Content-type', header);
+			// request.setRequestHeader('Authorization', sessionStorage.getItem('token'));
+			request.setRequestHeader('Authorization', sessionStorage.getItem('accessToken'));
+			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
+			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
+
+			request.onreadystatechange = () => {
+				if (request.readyState === XMLHttpRequest.DONE){
+					if(request.status === 200 || request.status === 201) {
+						if (method === 'DELETE') {
+							func.alertPopup('SUCCESS', MSG_DELETE_COMPLETED, true, MSG_CONFIRM);
 						}
 					} else {
 						func.alertPopup('ERROR', MSG_ERROR, true, MSG_CONFIRM, 'closed');

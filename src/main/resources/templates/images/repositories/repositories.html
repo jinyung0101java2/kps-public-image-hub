@@ -200,8 +200,8 @@
 					document.getElementById('total-storages').innerText = func.formatBytes(data.quota.used.storage);
 					document.getElementById('total-images').innerText = data.repo_count;
 
-					document.getElementById('page-start').innerText = repositories.page;
-					document.getElementById('page-end').innerText = data.project_admin_count;
+					// document.getElementById('page-start').innerText = repositories.page;
+					// document.getElementById('page-end').innerText = data.project_admin_count;
 
 				},
 
@@ -246,14 +246,14 @@
 
 					}, false);
 
-					document.querySelector('#angles-left-end').addEventListener('click', () => {
+					/*document.querySelector('#angles-left-end').addEventListener('click', () => {
 
 						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=${repositories.limit}&page=${repositories.pageStart}`, 'application/json', repositories.drawRepositories);
 						document.getElementById('page-start').innerText = repositories.pageStart;
 						repositories.page = repositories.pageStart;
-					}, false);
+					}, false);*/
 
-					document.querySelector('#angle-left').addEventListener('click', () => {
+					/*document.querySelector('#angle-left').addEventListener('click', () => {
 						if (repositories.page > 1) {
 							repositories.page -= 1;
 						} else if (repositories.page == 1) {
@@ -262,9 +262,9 @@
 
 						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=${repositories.limit}&page=${repositories.page}`, 'application/json', repositories.drawRepositories);
 						document.getElementById('page-start').innerText = repositories.page;
-					}, false);
+					}, false);*/
 
-					document.querySelector('#angle-right').addEventListener('click', () => {
+					/*document.querySelector('#angle-right').addEventListener('click', () => {
 						if (repositories.page < repositories.pageEnd) {
 							repositories.page += 1;
 						} else if (repositories.page == repositories.pageEnd) {
@@ -273,13 +273,13 @@
 
 						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=${repositories.limit}&page=${repositories.page}`, 'application/json', repositories.drawRepositories);
 						document.getElementById('page-start').innerText = repositories.page;
-					}, false);
+					}, false);*/
 
-					document.querySelector('#angles-right-end').addEventListener('click', () => {
+					/*document.querySelector('#angles-right-end').addEventListener('click', () => {
 						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=${repositories.limit}&page=${repositories.pageEnd}`, 'application/json', repositories.drawRepositories);
 						document.getElementById('page-start').innerText = repositories.pageEnd;
 						repositories.page = repositories.pageEnd;
-					}, false);
+					}, false);*/
 
 				},
 
@@ -287,12 +287,21 @@
 					let repositoriesCnt = sessionStorage.getItem('repositoriesCnt')
 					for (var i = 0; i <= repositoriesCnt-1; i++) {
 						if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
-							var class_id = $('.checkbox_' + `${i}`).attr('id')
+							var class_name = $('.checkbox_' + `${i}`).attr('name')
+							const arrName = class_name.split('/')
+							let artifactsName = '';
 
-							// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/users/current/permissions?scope=/project/`+ class_id +`&relative=true` + name, 'application/json', project.drawStatistics);
-							// func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.historyBack);
+							for (var i = 2; i <= arrName.length - 1; i++) {
+								if (arrName.length > 2) {
+									artifactsName += '%252F'+ arrName[i]
+								}
+							}
+
+							func.deleteHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ arrName[0] + '/' + 'repositories' + '/' + arrName[1] + artifactsName, '', true, 'application/json');
+							alert('Delete')
 						}
 					}
+					// func.refresh()
 				},
 
 				listEvent(){

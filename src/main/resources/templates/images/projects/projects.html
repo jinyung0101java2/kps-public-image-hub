@@ -238,7 +238,7 @@
 					for (var i = 0; i <= projectCnt-1; i++) {
 						if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
 							var class_id = $('.checkbox_' + `${i}`).attr('id')
-							func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.historyBack);
+							func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.refresh());
 						}
 					}
 				},
