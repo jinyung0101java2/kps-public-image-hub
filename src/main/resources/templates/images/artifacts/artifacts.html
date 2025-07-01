@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layouts/layout}">
 <div layout:fragment="content">
@@ -59,14 +58,16 @@
 			func.init(ASIDE_DP1.IMAGES, ASIDE_DP2.PROJECTS);
 
 			const artifacts = {
-				offset: 0, // 로드 페이지 넘버
-				limit: 10, // 로드 게시물 개수
-				allItemCount: 0, //게시물 촐 개수
+				offset: 0,
+				limit: 10,
+				allItemCount: 0,
 				type: 'administrator',
 
 				init() {
 					func.nameLoad = artifacts.reset;
-					document.getElementById('title').innerHTML = sessionStorage.getItem('imageName');
+
+					let imageName = sessionStorage.getItem('imageName');
+					document.getElementById('title').innerHTML = imageName.replaceAll("%252F", "/")
 					document.getElementById('moveRepository').innerHTML = sessionStorage.getItem('repositoryName');
 
 					artifacts.load();
@@ -151,7 +152,7 @@
 
 						}
 					} else if (data.length === 0) {
-						let html = '<tr><td colspan="5">No Data.</td></tr>';
+						let html = '<tr><td colspan="8">No Data.</td></tr>';
 						func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 					}
 

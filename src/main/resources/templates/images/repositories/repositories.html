@@ -309,10 +309,17 @@
 					for(var i=0; i<=listAll.length-1; i++){
 						listAll[i].addEventListener('click', (e) => {
 
-							let imageName = e.target.getAttribute('data-id');
-							imageName = imageName.split('/')[1]
+							let imageNameOrigin = e.target.getAttribute('data-id');
+							let imageNameArr = imageNameOrigin.split('/')
+							let imageName = '';
 
-							sessionStorage.setItem('imageName', imageName);
+							for (var i = 2; i <= imageNameArr.length - 1; i++) {
+								if (imageNameArr.length > 2) {
+									imageName += '%252F'+ imageNameArr[i]
+								}
+							}
+
+							sessionStorage.setItem('imageName', imageNameArr[1] + imageName);
 
 							document.location.href = URI_KPS_HUB_IMAGE_ARTIFACT;
 						}, true);
