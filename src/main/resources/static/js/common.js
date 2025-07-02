@@ -558,6 +558,61 @@ const func = {
 			request.send(); },0);
 	},
 
+	loadHubData(method, url, header, callbackFunction, list){
+		if(sessionStorage.getItem('token') == null){
+			func.loginCheck();
+		};
+
+		if(url == null) {
+			callbackFunction();
+			return false;
+		}
+
+		var request = new XMLHttpRequest();
+
+		setTimeout(function() {
+			request.open(method, url, false);
+			request.setRequestHeader('Content-type', header);
+			// request.setRequestHeader('Authorization', sessionStorage.getItem('token'));
+			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
+			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
+
+
+			request.onreadystatechange = () => {
+				if (request.readyState === XMLHttpRequest.DONE){
+					if(request.status === 200 && request.responseText != '') {
+						// var resultMessage = JSON.parse(request.responseText).resultMessage;
+						// var resultCode =  JSON.parse(request.responseText).resultCode;
+						// var detailMessage = JSON.parse(request.responseText).detailMessage;
+						//토큰 만료 검사
+						/*if( resultMessage == 'TOKEN_EXPIRED') {
+							func.refreshToken();
+							return func.loadData(method, url, header, callbackFunction, list);
+						}
+						else if(resultMessage == 'TOKEN_FAILED') {
+							func.loginCheck();
+							return func.loadData(method, url, header, callbackFunction, list);
+						}
+						else if(resultCode != RESULT_STATUS_SUCCESS) {
+							if(document.getElementById('loading')){
+								document.getElementById('wrap').removeChild(document.getElementById('loading'));
+							};
+							func.alertPopup('ERROR', detailMessage, true, MSG_CONFIRM, 'closed');
+						}
+						else {
+							callbackFunction(JSON.parse(request.responseText), list);
+						}*/
+						// callbackFunction(JSON.parse(request.responseText), list);
+					} else if(JSON.parse(request.responseText).httpStatusCode === 500){
+						sessionStorage.clear();
+						func.loginCheck();
+					};
+				};
+			};
+
+		request.send(); },0);
+	},
+
 	loadHarborData(method, url, header, callbackFunction, list){
 		if(sessionStorage.getItem('token') == null){
 			func.loginCheck();
@@ -579,7 +634,6 @@ const func = {
 			request.setRequestHeader('Authorization', sessionStorage.getItem('accessToken'));
 			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
 			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
-			request.setRequestHeader('X-Harbor-CSRF-Token', '');
 
 			request.onreadystatechange = () => {
 				if (request.readyState === XMLHttpRequest.DONE){
@@ -606,7 +660,6 @@ const func = {
 							callbackFunction(JSON.parse(request.responseText), list);
 						}*/
 						callbackFunction(JSON.parse(request.responseText), list);
-						console.log('AllResponseHeaders::: '+ request.getAllResponseHeaders())
 
 					} else if(JSON.parse(request.responseText).httpStatusCode === 500){
 						console.log("500")
@@ -1031,8 +1084,8 @@ const func = {
 	}*/
 
 	changeTime(time) {
-		const create_datetime = time;
-		const date = new Date(create_datetime);
+		const create_date_time = time;
+		const date = new Date(create_date_time);
 		const year = date.getFullYear();
 		const month = String(date.getMonth() + 1).padStart(2, "0");
 		const day = String(date.getDate()).padStart(2, "0");

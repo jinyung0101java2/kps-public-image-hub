@@ -84,7 +84,7 @@
 				load() {
 					func.loading();
 
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts?with_tag=true&with_scan_overview=true&with_sbom_overview=true&with_label=true&with_accessory=true&&page_size=100`, 'application/json', artifacts.drawArtifacts);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts?with_tag=true&with_scan_overview=true&with_sbom_overview=true&with_label=true&with_accessory=true&&page=1&page_size=-1`, 'application/json', artifacts.drawArtifacts);
 				},
 
 				drawArtifacts(data) {

@@ -143,7 +143,7 @@
 					func.loading();
 
 					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=${repositories.limit}&page=${repositories.page}`, 'application/json', repositories.drawRepositories);
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=100`, 'application/json', repositories.drawRepositories);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page=1&page_size=-1`, 'application/json', repositories.drawRepositories);
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryId')}/summary`, 'application/json', repositories.drawPage);
 
 				},

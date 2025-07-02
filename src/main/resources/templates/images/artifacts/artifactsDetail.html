@@ -108,7 +108,7 @@
 					let artifactsName = sessionStorage.getItem('artifactsName');
 					document.getElementById('title').innerHTML = artifactsName.substr(0,15)
 					document.getElementById('moveRepository').innerHTML = sessionStorage.getItem('repositoryName');
-					document.getElementById('moveImage').innerHTML = sessionStorage.getItem('imageName');
+					document.getElementById('moveImage').innerHTML = sessionStorage.getItem('imageName').replaceAll("%252F", "/");
 
 					artifacts.load();
 
@@ -128,12 +128,12 @@
 				load() {
 					func.loading();
 
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}/tags?with_signature=true&with_immutable_status=true&page_size=100`, 'application/json', artifacts.drawTags);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}/tags?with_signature=true&with_immutable_status=true&page=1&page_size=-1`, 'application/json', artifacts.drawTags);
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}?with_tag=false&with_scan_overview=true&with_sbom_overview=true&with_label=true&with_immutable_status=true`, 'application/json', artifacts.drawOverview);
 					if (sessionStorage.getItem('additions') === 'Y') {
-						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}/additions/vulnerabilities`, 'application/json', artifacts.drawAdditions);
+						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}/additions/vulnerabilities?page=1&page_size=-1`, 'application/json', artifacts.drawAdditions);
 					} else if (sessionStorage.getItem('additions') === 'N') {
-						let html = '<tr><td colspan="7">No Data.</td></tr>';
+						let html = '<tr><td colspan="8">No Data.</td></tr>';
 						func.appendHtml(document.querySelector('.additionListTable'), html, 'tbody');
 					}
 				},

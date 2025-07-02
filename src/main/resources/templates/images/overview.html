@@ -102,6 +102,7 @@
                 limit: 10,
                 allItemCount: 0,
                 type: 'administrator',
+                arrRepoName: [],
 
                 init() {
                     sessionStorage.setItem('accessToken' , 'Bearer ' + [[${accessToken}]]);
@@ -110,6 +111,7 @@
                     projects.load();
 
                     projects.event();
+
                 },
 
                 reset() {
@@ -121,8 +123,9 @@
                 load() {
                     func.loading();
 
-                    func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', projects.drawProjects);
+                    func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects?page=1&page_size=-1`, 'application/json', projects.drawProjects);
                     func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', projects.drawStatistics);
+                    func.loadHarborData('GET', `${func.harborUrl}api/v2.0/auditlog-exts?q=resource_type%253D~artifact,operation%253D~create&page_size=-1&page=1`, 'application/json', projects.drawPushedImages);
                 },
 
                 drawProjects(data) {
@@ -189,6 +192,18 @@
                     document.getElementById("repo_pri").innerText = data.private_repo_count;
                     document.getElementById("repo_pub").innerText = data.public_repo_count;
                     document.getElementById("repo_total").innerText = data.total_repo_count;
+
+                },
+
+                drawPushedImages(data) {
+                    let ascendingOrderData = data.sort((a, b) => new Date(b.op_time) - new Date(a.op_time))
+                    console.log(JSON.stringify(ascendingOrderData))
+
+                    for(var i = 0; i <= ascendingOrderData.length - 1; i++) {
+                        console.log(JSON.stringify(func.changeTime(ascendingOrderData[i].op_time)))
+                    }
+                    // func.changeTime(ascendingOrderData.op_time)
+
 
                 },
 

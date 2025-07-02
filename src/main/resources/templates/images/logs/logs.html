@@ -144,9 +144,9 @@
 					func.loading();
 
 					if (sessionStorage.getItem('repositoriesCnt') > 0) {
-						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/auditlog-exts?page_size=100`, 'application/json', logs.drawLogs);
+						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/auditlog-exts?page=1&page_size=-1`, 'application/json', logs.drawLogs);
 						//func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${logs.limit}&page=${logs.page}`, 'application/json', logs.drawLogs);
-						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=${logs.limit}&page=${logs.page}`, 'application/json', logs.drawRepositories);
+						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page=1&page_size=-1`, 'application/json', logs.drawRepositories);
 						// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', logs.drawStorage);
 						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryId')}/summary`, 'application/json', logs.drawPage);
 					} else if (sessionStorage.getItem('repositoriesCnt') == 0) {

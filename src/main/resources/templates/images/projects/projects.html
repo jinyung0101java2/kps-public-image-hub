@@ -119,7 +119,7 @@
 				load() {
 					func.loading();
 
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', projects.drawProjects);
+					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects?page=1&page_size=-1`, 'application/json', projects.drawProjects);
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', projects.drawStatistics);
 				},
 
