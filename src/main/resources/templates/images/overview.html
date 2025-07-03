@@ -14,49 +14,9 @@
                 <span>Projects</span>
             </ul>
         </article>
-        <article>
-            <fieldset>
-                <ul style="display: flex; float: right;">
-                    <li>
-                        <div class="statistics">
-                            <h3>Projects</h3>
-                            <div class="statistics-box">
-                                <div class="stat-cont">Private</div>
-                                <div class="stat-cnt" id="pro_pri"></div>
-                            </div>
-                            <div class="statistics-box">
-                                <div class="stat-cont">Public</div>
-                                <div class="stat-cnt" id="pro_pub"></div>
-                            </div>
-                            <div class="statistics-box">
-                                <div class="stat-cont">Total</div>
-                                <div class="stat-cnt" id="pro_total"></div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="last-statistics">
-                            <h3>Repositories</h3>
-                            <div class="statistics-box">
-                                <div class="stat-cont">Private</div>
-                                <div class="stat-cnt" id="repo_pri"></div>
-                            </div>
-                            <div class="statistics-box">
-                                <div class="stat-cont">Public</div>
-                                <div class="stat-cnt" id="repo_pub"></div>
-                            </div>
-                            <div class="statistics-box">
-                                <div class="stat-cont">Total</div>
-                                <div class="stat-cnt" id="repo_total"></div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </fieldset>
-        </article>
         <article class="base-pro">
             <div class="notice">
-                <div class="table_style01">
+                <div class="table_style01" style="margin-bottom: 0">
                     <table>
                         <caption>Projects List</caption>
                         <colgroup >
@@ -86,6 +46,27 @@
                 <a href="javascript:" id="create" class="create" th:text="#{M0938}" ></a>
                 <a href="javascript:" id="delete" class="delete" style="top: 35px; right: 150px;" th:text="#{M0026}" ></a>
             </div>
+        </article>
+        <article class="location" style="padding-top: 0; height: 65px;">
+            <ul class="title">
+                <span>Pushed Images</span>
+            </ul>
+        </article>
+        <article>
+            <fieldset>
+                <ul class="resource" style="display: flex; float: left; margin-left: 30px">
+                    <!--<li>
+                        <div class="pushed-images">
+                            <div class="resource-box">
+                                <div class="resource">cp-portal-repository/cp-portal-chaos-api:latest</div>
+                            </div>
+                            <div class="time-box">
+                                <div class="time">10시간 전</div>
+                            </div>
+                        </div>
+                    </li>-->
+                </ul>
+            </fieldset>
         </article>
     </div>
 </div>
@@ -124,7 +105,7 @@
                     func.loading();
 
                     func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects?page=1&page_size=-1`, 'application/json', projects.drawProjects);
-                    func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', projects.drawStatistics);
+                    // func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', projects.drawStatistics);
                     func.loadHarborData('GET', `${func.harborUrl}api/v2.0/auditlog-exts?q=resource_type%253D~artifact,operation%253D~create&page_size=-1&page=1`, 'application/json', projects.drawPushedImages);
                 },
 
@@ -184,26 +165,41 @@
                     projects.listEvent()
                 },
 
-                drawStatistics(data) {
-
-                    document.getElementById("pro_pri").innerText = data.private_project_count;
-                    document.getElementById("pro_pub").innerText = data.public_project_count;
-                    document.getElementById("pro_total").innerText = data.total_project_count;
-                    document.getElementById("repo_pri").innerText = data.private_repo_count;
-                    document.getElementById("repo_pub").innerText = data.public_repo_count;
-                    document.getElementById("repo_total").innerText = data.total_repo_count;
-
-                },
+                // drawStatistics(data) {
+                //
+                //     document.getElementById("pro_pri").innerText = data.private_project_count;
+                //     document.getElementById("pro_pub").innerText = data.public_project_count;
+                //     document.getElementById("pro_total").innerText = data.total_project_count;
+                //     document.getElementById("repo_pri").innerText = data.private_repo_count;
+                //     document.getElementById("repo_pub").innerText = data.public_repo_count;
+                //     document.getElementById("repo_total").innerText = data.total_repo_count;
+                //
+                // },
 
                 drawPushedImages(data) {
+
+                    let html;
+
                     let ascendingOrderData = data.sort((a, b) => new Date(b.op_time) - new Date(a.op_time))
                     console.log(JSON.stringify(ascendingOrderData))
 
-                    for(var i = 0; i <= ascendingOrderData.length - 1; i++) {
-                        console.log(JSON.stringify(func.changeTime(ascendingOrderData[i].op_time)))
-                    }
-                    // func.changeTime(ascendingOrderData.op_time)
+                    for(var i = 0; i <= 1; i++) {
+                        let time = func.differenceInTime(ascendingOrderData[i].op_time)
+                        console.log("시간:: " + time)
+                        html = `<li>
+                                    <div class="pushed-images">
+                                        <div class="resource-box">
+                                            <div class="resource">${ascendingOrderData[i].resource}</div>
+                                        </div>
+                                        <div class="time-box">
+                                            <div id="time_${i}" class="time"></div>
+                                        </div>
+                                    </div>
+                                </li>`;
 
+                        func.appendHtml(document.querySelector('.resource'), html, 'ul');
+                        document.getElementById("time_" + i).innerText = time;
+                    }
 
                 },
 

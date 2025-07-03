@@ -1103,6 +1103,29 @@ const func = {
 		}
 	},
 
+	differenceInTime(time) {
+		const startDate = new Date(time);
+		const endDate = new Date();
+		const timeDifferenceInMilliseconds = endDate.getTime() - startDate.getTime();
+		let result;
+
+		const timeDifferenceInSeconds = timeDifferenceInMilliseconds / 1000;
+		const timeDifferenceInMinutes = timeDifferenceInSeconds / 60;
+		const timeDifferenceInHours = timeDifferenceInMinutes / 60;
+		// console.log(`시간 차이 (시간):` +  Math.floor(timeDifferenceInHours) + ' 시간 전') ;
+
+		const timeDifferenceInDays = timeDifferenceInHours / 24;
+		// console.log(`시간 차이 (일):` + Math.floor(timeDifferenceInDays) + ' 일 전') ;
+
+		if (timeDifferenceInHours < 24) {
+			result = Math.floor(timeDifferenceInHours) + ' 시간 전'
+		} else if (timeDifferenceInHours > 24) {
+			result = Math.floor(timeDifferenceInDays) + ' 일 전'
+		}
+
+		return result;
+	},
+
 	formatBytes(bytes, decimals) {
 	if (bytes === 0) return '0 Byte';
 
