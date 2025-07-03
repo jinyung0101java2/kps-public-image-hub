@@ -49,7 +49,7 @@
         </article>
         <article class="location" style="padding-top: 0; height: 65px;">
             <ul class="title">
-                <span>Pushed Images</span>
+                <span th:text="#{M0952}"></span>
             </ul>
         </article>
         <article>
@@ -166,6 +166,7 @@
                         html = `<li>
                                     <div class="pushed-images">
                                         <div class="resource-box">
+                                            <i class="fa-solid fa-file" style="margin-right: 7px;"></i>
                                             <div class="resource">${ascendingOrderData[i].resource}</div>
                                         </div>
                                         <div class="time-box">
@@ -175,7 +176,29 @@
                                 </li>`;
 
                         func.appendHtml(document.querySelector('.resource'), html, 'ul');
-                        document.getElementById("pushed_time_" + i).innerText = time;
+
+                        if (time.unit === "minute") {
+                            if (time.time === 1) {
+                                document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_MINUTE_AGO;
+                            } else if (time.time > 1) {
+                                document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_MINUTES_AGO;
+                            } else if (time.time === 0) {
+                                document.getElementById("pushed_time_" + i).innerText = A_MOMENT_AGO;
+                            }
+                        } else if (time.unit === "hour") {
+                            if (time.time === 1) {
+                                document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_HOUR_AGO;
+                            } else if (time.time > 1) {
+                                document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_HOURS_AGO;
+                            }
+                        } else if (time.unit === "day") {
+                            if (time.time === 1) {
+                                document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_DAY_AGO;
+                            } else if (time.time > 1) {
+                                document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_DAYS_AGO;
+                            }
+                        }
+
                     }
 
                 },

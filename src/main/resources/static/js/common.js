@@ -1117,10 +1117,21 @@ const func = {
 		const timeDifferenceInDays = timeDifferenceInHours / 24;
 		// console.log(`시간 차이 (일):` + Math.floor(timeDifferenceInDays) + ' 일 전') ;
 
-		if (timeDifferenceInHours < 24) {
-			result = Math.floor(timeDifferenceInHours) + ' 시간 전'
+		if (timeDifferenceInMinutes > 1440 && timeDifferenceInHours < 24) {
+			result = {
+						"time": Math.floor(timeDifferenceInHours),
+						"unit": "hour"
+			}
 		} else if (timeDifferenceInHours > 24) {
-			result = Math.floor(timeDifferenceInDays) + ' 일 전'
+			result = {
+						"time": Math.floor(timeDifferenceInDays),
+						"unit": "day"
+			}
+		} else if (timeDifferenceInMinutes < 1440) {
+			result = {
+						"time": Math.floor(timeDifferenceInMinutes),
+						"unit": "minute"
+			}
 		}
 
 		return result;
