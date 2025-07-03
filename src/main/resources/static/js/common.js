@@ -194,7 +194,7 @@ const func = {
 		};
 	},
 
-	proCreate(title, url, btnName){
+	proCreate(title, btnName){
 
 		var html = `<div class="modal-wrap" id="modal">
 			<div class="modal midium" style="width: 576px;height: 304px">
@@ -232,11 +232,53 @@ const func = {
 
 			let name = document.getElementById('name').value
 			let access = document.getElementById('access').checked
+
+			if (name === '') {
+				document.getElementById('name').focus()
+			} else {
+				document.getElementById('wrap').removeChild(document.getElementById('modal'));
+
+				var sendData =  {"project_name":name,"metadata":{"public":JSON.stringify(access)},"storage_limit": null,"registry_id": null};
+
+				func.saveHarborData('POST', `${func.harborUrl}api/v2.0/projects`, JSON.stringify(sendData), true, 'application/json', func.refresh);
+			}
+		}, false);
+	},
+
+	tagCreate(title, btnName){
+		var html = `<div class="modal-wrap" id="modal">
+			<div class="modal midium" style="width: 576px;height: 250px">
+				<h5>${title}</h5>
+					<dl>
+						<dt>
+							<label for="tagName">Tags Name</label>
+						</dt>
+						<dd>
+							<input id="tagName" type="text" style="width: 90%; border: 1px solid #ebebeb; height: 50px; line-height: 48px; padding-left: 18px; margin-left: 1px; font-size: 18px;">
+						</dd>
+					</dl>
+				<a class="confirm" href="javascript:;">${btnName}</a>
+				<a class="close" href="javascript:;">`+ MSG_CLOSE + `</a>
+			</div>
+		</div>`;
+
+		func.appendHtml(document.getElementById('wrap'), html, 'div');
+
+		document.getElementById('modal').querySelector('.close').addEventListener('click', (e) => {
 			document.getElementById('wrap').removeChild(document.getElementById('modal'));
+		}, false);
 
-			var sendData =  {"project_name":name,"metadata":{"public":JSON.stringify(access)},"storage_limit": null,"registry_id": null};
+		document.getElementById('modal').querySelector('.confirm').addEventListener('click', (e) => {
+			let name = document.getElementById('tagName').value
+			if (name === '') {
+				document.getElementById('tagName').focus()
+			} else {
+				document.getElementById('wrap').removeChild(document.getElementById('modal'));
 
-			func.saveHarborData('POST', `${func.harborUrl}api/v2.0/projects`, JSON.stringify(sendData), true, 'application/json', func.refresh);
+				var sendData =  {"name":name};
+				func.saveHarborData('POST', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}/tags`, JSON.stringify(sendData), true, 'application/json', func.refresh);
+			}
+
 		}, false);
 	},
 
@@ -823,6 +865,10 @@ const func = {
 						}
 					} else {
 						func.alertPopup('ERROR', MSG_ERROR, true, MSG_CONFIRM, 'closed');
+
+						if (document.getElementById('loading')) {
+							document.getElementById('wrap').removeChild(document.getElementById('loading'));
+						}
 					}
 				};
 			};
@@ -1111,13 +1157,14 @@ const func = {
 
 		const timeDifferenceInSeconds = timeDifferenceInMilliseconds / 1000;
 		const timeDifferenceInMinutes = timeDifferenceInSeconds / 60;
+		// console.log(`시간 차이 (분):` +  Math.floor(timeDifferenceInMinutes) + ' 분 전') ;
 		const timeDifferenceInHours = timeDifferenceInMinutes / 60;
 		// console.log(`시간 차이 (시간):` +  Math.floor(timeDifferenceInHours) + ' 시간 전') ;
 
 		const timeDifferenceInDays = timeDifferenceInHours / 24;
 		// console.log(`시간 차이 (일):` + Math.floor(timeDifferenceInDays) + ' 일 전') ;
 
-		if (timeDifferenceInMinutes > 1440 && timeDifferenceInHours < 24) {
+		if (timeDifferenceInMinutes > 60 && timeDifferenceInHours < 24) {
 			result = {
 						"time": Math.floor(timeDifferenceInHours),
 						"unit": "hour"
@@ -1127,7 +1174,7 @@ const func = {
 						"time": Math.floor(timeDifferenceInDays),
 						"unit": "day"
 			}
-		} else if (timeDifferenceInMinutes < 1440) {
+		} else if (timeDifferenceInMinutes < 60) {
 			result = {
 						"time": Math.floor(timeDifferenceInMinutes),
 						"unit": "minute"

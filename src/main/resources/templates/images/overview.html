@@ -207,7 +207,7 @@
 
                     if(document.querySelector('.create')) {
                         document.querySelector('.create').addEventListener('click', () => {
-                            func.proCreate(MSG_NEW_PROJECT, 'secrets', MSG_SAVE);
+                            func.proCreate(MSG_NEW_PROJECT, MSG_SAVE);
                         }, false);
                     }
 
@@ -247,13 +247,23 @@
                 },
 
                 delete() {
-                    let projectCnt = sessionStorage.getItem('projectCnt')
-                    for (var i = 0; i <= projectCnt-1; i++) {
-                        if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
-                            var class_id = $('.checkbox_' + `${i}`).attr('id')
-                            func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.refresh);
+                    func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', (e) => {
+                        let projectCnt = sessionStorage.getItem('projectCnt')
+                        for (var i = 0; i <= projectCnt-1; i++) {
+                            if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
+                                var class_id = $('.checkbox_' + `${i}`).attr('id')
+                                var class_name = $('.checkbox_' + `${i}`).attr('name')
+
+                                if(class_name === e[i].name) {
+                                    if(e[i].repo_count > 0) {
+                                        func.alertPopup('PRECONDITION FAILED', MSG_ERROR_CAN_NOT_BE_DELETED, true, MSG_CONFIRM, 'closed');
+                                    } else if (e[i].repo_count === 0) {
+                                        func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.refresh);
+                                    }
+                                }
+                            }
                         }
-                    }
+                    }, true);
                 },
 
                 listEvent() {
