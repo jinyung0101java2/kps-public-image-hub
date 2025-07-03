@@ -55,16 +55,6 @@
         <article>
             <fieldset>
                 <ul class="resource" style="display: flex; float: left; margin-left: 30px">
-                    <!--<li>
-                        <div class="pushed-images">
-                            <div class="resource-box">
-                                <div class="resource">cp-portal-repository/cp-portal-chaos-api:latest</div>
-                            </div>
-                            <div class="time-box">
-                                <div class="time">10시간 전</div>
-                            </div>
-                        </div>
-                    </li>-->
                 </ul>
             </fieldset>
         </article>
@@ -105,7 +95,6 @@
                     func.loading();
 
                     func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects?page=1&page_size=-1`, 'application/json', projects.drawProjects);
-                    // func.loadHarborData('GET', `${func.harborUrl}api/v2.0/statistics`, 'application/json', projects.drawStatistics);
                     func.loadHarborData('GET', `${func.harborUrl}api/v2.0/auditlog-exts?q=resource_type%253D~artifact,operation%253D~create&page_size=-1&page=1`, 'application/json', projects.drawPushedImages);
                 },
 
@@ -165,17 +154,6 @@
                     projects.listEvent()
                 },
 
-                // drawStatistics(data) {
-                //
-                //     document.getElementById("pro_pri").innerText = data.private_project_count;
-                //     document.getElementById("pro_pub").innerText = data.public_project_count;
-                //     document.getElementById("pro_total").innerText = data.total_project_count;
-                //     document.getElementById("repo_pri").innerText = data.private_repo_count;
-                //     document.getElementById("repo_pub").innerText = data.public_repo_count;
-                //     document.getElementById("repo_total").innerText = data.total_repo_count;
-                //
-                // },
-
                 drawPushedImages(data) {
 
                     let html;
@@ -183,22 +161,21 @@
                     let ascendingOrderData = data.sort((a, b) => new Date(b.op_time) - new Date(a.op_time))
                     console.log(JSON.stringify(ascendingOrderData))
 
-                    for(var i = 0; i <= 1; i++) {
+                    for(var i = 0; i <= 4; i++) {
                         let time = func.differenceInTime(ascendingOrderData[i].op_time)
-                        console.log("시간:: " + time)
                         html = `<li>
                                     <div class="pushed-images">
                                         <div class="resource-box">
                                             <div class="resource">${ascendingOrderData[i].resource}</div>
                                         </div>
                                         <div class="time-box">
-                                            <div id="time_${i}" class="time"></div>
+                                            <div id="pushed_time_${i}" class="time"></div>
                                         </div>
                                     </div>
                                 </li>`;
 
                         func.appendHtml(document.querySelector('.resource'), html, 'ul');
-                        document.getElementById("time_" + i).innerText = time;
+                        document.getElementById("pushed_time_" + i).innerText = time;
                     }
 
                 },
@@ -251,11 +228,9 @@
                     for (var i = 0; i <= projectCnt-1; i++) {
                         if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
                             var class_id = $('.checkbox_' + `${i}`).attr('id')
-                            func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.refresh());
+                            func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/`+ class_id, '', true, 'application/json', func.refresh);
                         }
                     }
-
-
                 },
 
                 listEvent() {

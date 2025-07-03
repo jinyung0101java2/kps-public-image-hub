@@ -236,7 +236,7 @@ const func = {
 
 			var sendData =  {"project_name":name,"metadata":{"public":JSON.stringify(access)},"storage_limit": null,"registry_id": null};
 
-			func.saveHarborData('POST', `${func.harborUrl}api/v2.0/projects`, JSON.stringify(sendData), true, 'application/json', func.refresh());
+			func.saveHarborData('POST', `${func.harborUrl}api/v2.0/projects`, JSON.stringify(sendData), true, 'application/json', func.refresh);
 		}, false);
 	},
 
