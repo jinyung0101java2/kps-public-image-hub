@@ -105,7 +105,6 @@
 						</tr>
 						</tfoot>-->
 					</table>
-					<a class="more" href="javascript:">more</a>
 				</div>
 			</div>
 		</article>
@@ -241,13 +240,6 @@
 				},*/
 
 				event(){
-					document.querySelector('.more').addEventListener('click', () => {
-						if(document.querySelector('.listTable').querySelectorAll('tr').length < project.allItemCount){
-							logs.offset++;
-
-							logs.load();
-						}
-					}, false);
 
 					document.querySelector('#angles-left-end').addEventListener('click', () => {
 

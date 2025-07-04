@@ -22,8 +22,9 @@
 							<colgroup >
 								<col width="4%" />
 								<col width="16%" />
+								<col width="3%" />
 								<col width="13%" />
-								<col width="13%" />
+								<col width="10%" />
 								<col width="13%" />
 								<col width="13%" />
 								<col width="13%" />
@@ -33,6 +34,7 @@
 							<tr>
 								<th scope="col"><input type="checkbox" name="all-artifacts" id="all-artifacts"><label for="all-artifacts" style="padding-left: 27px; position: relative; cursor: pointer;"></label></th>
 								<th scope="col">Artifacts</th>
+								<th scope="col" style="border-left: 0"></th>
 								<th scope="col">Tags</th>
 								<th scope="col">Signed</th>
 								<th scope="col">Size</th>
@@ -51,6 +53,7 @@
 	</div>
 </div>
 <th:block layout:fragment="script">
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>-->
 	<script type="text/javascript">
 		window.onload = () => {
 
@@ -106,11 +109,17 @@
 							let digest = data[i].digest.substr(0,15)
 							let push_time = func.changeTime(data[i].push_time)
 							let size = func.formatBytes(data[i].size, 2);
+							let tag = '';
+
+							for (var j = 0; j <= data[i].tags.length - 1; j++) {
+								tag += data[i].tags[j].name + ', '
+							}
 
 							html = `<tr>
                                         <td style="border-right:1px solid #ebebeb"><input type="checkbox" name="${data[i].digest}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
                                         <td class="left"><img id="digest_img_${i}" alt="artifact image" style="width: 8%; margin-right: 5px;"><a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}"></a></td>
-                                        <td>${data[i].tags[0].name}</td>
+                                        <td><i id="copy_id_${i}" class="fa-regular fa-copy fa-xl copyBtn" style="cursor: pointer" onclick="copyClick(event)"></i></td>
+                                        <td id="tag_id_${i}"></td>
                                         <td><i class="fa-solid fa-circle-xmark" style="color: #e70000"></i></td>
                                         <td id="size_id_${i}"></td>
                                         <td><div id="scan_overview_severity_id_${i}"></div><div id="scan_overview_id_${i}"></div></td>
@@ -121,7 +130,14 @@
 
 							document.getElementById("digest_name_" + i).innerText = digest;
 							document.getElementById("push_time_" + i).innerText = push_time;
+							document.getElementById("tag_id_" + i).innerText = tag.slice(0, - 2);
 							document.getElementById("size_id_" + i).innerText = size;
+
+							if (data[i].type === 'IMAGE') {
+								document.getElementById("copy_id_" + i).setAttribute('data-id', 'docker pull ' + func.harborUrl.replace('https://', '') + data[i].repository_name + '@' + data[i].digest)
+							} else if (data[i].type === 'CHART') {
+								document.getElementById("copy_id_" + i).setAttribute('data-id', 'helm pull ' + func.harborUrl.replace('https', 'oci') + data[i].repository_name + ' --version ' + data[i].tags[0].name)
+							}
 
 							if (data[i].scan_overview != null) {
 								let vulnerabilitiesData = func.vulnerabilitiesData(changeScanOverview3)
@@ -138,13 +154,13 @@
 								sessionStorage.setItem('additions', 'Y');
 							} else if (data[i].type === 'IMAGE') {
 								document.getElementById("scan_overview_id_" + i).innerText = "No Scanned";
-								document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #5a8cff; width: 100px; height: 23px; margin: 0 auto;')
+								document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #e70000; width: 100px; height: 23px; margin: 0 auto;')
 								document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-image.png')
 								document.getElementById("digest_img_" + i).setAttribute('style','width: 10%; margin-right: 5px;')
 								sessionStorage.setItem('additions', 'N');
 							} else if (data[i].type === 'CHART') {
 								document.getElementById("scan_overview_id_" + i).innerText = "Unsupported";
-								document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #e70000; width: 100px; height: 23px; margin: 0 auto;')
+								document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #818894; width: 100px; height: 23px; margin: 0 auto;')
 								document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-chart.png')
 								document.getElementById("digest_img_" + i).setAttribute('style','width: 8%; margin-right: 5px;')
 								sessionStorage.setItem('additions', 'N');
@@ -152,7 +168,7 @@
 
 						}
 					} else if (data.length === 0) {
-						let html = '<tr><td colspan="8">No Data.</td></tr>';
+						let html = '<tr><td colspan="9">No Data.</td></tr>';
 						func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 					}
 
@@ -231,9 +247,24 @@
 						}, true);
 					}
 				},
+
 			};
 
 			artifacts.init();
+		}
+
+		function copyClick(event) {
+			const clickedButton = event.target;
+			const buttonId = clickedButton.id;
+			const copyText = document.querySelector(`#${buttonId}`).getAttribute('data-id')
+			window.navigator.clipboard.writeText(copyText)
+			document.querySelector(`#${buttonId}`).setAttribute('style', 'cursor: pointer; color: #0ACF83;');
+
+			for (var i = 0; i <= sessionStorage.getItem('artifactsCnt') - 1; i++) {
+				if ('copy_id_' + i !== buttonId) {
+					document.getElementById('copy_id_' + i).setAttribute('style', 'cursor: pointer;');
+				}
+			}
 		}
 	</script>
 </th:block>

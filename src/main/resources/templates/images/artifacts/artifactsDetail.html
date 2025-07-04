@@ -25,16 +25,18 @@
 						<caption>Tags List</caption>
 						<colgroup >
 							<col width="4%" />
-							<col width="32%" />
-							<col width="32%" />
-							<col width="32%" />
+							<col width="31%" />
+							<col width="3%" />
+							<col width="31%" />
+							<col width="31%" />
 						</colgroup>
 						<thead>
 						<tr>
 							<th scope="col"><input type="checkbox" name="all-artifacts" id="all-artifacts"><label for="all-artifacts" style="padding-left: 27px; position: relative; cursor: pointer;"></label></th>
 							<th scope="col">Name</th>
-							<th scope="col">Push Time</th>
+							<th scope="col" style="border-left: 0"></th>
 							<th scope="col">Pull Time</th>
+							<th scope="col">Push Time</th>
 						</tr>
 						</thead>
 						<tbody class="tagListTable">
@@ -145,15 +147,22 @@
 					sessionStorage.setItem('tagsCnt', data.length);
 					if (data.length > 0) {
 						for (var i = 0; i <= data.length - 1; i++) {
+							let pull_time;
 
-							let pull_time = func.changeTime(data[i].pull_time)
+							if (data[i].pull_time === '0001-01-01T00:00:00.000Z') {
+								pull_time = '';
+							} else {
+								pull_time = func.changeTime(data[i].pull_time)
+							}
+
 							let push_time = func.changeTime(data[i].push_time)
 
 							html = `<tr>
                                         <td style="border-right:1px solid #ebebeb"><input type="checkbox" name="${data[i].name}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
-                                        <td id="name">${data[i].name}</td>
-                                        <td id="push_time_${i}">push_time</td>
+                                        <td id="name_${i}">${data[i].name}</td>
+                                        <td><i id="copy_id_${i}" class="fa-regular fa-copy fa-xl copyBtn" data-name="${data[i].name}" style="cursor: pointer" onclick="copyClick(event)"></i></td>
                                         <td id="pull_time_${i}">pull_time</td>
+                                        <td id="push_time_${i}">push_time</td>
                                     </tr>`;
 							func.appendHtml(document.querySelector('.tagListTable'), html, 'tbody');
 
@@ -207,6 +216,14 @@
 						func.appendHtml(document.querySelector('.overviewListTable'), html, 'tbody');
 					}
 
+					for (var i = 0; i <= sessionStorage.getItem('tagsCnt') - 1; i++) {
+						if (data.type === 'IMAGE') {
+							document.getElementById("copy_id_" + i).setAttribute('data-id', 'docker pull ' + func.harborUrl.replace('https://', '') + data.repository_name + ':')
+						} else if (data.type === 'CHART') {
+							document.getElementById("copy_id_" + i).setAttribute('data-id', 'helm pull ' + func.harborUrl.replace('https', 'oci') + data.repository_name + ' --version ')
+						}
+					}
+
 					if (document.getElementById('loading')) {
 						document.getElementById('wrap').removeChild(document.getElementById('loading'));
 					}
@@ -255,7 +272,6 @@
 									}
 
 									document.getElementById("col3_" + i).innerText = cvssData;
-
 								}
 							}
 						}
@@ -362,6 +378,20 @@
 			};
 
 			artifacts.init();
+		}
+
+		function copyClick(event) {
+			const clickedButton = event.target;
+			const buttonId = clickedButton.id;
+			const copyText = document.querySelector(`#${buttonId}`).getAttribute('data-id') + document.querySelector(`#${buttonId}`).getAttribute('data-name')
+			window.navigator.clipboard.writeText(copyText)
+			document.querySelector(`#${buttonId}`).setAttribute('style', 'cursor: pointer; color: #0ACF83;');
+
+			for (var i = 0; i <= sessionStorage.getItem('tagsCnt') - 1; i++) {
+				if ('copy_id_' + i !== buttonId) {
+					document.getElementById('copy_id_' + i).setAttribute('style', 'cursor: pointer;');
+				}
+			}
 		}
 	</script>
 </th:block>
