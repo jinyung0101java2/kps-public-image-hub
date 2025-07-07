@@ -64,6 +64,7 @@ public class ConstantsUrl {
     public static final String URI_KPS_HUB_IMAGE_PROJECT = "/hub/image/projects";
     public static final String URI_KPS_HUB_IMAGE_REPOSITORY = "/hub/image/projects/repositories";
     public static final String URI_KPS_HUB_IMAGE_LOG = "/hub/image/projects/logs";
+    public static final String URI_KPS_HUB_IMAGE_VULNERABILITY = "/hub/image/projects/vulnerabilities";
     public static final String URI_KPS_HUB_IMAGE_ARTIFACT = "/hub/image/projects/repositories/artifacts";
     public static final String URI_KPS_HUB_IMAGE_ARTIFACT_DETAIL = "/hub/image/projects/repositories/artifacts/details";
 
