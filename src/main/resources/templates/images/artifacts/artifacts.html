@@ -111,8 +111,10 @@
 							let size = func.formatBytes(data[i].size, 2);
 							let tag = '';
 
-							for (var j = 0; j <= data[i].tags.length - 1; j++) {
-								tag += data[i].tags[j].name + ', '
+							if (data[i].tags !== null) {
+								for (var j = 0; j <= data[i].tags.length - 1; j++) {
+									tag += data[i].tags[j].name + ', '
+								}
 							}
 
 							html = `<tr>
