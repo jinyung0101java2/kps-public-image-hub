@@ -9,236 +9,222 @@
 			<ul>
 				<li><a onclick="movePage(URI_CP_BASE_URL)">Images</a></li>
 				<li><a onclick="movePage(URI_KPS_HUB_IMAGE_PROJECT)">Projects</a></li>
-				<li><a id="moveRepository"></a></li>
-				<li><a id="moveImage"></a></li>
 			</ul>
 			<ul class="title">
 				<span id="title"></span>
 			</ul>
 		</article>
+		<article>
+			<fieldset>
+				<ul style="display: flex; float: right;">
+					<li>
+						<div class="statistics">
+							<h3 class="stat-title">Total Images</h3>
+							<div class="stat-box">
+								<i class="fa-solid fa-file fa-2xl stat-img"></i>
+								<div id="total-images" class="total-cnt"></div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="statistics">
+							<h3 class="stat-title">Total Artifacts</h3>
+							<div class="stat-box">
+								<i class="fa-solid fa-box-archive fa-2xl stat-img"></i>
+								<div id="total-artifacts" class="total-cnt"></div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="statistics">
+							<h3 class="stat-title">Total Pulls</h3>
+							<div class="stat-box">
+								<i class="fa-solid fa-download fa-2xl stat-img"></i>
+								<div id="total-pulls" class="total-cnt"></div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="statistics">
+							<h3 class="stat-title">Storage Used</h3>
+							<div class="stat-box">
+								<i class="fa-solid fa-database fa-2xl stat-img"></i>
+								<div id="total-storages" class="total-cnt"></div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="last-statistics">
+							<h4 class="stat-title">Critical Vulnerabilities</h4>
+							<div class="stat-box">
+								<i class="fa-solid fa-shield-halved fa-2xl stat-img"></i>
+								<div id="total-Vulnerabilities" class="total-cnt"></div>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</fieldset>
+		</article>
 		<article class="base-pro base tab-cont-wrap">
 
 			<div class="notice">
-				<h4>Additions</h4>
+				<ul class="tab-btn">
+					<li type="repository"><a onclick="movePage(URI_KPS_HUB_IMAGE_REPOSITORY)" th:text="#{M0940}"></a></li>
+					<li type="vulnerability" class="active"><a th:text="#{M0955}"></a></li>
+					<li type="log"><a onclick="movePage(URI_KPS_HUB_IMAGE_LOG)" th:text="#{M0941}"></a></li>
+				</ul>
 				<div class="table_style01">
 					<table>
-						<caption>Additions List</caption>
-						<colgroup >
-							<col width="2%" />
-							<col width="16%" />
-							<col width="6%" />
-							<col width="6%" />
-							<col width="22%" />
-							<col width="16%" />
-							<col width="16%" />
-							<col width="16%" />
-						</colgroup>
+						<caption>Vulnerabilities List</caption>
+							<colgroup >
+								<col width="2%" />
+								<col width="13%" />
+								<col width="15%" />
+								<col width="8%" />
+								<col width="12%" />
+								<col width="6%" />
+								<col width="6%" />
+								<col width="12%" />
+								<col width="12%" />
+								<col width="12%" />
+							</colgroup>
 						<thead>
 						<tr>
 							<th scope="col"></th>
-							<th scope="col">Vulnerability</th>
-							<th scope="col">Severity</th>
+							<th scope="col">CVE ID</th>
+							<th scope="col">Repository Name</th>
+							<th scope="col">Digest</th>
+							<th scope="col">Tags</th>
 							<th scope="col">CVSS3</th>
+							<th scope="col">Severity</th>
 							<th scope="col">Package</th>
 							<th scope="col">Current version</th>
 							<th scope="col">Fixed in version</th>
-							<th scope="col">Listed In CVE Allowlist</th>
 						</tr>
 						</thead>
-						<tbody class="additionListTable">
+						<tbody class="listTable">
 						</tbody>
+						<!--<tfoot>
+						<tr>
+							<td colspan="5">
+								<i id="angles-left-end" class="fa-solid fa-angles-left" style="cursor: pointer; margin: 0 5px 0 5px;"></i>
+								<i id="angle-left" class="fa-solid fa-angle-left" style="cursor: pointer; margin: 0 5px 0 5px;"></i>
+								<span id="page-start" style="margin: 0 5px 0 5px;"></span><span>/</span><span id="page-end" style="margin: 0 5px 0 5px;"></span>
+								<i id="angle-right" class="fa-solid fa-angle-right" style="cursor: pointer; margin: 0 5px 0 5px;"></i>
+								<i id="angles-right-end" class="fa-solid fa-angles-right" style="cursor: pointer; margin: 0 5px 0 5px;"></i>
+							</td>
+						</tr>
+						</tfoot>-->
 					</table>
 				</div>
-				<a href="javascript:" id="create" class="create" style="top: 30px; right: 102px;" th:text="#{M0223}" ></a>
-				<a href="javascript:" id="delete" class="delete" style="top: 30px;" th:text="#{M0026}" ></a>
 			</div>
 		</article>
 	</div>
 </div>
 <th:block layout:fragment="script">
-
 	<script type="text/javascript">
 		window.onload = () => {
 
 			IS_GLOBAL = true;
 			func.init(ASIDE_DP1.IMAGES, ASIDE_DP2.PROJECTS);
 
-			const artifacts = {
-				offset: 0,
-				limit: 10,
-				allItemCount: 0,
+			const vulnerabilities = {
+				limit: 15,
+				page: 1,
+				pageStart: 1,
+				pageEnd: 0,
 				type: 'administrator',
 
 				init() {
-					func.nameLoad = artifacts.reset;
+					func.nameLoad = vulnerabilities.reset;
+					document.getElementById('title').innerHTML = sessionStorage.getItem('repositoryName');
 
-					let artifactsName = sessionStorage.getItem('artifactsName');
-					document.getElementById('title').innerHTML = artifactsName.substr(0,15)
-					document.getElementById('moveRepository').innerHTML = sessionStorage.getItem('repositoryName');
-					document.getElementById('moveImage').innerHTML = sessionStorage.getItem('imageName').replaceAll("%252F", "/");
+					vulnerabilities.load();
 
-					artifacts.load();
-
-					artifacts.event();
+					vulnerabilities.event();
 				},
 
 				reset() {
-					func.removeHtml(document.querySelector('.tagListTable'));
-					artifacts.offset = 0;
-					artifacts.load();
-
-					func.removeHtml(document.querySelector('.additionListTable'));
-					artifacts.offset = 0;
-					artifacts.load();
+					func.removeHtml(document.querySelector('.listTable'));
+					vulnerabilities.offset = 0;
+					vulnerabilities.load();
 				},
 
 				load() {
 					func.loading();
 
-					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}/tags?with_signature=true&with_immutable_status=true&page=1&page_size=-1`, 'application/json', artifacts.drawTags);
-					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}?with_tag=false&with_scan_overview=true&with_sbom_overview=true&with_label=true&with_immutable_status=true`, 'application/json', artifacts.drawOverview);
-					// if (sessionStorage.getItem('additions') === 'Y') {
-					// 	func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}/additions/vulnerabilities?page=1&page_size=-1`, 'application/json', artifacts.drawAdditions);
-					// } else if (sessionStorage.getItem('additions') === 'N') {
-					// 	let html = '<tr><td colspan="8">No Data.</td></tr>';
-					// 	func.appendHtml(document.querySelector('.additionListTable'), html, 'tbody');
-					// }
+					if (sessionStorage.getItem('repositoriesCnt') > 0) {
+						// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/auditlog-exts?page=1&page_size=-1`, 'application/json', logs.drawLogs);
+						//func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${logs.limit}&page=${logs.page}`, 'application/json', logs.drawLogs);
+						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/security/vul?with_tag=true&tune_count=true&q=project_id%253D${sessionStorage.getItem('repositoryId')}&page=1&page_size=-1`, 'application/json', vulnerabilities.drawVulnerabilities);
+						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page=1&page_size=-1`, 'application/json', vulnerabilities.drawRepositories);
+						// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', logs.drawStorage);
+						// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryId')}/summary`, 'application/json', vulnerabilities.drawPage);
+					} else if (sessionStorage.getItem('repositoriesCnt') == 0) {
+
+						document.getElementById('total-images').innerText = '0';
+						document.getElementById('total-artifacts').innerText = '0';
+						document.getElementById('total-pulls').innerText = '0';
+						document.getElementById('total-storages').innerText = '0 Byte';
+
+						let html = '<tr><td colspan="5">No Data.</td></tr>';
+						func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
+
+						if (document.getElementById('loading')) {
+							document.getElementById('wrap').removeChild(document.getElementById('loading'));
+						}
+					}
 				},
 
-				drawTags(data) {
+				drawVulnerabilities(data) {
 
 					let html;
-					sessionStorage.setItem('tagsCnt', data.length);
+					sessionStorage.setItem('vulnerabilitiesCnt', data.length);
+
+					func.removeHtml(document.querySelector('.listTable'), html, 'tbody');
+
 					if (data.length > 0) {
 						for (var i = 0; i <= data.length - 1; i++) {
-							let pull_time;
 
-							if (data[i].pull_time === '0001-01-01T00:00:00.000Z') {
-								pull_time = '';
-							} else {
-								pull_time = func.changeTime(data[i].pull_time)
+							let tag = '';
+							if (data[i].tags !== null) {
+								for (var j = 0; j <= data[i].tags.length - 1; j++) {
+									tag += data[i].tags[j] + ', '
+								}
 							}
 
-							let push_time = func.changeTime(data[i].push_time)
+							let digest = data[i].digest.substr(0,15)
 
 							html = `<tr>
-                                        <td style="border-right:1px solid #ebebeb"><input type="checkbox" name="${data[i].name}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
-                                        <td id="name_${i}">${data[i].name}</td>
-                                        <td><i id="copy_id_${i}" class="fa-regular fa-copy fa-xl copyBtn" data-name="${data[i].name}" style="cursor: pointer" onclick="copyClick(event)"></i></td>
-                                        <td id="pull_time_${i}">pull_time</td>
-                                        <td id="push_time_${i}">push_time</td>
-                                    </tr>`;
-							func.appendHtml(document.querySelector('.tagListTable'), html, 'tbody');
+											<td id="col0_${i}"><div id="arcoBtn_${i}" style="width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;"></div></td>
+											<td id="col1_${i}"><a class="name" href="${data[i].links[0]}" target='_blank' data-id="${data[i].cve_id}">${data[i].cve_id}</a></td>
+											<td id="col2_${i}" class="left">${data[i].repository_name}</td>
+											<td id="col3_${i}" class="left"></td>
+											<td id="col4_${i}"></td>
+											<td id="col5_${i}">${data[i].cvss_v3_score}</td>
+											<td id="col6_${i}"><span id="severity_${i}">${data[i].severity}</span></td>
+											<td id="col7_${i}" class="left">${data[i].package}</td>
+											<td id="col8_${i}">${data[i].version}</td>
+											<td id="col9_${i}" class="left"><i class="fa-solid fa-wrench" style="color: #00b92a; margin-right: 7px;"></i>${data[i].fixed_version}</td>
+											</tr><tr><td id="desc_${i}" style="display: none" class="left" colspan="10" name="off">${data[i].desc}</td></tr>`;
 
-							document.getElementById("pull_time_" + i).innerText = pull_time;
-							document.getElementById("push_time_" + i).innerText = push_time;
+							func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
+
+							document.getElementById("col4_" + i).innerText = tag.slice(0, - 2);
+							document.getElementById("col3_" + i).innerText = digest;
+
+							if (data[i].severity === 'High') {
+								document.getElementById("severity_" + i).setAttribute('style',"background-color: #ff8f3d; border-radius: 10px; padding: 0 27px 0px 27px; color: #ffffff;");
+							} else if (data[i].severity === 'Medium') {
+								document.getElementById("severity_" + i).setAttribute('style',"background-color: #ffce66; border-radius: 10px; padding: 0 16px 0px 16px; color: #ffffff;");
+							} else if (data[i].severity === 'Low') {
+								document.getElementById("severity_" + i).setAttribute('style',"background-color: #fff1ad; border-radius: 10px; padding: 0 28px 0px 28px; color: #ffffff;");
+							}
 
 						}
 					} else if (data.length === 0) {
-						let html = '<tr><td colspan="5">No Data.</td></tr>';
-						func.appendHtml(document.querySelector('.tagListTable'), html, 'tbody');
-					}
-
-					if (document.getElementById('loading')) {
-						document.getElementById('wrap').removeChild(document.getElementById('loading'));
-					}
-				},
-
-				drawOverview(data) {
-
-					let extraAttrs = data.extra_attrs;
-
-					let keysArr = Object.keys(extraAttrs)
-					let valuesArr = Object.values(extraAttrs)
-
-					let html;
-					if (keysArr.length > 0) {
-						for (var i = 0; i <= keysArr.length - 1; i++) {
-
-							html = `<tr>
-										<td id="keys_id_${i}" style="background-color: #f7f7f7; font-size: 18px; color: #47494D"></td>
-										<td class="left" id="values_id_${i}"></td>
-									</tr>`;
-							func.appendHtml(document.querySelector('.overviewListTable'), html, 'tbody');
-
-							if (keysArr[i] === 'created') {
-								let time = func.changeTime(valuesArr[i])
-
-								document.getElementById("keys_id_" + i).innerText = keysArr[i];
-								document.getElementById("values_id_" + i).innerText = time;
-							} else if(typeof valuesArr[i] === 'object') {
-								document.getElementById("keys_id_" + i).innerText = keysArr[i];
-								document.getElementById("values_id_" + i).innerText = JSON.stringify(valuesArr[i]);
-							} else {
-								document.getElementById("keys_id_" + i).innerText = keysArr[i];
-								document.getElementById("values_id_" + i).innerText = valuesArr[i];
-							}
-
-						}
-					} else if (extraAttrs.length === 0) {
-						let html = '<tr><td colspan="2">No Data.</td></tr>';
-						func.appendHtml(document.querySelector('.overviewListTable'), html, 'tbody');
-					}
-
-					for (var i = 0; i <= sessionStorage.getItem('tagsCnt') - 1; i++) {
-						if (data.type === 'IMAGE') {
-							document.getElementById("copy_id_" + i).setAttribute('data-id', 'docker pull ' + func.harborUrl.replace('https://', '') + data.repository_name + ':')
-						} else if (data.type === 'CHART') {
-							document.getElementById("copy_id_" + i).setAttribute('data-id', 'helm pull ' + func.harborUrl.replace('https', 'oci') + data.repository_name + ' --version ')
-						}
-					}
-
-					if (document.getElementById('loading')) {
-						document.getElementById('wrap').removeChild(document.getElementById('loading'));
-					}
-				},
-
-				drawAdditions(data) {
-					if (sessionStorage.getItem('additions') == 'N') {
-						let html = '<tr><td colspan="7">No Data.</td></tr>';
-						func.appendHtml(document.querySelector('.additionListTable'), html, 'tbody');
-
-					} else if (sessionStorage.getItem('additions') == 'Y') {
-						if (data !== null) {
-							let originData = JSON.stringify(data)
-							let changeData1 = originData.replace('{"application/vnd.security.vulnerability.report; version=1.1":','')
-							let changeData2 = changeData1.slice(0, -1)
-							let changeData3 = JSON.parse(changeData2)
-
-							let html;
-							sessionStorage.setItem('additionsCnt', changeData3.vulnerabilities.length);
-
-							if (changeData3.vulnerabilities.length > 0) {
-								for (var i = 0; i <= changeData3.vulnerabilities.length - 1; i++) {
-
-									let cvss3 = changeData3.vulnerabilities[i].vendor_attributes.CVSS;
-									let cvssData = func.cvss3Data(cvss3)
-
-									html = `<tr>
-											<td id="col0_${i}"><div id="arcoBtn_${i}" style="width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;"></div></td>
-											<td id="col1_${i}"><a class="name" href="${changeData3.vulnerabilities[i].links[0]}" target='_blank' data-id="${changeData3.vulnerabilities[i].id}">${changeData3.vulnerabilities[i].id}</a></td>
-											<td id="col2_${i}"><div id="severity_${i}"><span style="color: #ffffff">${changeData3.vulnerabilities[i].severity}</span></div></td>
-											<td id="col3_${i}" class="addtions"></td>
-											<td id="col4_${i}" class="left">${changeData3.vulnerabilities[i].package}</td>
-											<td id="col5_${i}">${changeData3.vulnerabilities[i].version}</td>
-											<td id="col6_${i}" class="left"><i class="fa-solid fa-wrench" style="color: #00b92a; margin-right: 7px;"></i>${changeData3.vulnerabilities[i].fix_version}</td>
-											<td id="col7_${i}">No</td>
-											</tr><tr><td id="desc_${i}" style="display: none" class="left" colspan="8" name="off">${changeData3.vulnerabilities[i].description}</td></tr>`;
-
-									func.appendHtml(document.querySelector('.additionListTable'), html, 'tbody');
-
-									if (changeData3.vulnerabilities[i].severity === 'High') {
-										document.getElementById("severity_" + i).setAttribute('style',"background-color: #ff8f3d; border-radius: 10px;");
-									} else if (changeData3.vulnerabilities[i].severity === 'Medium') {
-										document.getElementById("severity_" + i).setAttribute('style',"background-color: #ffce66; border-radius: 10px;");
-									} else if (changeData3.vulnerabilities[i].severity === 'Low') {
-										document.getElementById("severity_" + i).setAttribute('style',"background-color: #fff1ad; border-radius: 10px;");
-									}
-
-									document.getElementById("col3_" + i).innerText = cvssData;
-								}
-							}
-						}
+						let html = '<tr><td colspan="10">No Data.</td></tr>';
+						func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 					}
 
 					if (document.getElementById('loading')) {
@@ -246,116 +232,116 @@
 					}
 
 					document.addEventListener('click', (e) => {
-						for (let i = 0; i <= sessionStorage.getItem('additionsCnt') - 1; i++) {
+						for (let i = 0; i <= sessionStorage.getItem('vulnerabilitiesCnt') - 1; i++) {
 
 							if (e.target && e.target.id === 'arcoBtn_' + `${i}`) {
 								if (document.getElementById("desc_" + `${i}`).getAttribute('name') === 'off') {
-									document.getElementById("desc_" + `${i}`).setAttribute('style', 'text-align: left');
+									document.getElementById("desc_" + `${i}`).setAttribute('style', 'text-align: left; padding-left: 40px;');
 									document.getElementById("desc_" + `${i}`).setAttribute('name', 'on');
 									document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(315deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;');
-									for (let j = 0; j <= 7; j++) {
-										if (j === 4 || j === 6) {
-											document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'text-align: left; border-bottom: 0px; border-left: 0; padding: 7px 7px 7px 7px; color: #818894; font-size: 15px; white-space: normal; letter-spacing: -0.2px;');
-										} else {
-											document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'text-align: center; border-bottom: 0px; border-left: 0; padding: 7px 7px 7px 7px; color: #818894; font-size: 15px; white-space: normal; letter-spacing: -0.2px;');
-										}
+									for (let j = 0; j <= 9; j++) {
+										document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'border-bottom: 0px;');
 									}
 								} else if (document.getElementById("desc_" + `${i}`).getAttribute('name') === 'on') {
 									document.getElementById("desc_" + `${i}`).setAttribute('style', 'display: none;');
 									document.getElementById("desc_" + `${i}`).setAttribute('name', 'off')
 									document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;');
-									for (let j = 0; j <= 7; j++) {
-										if (j === 4 || j === 6) {
-											document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'text-align: left; border-bottom: 1px solid #ebebeb;; border-left: 0; padding: 7px 7px 7px 7px; color: #818894; font-size: 15px; white-space: normal; letter-spacing: -0.2px;');
-										} else {
-											document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'text-align: center; border-bottom: 1px solid #ebebeb;; border-left: 0; padding: 7px 7px 7px 7px; color: #818894; font-size: 15px; white-space: normal; letter-spacing: -0.2px;');
-										}
+									for (let j = 0; j <= 9; j++) {
+										document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'border-bottom: 1px;');
 									}
 								}
 							}
 						}
 					});
-				},
 
-				event() {
-
-					if(document.querySelector('.create')) {
-						document.querySelector('.create').addEventListener('click', () => {
-							func.tagCreate(MSG_ADD_TAG, MSG_SAVE);
-						}, false);
-					}
-
-					document.querySelector('#all-artifacts').addEventListener('click', () => {
-						let check = document.getElementById('all-artifacts').checked
-						let artifactsCnt = sessionStorage.getItem('artifactsCnt')
-						if (check === true) {
-							for (var i = 0; i <= artifactsCnt-1; i++) {
-								document.querySelector('.checkbox_' + `${i}`).checked = true;
-							}
-
-						} else {
-							for (var i = 0; i <= artifactsCnt-1; i++) {
-								document.querySelector('.checkbox_' + `${i}`).checked = false;
-							}
-						}
-					}, false);
-
-					document.getElementById('delete').addEventListener('click', (e) => {
-						let artifactsCnt = sessionStorage.getItem('artifactsCnt')
-
-						let tr = 0;
-						for (var i = 0; i <= artifactsCnt-1; i++) {
-							if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
-								tr+=1;
-							}
-						}
-
-						if (tr > 0 ) {
-							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE, true, MSG_CONFIRM, artifacts.delete);
-						} else if (tr === 0) {
-							func.alertPopup('DELETE', MSG_CHECK_TO_DELETE_ITEM, true, MSG_CONFIRM, 'closed');
-						}
-
-					}, false);
-
-					document.querySelector('#moveRepository').addEventListener('click', () => {
-						document.location.href = URI_KPS_HUB_IMAGE_REPOSITORY;
-					}, false);
-
-					document.querySelector('#moveImage').addEventListener('click', () => {
-						document.location.href = URI_KPS_HUB_IMAGE_ARTIFACT;
-					}, false);
 
 				},
 
-				delete() {
-					let tagsCnt = sessionStorage.getItem('tagsCnt')
-					for (var i = 0; i <= tagsCnt-1; i++) {
-						if (document.querySelector('.checkbox_' + `${i}`).checked === true) {
-							var class_name = $('.checkbox_' + `${i}`).attr('name')
+				drawRepositories(data) {
 
-							func.saveHarborData('DELETE', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}/tags/` + class_name, '', true, 'application/json', func.refresh);
+					let totalArtifacts = 0;
+					let totalPulls = 0;
+
+					if (data.length > 0) {
+						for (var i = 0; i <= data.length - 1; i++) {
+
+							totalArtifacts += data[i].artifact_count;
+							totalPulls += data[i].pull_count;
+
 						}
 					}
+
+					document.getElementById('total-artifacts').innerText = totalArtifacts
+					document.getElementById('total-pulls').innerText = totalPulls
+
+					if (document.getElementById('loading')) {
+						document.getElementById('wrap').removeChild(document.getElementById('loading'));
+					}
+
+				},
+
+				// drawPage(data) {
+				// 	document.getElementById('total-storages').innerText = func.formatBytes(data.quota.used.storage);
+				// 	document.getElementById('total-images').innerText = data.repo_count;
+				//
+				// 	document.getElementById('page-start').innerText = logs.page;
+				// 	document.getElementById('page-end').innerText = data.project_admin_count;
+				// },
+
+				/*drawStorage(data) {
+
+					for (var i = 0; i <= data.length - 1; i++) {
+						if(data[i].name === sessionStorage.getItem('repositoryName')) {
+							func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${data[i].project_id}/summary`, 'application/json', (e) => {
+								document.getElementById('total-storages').innerText = func.formatBytes(e.quota.used.storage)
+							});
+						}
+					}
+
+				},*/
+
+				event(){
+
+					// document.querySelector('#angles-left-end').addEventListener('click', () => {
+					//
+					// 	func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${vulnerabilities.limit}&page=${vulnerabilities.pageStart}`, 'application/json', vulnerabilities.drawRepositories);
+					// 	document.getElementById('page-start').innerText = vulnerabilities.pageStart;
+					// 	vulnerabilities.page = vulnerabilities.pageStart;
+					// }, false);
+					//
+					// document.querySelector('#angle-left').addEventListener('click', () => {
+					// 	if (vulnerabilities.page > 1) {
+					// 		vulnerabilities.page -= 1;
+					// 	} else if (vulnerabilities.page == 1) {
+					// 		vulnerabilities.page = vulnerabilities.pageStart
+					// 	}
+					//
+					// 	func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${vulnerabilities.limit}&page=${vulnerabilities.page}`, 'application/json', vulnerabilities.drawRepositories);
+					// 	document.getElementById('page-start').innerText = vulnerabilities.page;
+					// }, false);
+					//
+					// document.querySelector('#angle-right').addEventListener('click', () => {
+					// 	if (vulnerabilities.page < vulnerabilities.pageEnd) {
+					// 		vulnerabilities.page += 1;
+					// 	} else if (vulnerabilities.page == vulnerabilities.pageEnd) {
+					// 		vulnerabilities.page = vulnerabilities.pageEnd
+					// 	}
+					//
+					// 	func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${vulnerabilities.limit}&page=${vulnerabilities.page}`, 'application/json', vulnerabilities.drawRepositories);
+					// 	document.getElementById('page-start').innerText = vulnerabilities.page;
+					// }, false);
+					//
+					// document.querySelector('#angles-right-end').addEventListener('click', () => {
+					// 	func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${vulnerabilities.limit}&page=${vulnerabilities.pageEnd}`, 'application/json', vulnerabilities.drawRepositories);
+					// 	document.getElementById('page-start').innerText = vulnerabilities.pageEnd;
+					// 	vulnerabilities.page = vulnerabilities.pageEnd;
+					// }, false);
+
 				},
 
 			};
 
-			artifacts.init();
-		}
-
-		function copyClick(event) {
-			const clickedButton = event.target;
-			const buttonId = clickedButton.id;
-			const copyText = document.querySelector(`#${buttonId}`).getAttribute('data-id') + document.querySelector(`#${buttonId}`).getAttribute('data-name')
-			window.navigator.clipboard.writeText(copyText)
-			document.querySelector(`#${buttonId}`).setAttribute('style', 'cursor: pointer; color: #0ACF83;');
-
-			for (var i = 0; i <= sessionStorage.getItem('tagsCnt') - 1; i++) {
-				if ('copy_id_' + i !== buttonId) {
-					document.getElementById('copy_id_' + i).setAttribute('style', 'cursor: pointer;');
-				}
-			}
+			vulnerabilities.init();
 		}
 	</script>
 </th:block>

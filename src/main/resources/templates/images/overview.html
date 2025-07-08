@@ -159,7 +159,6 @@
                     let html;
 
                     let ascendingOrderData = data.sort((a, b) => new Date(b.op_time) - new Date(a.op_time))
-                    console.log(JSON.stringify(ascendingOrderData))
 
                     for(var i = 0; i <= 4; i++) {
                         let time = func.differenceInTime(ascendingOrderData[i].op_time)

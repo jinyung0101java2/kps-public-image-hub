@@ -286,7 +286,7 @@
 
 							if (e.target && e.target.id === 'arcoBtn_' + `${i}`) {
 								if (document.getElementById("desc_" + `${i}`).getAttribute('name') === 'off') {
-									document.getElementById("desc_" + `${i}`).setAttribute('style', 'text-align: left');
+									document.getElementById("desc_" + `${i}`).setAttribute('style', 'text-align: left; padding-left: 40px;');
 									document.getElementById("desc_" + `${i}`).setAttribute('name', 'on');
 									document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(315deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;');
 									for (let j = 0; j <= 7; j++) {

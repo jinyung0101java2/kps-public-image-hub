@@ -70,18 +70,18 @@
 			<div class="notice">
 				<ul class="tab-btn">
 					<li type="repository"><a onclick="movePage(URI_KPS_HUB_IMAGE_REPOSITORY)" th:text="#{M0940}"></a></li>
-<!--					<li type="vulnerability"><a onclick="movePage(URI_KPS_HUB_IMAGE_VULNERABILITY)" th:text="#{M0955}"></a></li>-->
+					<li type="vulnerability"><a onclick="movePage(URI_KPS_HUB_IMAGE_VULNERABILITY)" th:text="#{M0955}"></a></li>
 					<li type="log" class="active"><a th:text="#{M0941}"></a></li>
 				</ul>
 				<div class="table_style01">
 					<table>
 						<caption>Logs List</caption>
 						<colgroup >
-							<col width="30%" />
-							<col width="45%" />
-							<col width="10%" />
-							<col width="5%" />
-							<col width="10%" />
+							<col width="20%" />
+							<col width="44%" />
+							<col width="12%" />
+							<col width="12%" />
+							<col width="12%" />
 						</colgroup>
 						<thead>
 						<tr>
@@ -147,7 +147,7 @@
 						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/auditlog-exts?page=1&page_size=-1`, 'application/json', logs.drawLogs);
 						//func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${logs.limit}&page=${logs.page}`, 'application/json', logs.drawLogs);
 						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page=1&page_size=-1`, 'application/json', logs.drawRepositories);
-						// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', logs.drawStorage);
+						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', logs.drawStorage);
 						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryId')}/summary`, 'application/json', logs.drawPage);
 					} else if (sessionStorage.getItem('repositoriesCnt') == 0) {
 
@@ -175,7 +175,7 @@
 							let time = func.changeTime(data[i].op_time)
 
 							html = `<tr>
-                                        <td class="left">${data[i].username}</td>
+                                        <td>${data[i].username}</td>
                                         <td class="left">${data[i].resource}</td>
                                         <td>${data[i].resource_type}</td>
                                         <td>${data[i].operation}</td>
@@ -224,11 +224,11 @@
 					document.getElementById('total-storages').innerText = func.formatBytes(data.quota.used.storage);
 					document.getElementById('total-images').innerText = data.repo_count;
 
-					document.getElementById('page-start').innerText = logs.page;
-					document.getElementById('page-end').innerText = data.project_admin_count;
+					// document.getElementById('page-start').innerText = logs.page;
+					// document.getElementById('page-end').innerText = data.project_admin_count;
 				},
 
-				/*drawStorage(data) {
+				drawStorage(data) {
 
 					for (var i = 0; i <= data.length - 1; i++) {
 						if(data[i].name === sessionStorage.getItem('repositoryName')) {
@@ -238,44 +238,44 @@
 						}
 					}
 
-				},*/
+				},
 
 				event(){
 
-					document.querySelector('#angles-left-end').addEventListener('click', () => {
-
-						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${logs.limit}&page=${logs.pageStart}`, 'application/json', logs.drawRepositories);
-						document.getElementById('page-start').innerText = logs.pageStart;
-						logs.page = logs.pageStart;
-					}, false);
-
-					document.querySelector('#angle-left').addEventListener('click', () => {
-						if (logs.page > 1) {
-							logs.page -= 1;
-						} else if (logs.page == 1) {
-							logs.page = logs.pageStart
-						}
-
-						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${logs.limit}&page=${logs.page}`, 'application/json', logs.drawRepositories);
-						document.getElementById('page-start').innerText = logs.page;
-					}, false);
-
-					document.querySelector('#angle-right').addEventListener('click', () => {
-						if (logs.page < logs.pageEnd) {
-							logs.page += 1;
-						} else if (logs.page == logs.pageEnd) {
-							logs.page = logs.pageEnd
-						}
-
-						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${logs.limit}&page=${logs.page}`, 'application/json', logs.drawRepositories);
-						document.getElementById('page-start').innerText = logs.page;
-					}, false);
-
-					document.querySelector('#angles-right-end').addEventListener('click', () => {
-						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${logs.limit}&page=${logs.pageEnd}`, 'application/json', logs.drawRepositories);
-						document.getElementById('page-start').innerText = logs.pageEnd;
-						logs.page = logs.pageEnd;
-					}, false);
+					// document.querySelector('#angles-left-end').addEventListener('click', () => {
+					//
+					// 	func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${logs.limit}&page=${logs.pageStart}`, 'application/json', logs.drawRepositories);
+					// 	document.getElementById('page-start').innerText = logs.pageStart;
+					// 	logs.page = logs.pageStart;
+					// }, false);
+					//
+					// document.querySelector('#angle-left').addEventListener('click', () => {
+					// 	if (logs.page > 1) {
+					// 		logs.page -= 1;
+					// 	} else if (logs.page == 1) {
+					// 		logs.page = logs.pageStart
+					// 	}
+					//
+					// 	func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${logs.limit}&page=${logs.page}`, 'application/json', logs.drawRepositories);
+					// 	document.getElementById('page-start').innerText = logs.page;
+					// }, false);
+					//
+					// document.querySelector('#angle-right').addEventListener('click', () => {
+					// 	if (logs.page < logs.pageEnd) {
+					// 		logs.page += 1;
+					// 	} else if (logs.page == logs.pageEnd) {
+					// 		logs.page = logs.pageEnd
+					// 	}
+					//
+					// 	func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${logs.limit}&page=${logs.page}`, 'application/json', logs.drawRepositories);
+					// 	document.getElementById('page-start').innerText = logs.page;
+					// }, false);
+					//
+					// document.querySelector('#angles-right-end').addEventListener('click', () => {
+					// 	func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${logs.limit}&page=${logs.pageEnd}`, 'application/json', logs.drawRepositories);
+					// 	document.getElementById('page-start').innerText = logs.pageEnd;
+					// 	logs.page = logs.pageEnd;
+					// }, false);
 
 				},
 
