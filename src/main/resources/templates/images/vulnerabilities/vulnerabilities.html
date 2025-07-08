@@ -198,8 +198,8 @@
 							html = `<tr>
 											<td id="col0_${i}"><div id="arcoBtn_${i}" style="width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;"></div></td>
 											<td id="col1_${i}"><a class="name" href="${data[i].links[0]}" target='_blank' data-id="${data[i].cve_id}">${data[i].cve_id}</a></td>
-											<td id="col2_${i}" class="left">${data[i].repository_name}</td>
-											<td id="col3_${i}" class="left"></td>
+											<td id="col2_${i}" class="left"><a class="repository_name" href="javascript:;" data-id="${data[i].repository_name}" data-name="repository">${data[i].repository_name}</a></td>
+											<td id="col3_${i}" class="left"><a id="digest_${i}" class="digest_name" href="javascript:;" data-id="${data[i].digest}" data-name="${data[i].repository_name}">digest</a></td>
 											<td id="col4_${i}"></td>
 											<td id="col5_${i}">${data[i].cvss_v3_score}</td>
 											<td id="col6_${i}"><span id="severity_${i}">${data[i].severity}</span></td>
@@ -211,7 +211,7 @@
 							func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 
 							document.getElementById("col4_" + i).innerText = tag.slice(0, - 2);
-							document.getElementById("col3_" + i).innerText = digest;
+							document.getElementById("digest_" + i).innerText = digest;
 
 							if (data[i].severity === 'High') {
 								document.getElementById("severity_" + i).setAttribute('style',"background-color: #ff8f3d; border-radius: 10px; padding: 0 27px 0px 27px; color: #ffffff;");
@@ -247,13 +247,14 @@
 									document.getElementById("desc_" + `${i}`).setAttribute('name', 'off')
 									document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;');
 									for (let j = 0; j <= 9; j++) {
-										document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'border-bottom: 1px;');
+										document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'border-bottom: 1px solid #ebebeb;');
 									}
 								}
 							}
 						}
 					});
 
+					vulnerabilities.listEvent()
 
 				},
 
@@ -278,6 +279,47 @@
 						document.getElementById('wrap').removeChild(document.getElementById('loading'));
 					}
 
+				},
+
+				listEvent(){
+					var listAll = document.querySelector('.listTable').querySelectorAll('a');
+					for(var i=0; i <= listAll.length - 1; i++){
+						listAll[i].addEventListener('click', (e) => {
+
+							if (e.target.getAttribute('data-id').includes('sha256')) {
+								sessionStorage.setItem('artifactsName', e.target.getAttribute('data-id'));
+
+								let imageNameOrigin = e.target.getAttribute('data-name');
+								let imageNameArr = imageNameOrigin.split('/')
+								let imageName = '';
+
+								for (var i = 2; i <= imageNameArr.length - 1; i++) {
+									if (imageNameArr.length > 2) {
+										imageName += '%252F'+ imageNameArr[i]
+									}
+								}
+
+								sessionStorage.setItem('imageName', imageNameArr[1] + imageName);
+
+								document.location.href = URI_KPS_HUB_IMAGE_ARTIFACT_DETAIL;
+							} else if (e.target.getAttribute('data-name') === 'repository' ) {
+								let imageNameOrigin = e.target.getAttribute('data-id');
+								let imageNameArr = imageNameOrigin.split('/')
+								let imageName = '';
+
+								for (var i = 2; i <= imageNameArr.length - 1; i++) {
+									if (imageNameArr.length > 2) {
+										imageName += '%252F'+ imageNameArr[i]
+									}
+								}
+
+								sessionStorage.setItem('imageName', imageNameArr[1] + imageName);
+
+								document.location.href = URI_KPS_HUB_IMAGE_ARTIFACT;
+							}
+
+						}, true);
+					}
 				},
 
 				// drawPage(data) {
