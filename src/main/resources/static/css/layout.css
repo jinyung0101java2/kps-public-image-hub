@@ -784,10 +784,12 @@ header > div > div > div > div > div ul li a.on {background-color:#ff7a0f; color
 .pushed-images > div.resource-box {display: flex; margin-top: 5px; height: 60px;}
 /*.pushed-images > div.time-box {float: right; margin: 50px 0 0 100px; position: fixed;}*/
 /*.pushed-images > div.time-box > div.time {margin: 10px}*/
-.pushed-images > div.time-box > div.time {float: right; margin: 15px 0 0 0; position: fixed;}
+/*.pushed-images > div.time-box > div.time {float: right; margin: 15px 0 0 0; position: fixed;}*/
+.pushed-images > div.time-box > div.time {float: right; margin: 15px 0 0 0;}
 
 .statistics {border: 1px solid #d3d3d3;	border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px;	height: 124px; margin-left: 10px;}
 .statistics > h3.stat-title {margin-bottom: 35px}
+.last-statistics > h3.stat-title {margin-bottom: 35px}
 .statistics > div.statistics-box {display: flex; margin-top: 5px}
 .statistics > div.statistics-box > div.stat-cont {width: 93px}
 .statistics > div.statistics-box > div.stat-cnt {margin-left: 10px}

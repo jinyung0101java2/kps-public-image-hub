@@ -54,10 +54,10 @@
 					</li>
 					<li>
 						<div class="last-statistics">
-							<h4 class="stat-title">Critical Vulnerabilities</h4>
+							<h3 class="stat-title">Total Vulnerabilities</h3>
 							<div class="stat-box">
 								<i class="fa-solid fa-shield-halved fa-2xl stat-img"></i>
-								<div id="total-Vulnerabilities" class="total-cnt"></div>
+								<div id="total-vulnerabilities" class="total-cnt"></div>
 							</div>
 						</div>
 					</li>
@@ -142,7 +142,7 @@
 
 				load() {
 					func.loading();
-
+					func.loadCveData('GET', `${func.harborUrl}api/v2.0/security/vul?with_tag=true&tune_count=true&q=project_id%253D${sessionStorage.getItem('repositoryId')}&page=1&page_size=-1`, 'application/json');
 					// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page_size=${repositories.limit}&page=${repositories.page}`, 'application/json', repositories.drawRepositories);
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page=1&page_size=-1`, 'application/json', repositories.drawRepositories);
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryId')}/summary`, 'application/json', repositories.drawPage);
@@ -200,6 +200,7 @@
 					repositories.pageEnd = data.project_admin_count;
 					document.getElementById('total-storages').innerText = func.formatBytes(data.quota.used.storage);
 					document.getElementById('total-images').innerText = data.repo_count;
+					document.getElementById('total-vulnerabilities').innerText = sessionStorage.getItem('cveCnt');
 
 					// document.getElementById('page-start').innerText = repositories.page;
 					// document.getElementById('page-end').innerText = data.project_admin_count;

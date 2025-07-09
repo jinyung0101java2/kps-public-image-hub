@@ -55,10 +55,10 @@
 					</li>
 					<li>
 						<div class="last-statistics">
-							<h4 class="stat-title">Critical Vulnerabilities</h4>
+							<h3 class="stat-title">Total Vulnerabilities</h3>
 							<div class="stat-box">
 								<i class="fa-solid fa-shield-halved fa-2xl stat-img"></i>
-								<div id="total-Vulnerabilities" class="total-cnt"></div>
+								<div id="total-vulnerabilities" class="total-cnt"></div>
 							</div>
 						</div>
 					</li>
@@ -223,6 +223,7 @@
 				drawPage(data) {
 					document.getElementById('total-storages').innerText = func.formatBytes(data.quota.used.storage);
 					document.getElementById('total-images').innerText = data.repo_count;
+					document.getElementById('total-vulnerabilities').innerText = sessionStorage.getItem('cveCnt');
 
 					// document.getElementById('page-start').innerText = logs.page;
 					// document.getElementById('page-end').innerText = data.project_admin_count;
