@@ -677,11 +677,11 @@ const func = {
 			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
 			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
 
-			request.onreadystatechange = () => {
-				if (request.readyState === XMLHttpRequest.DONE){
-					if(request.status === 200 && request.responseText != ''){
+			request.onreadystatechange = async () => {
+				if (request.readyState === XMLHttpRequest.DONE) {
+					if (request.status === 200 && request.responseText != '') {
 						var resultMessage = JSON.parse(request.responseText).resultMessage;
-						var resultCode =  JSON.parse(request.responseText).resultCode;
+						var resultCode = JSON.parse(request.responseText).resultCode;
 						var detailMessage = JSON.parse(request.responseText).detailMessage;
 						//토큰 만료 검사
 						/*if( resultMessage == 'TOKEN_EXPIRED') {
@@ -702,13 +702,20 @@ const func = {
 							callbackFunction(JSON.parse(request.responseText), list);
 						}*/
 						callbackFunction(JSON.parse(request.responseText), list);
+						// console.log(JSON.parse(request.responseText))
+						// console.log(request.getAllResponseHeaders())
 
-					} else if(JSON.parse(request.responseText).httpStatusCode === 500){
+						console.log('X-Total-Count:::' + request.getResponseHeader('x-total-count'))
+						// console.log(JSON.stringify(request.getAllResponseHeaders()))
+
+					} else if (JSON.parse(request.responseText).httpStatusCode === 500) {
 						console.log("500")
 						sessionStorage.clear();
 						func.loginCheck();
-					};
-				};
+					}
+					;
+				}
+				;
 			};
 
 			request.send(); },0);
