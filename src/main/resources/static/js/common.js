@@ -563,6 +563,7 @@ const func = {
 			request.setRequestHeader('Content-type', header);
 			// request.setRequestHeader('Authorization', sessionStorage.getItem('token'));
 			// request.setRequestHeader('Authorization', sessionStorage.getItem('token'));
+			request.setRequestHeader('Authorization', sessionStorage.getItem('accessToken'));
 			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
 			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
 
@@ -617,6 +618,7 @@ const func = {
 			request.open(method, url, false);
 			request.setRequestHeader('Content-type', header);
 			// request.setRequestHeader('Authorization', sessionStorage.getItem('token'));
+			request.setRequestHeader('Authorization', sessionStorage.getItem('accessToken'));
 			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
 			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
 
