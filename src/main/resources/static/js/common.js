@@ -19,17 +19,17 @@ const func = {
 		// Locale Language 조회
 		func.getLocaleLang();
 
-		if(IS_GLOBAL == false) {
-			func.loadData('GET', `${func.url}users/clustersList?isGlobal=${IS_GLOBAL}`, 'application/json', func.clusters);
-		}
-		else {
-			document.getElementById('clusterTitleDiv').style.display="none";
-			document.getElementById('nameSpaceTitleDiv').style.display="none";
-
-			if(sessionStorage.getItem('cluster') == null) {
-				func.loadData('GET', `${func.url}users/clustersList?isGlobal=${IS_GLOBAL}`, 'application/json', func.clusters);
-			}
-		}
+		// if(IS_GLOBAL == false) {
+		// 	func.loadData('GET', `${func.url}users/clustersList?isGlobal=${IS_GLOBAL}`, 'application/json', func.clusters);
+		// }
+		// else {
+		// 	document.getElementById('clusterTitleDiv').style.display="none";
+		// 	document.getElementById('nameSpaceTitleDiv').style.display="none";
+		//
+		// 	if(sessionStorage.getItem('cluster') == null) {
+		// 		func.loadData('GET', `${func.url}users/clustersList?isGlobal=${IS_GLOBAL}`, 'application/json', func.clusters);
+		// 	}
+		// }
 
 
 		// navigation 초기 선택 설정
@@ -967,39 +967,6 @@ const func = {
 						if (document.getElementById('loading')) {
 							document.getElementById('wrap').removeChild(document.getElementById('loading'));
 						}
-					}
-				};
-			};
-
-			request.send(data); }, 0);
-	},
-
-	deleteHarborData(method, url, data, bull, header){
-		func.loading();
-
-		if(sessionStorage.getItem('token') == null){
-			func.loginCheck();
-		};
-
-
-		var request = new XMLHttpRequest();
-
-		setTimeout(function() {
-			request.open(method, url, false);
-			request.setRequestHeader('Content-type', header);
-			// request.setRequestHeader('Authorization', sessionStorage.getItem('token'));
-			request.setRequestHeader('Authorization', sessionStorage.getItem('accessToken'));
-			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
-			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
-
-			request.onreadystatechange = () => {
-				if (request.readyState === XMLHttpRequest.DONE){
-					if(request.status === 200 || request.status === 201) {
-						if (method === 'DELETE') {
-							func.alertPopup('SUCCESS', MSG_DELETE_COMPLETED, true, MSG_CONFIRM);
-						}
-					} else {
-						func.alertPopup('ERROR', MSG_ERROR, true, MSG_CONFIRM, 'closed');
 					}
 				};
 			};

@@ -15,7 +15,6 @@ spring:
             client-id: ${KEYCLOAK_CP_CLIENT_ID}
             client-secret: ${KEYCLOAK_CP_CLIENT_SECRET}
             authorization-grant-type: authorization_code
-#            redirect-uri: ${CP_PORTAL_UI_URI}/login/oauth2/code/keycloak
             redirect-uri: ${KPS_HUB_UI_URI}/login/oauth2/code/keycloak
             scope:
         provider:
@@ -71,8 +70,6 @@ logging:
 
 cpApi:
   url: http://localhost:3333
-chaosApi:
-  url: http://localhost:8092
 catalogApi:
   url: http://localhost:8093
 harborApi:
@@ -90,8 +87,6 @@ logging:
 
 cpApi:
   url: ${CP_PORTAL_API_URI}
-chaosApi:
-  url: ${CP_PORTAL_CHAOS_API_URI}
 catalogApi:
   url: ${CP_PORTAL_CATALOG_API_URI}
 harborApi:

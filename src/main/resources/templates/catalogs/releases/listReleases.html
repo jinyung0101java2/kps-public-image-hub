@@ -80,7 +80,8 @@
 
             load(){
              // func.loading();
-              func.loadData('GET', `${func.catalogUrl}/api/clusters/${sessionStorage.getItem('cluster')}/namespaces/${sessionStorage.getItem('nameSpace')}/releases?searchName=${document.getElementById('searchText').value}&limit=${releases.limit}&offset=${releases.offset}`, 'application/json', releases.draw);
+             //  func.loadData('GET', `${func.catalogUrl}/api/clusters/${sessionStorage.getItem('cluster')}/namespaces/${sessionStorage.getItem('nameSpace')}/releases?searchName=${document.getElementById('searchText').value}&limit=${releases.limit}&offset=${releases.offset}`, 'application/json', releases.draw);
+              func.loadData('GET', `${func.catalogUrl}/api/clusters/host-cluster/namespaces/jjy/releases?searchName=${document.getElementById('searchText').value}&limit=${releases.limit}&offset=${releases.offset}`, 'application/json', releases.draw);
             },
 
             draw(data){
