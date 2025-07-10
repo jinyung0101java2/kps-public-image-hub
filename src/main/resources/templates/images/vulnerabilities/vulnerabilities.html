@@ -216,9 +216,9 @@
 
 							html = `<tr>
 											<td id="col0_${i}"><div id="arcoBtn_${i}" style="width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;"></div></td>
-											<td id="col1_${i}"><a class="name" href="${data[i].links[0]}" target='_blank' data-id="${data[i].cve_id}">${data[i].cve_id}</a></td>
-											<td id="col2_${i}" class="left"><a class="repository_name" href="javascript:;" data-id="${data[i].repository_name}" data-name="repository">${data[i].repository_name}</a></td>
-											<td id="col3_${i}" class="left"><a id="digest_${i}" class="digest_name" href="javascript:;" data-id="${data[i].digest}" data-name="${data[i].repository_name}">digest</a></td>
+											<td id="col1_${i}"><a class="name" href="${data[i].links[0]}" target='_blank' data-id="${data[i].cve_id}" style="text-decoration: none; color: #019b72;">${data[i].cve_id}</a></td>
+											<td id="col2_${i}" class="left"><a class="repository_name" href="javascript:;" data-id="${data[i].repository_name}" data-name="repository" style="text-decoration: none; color: #019b72;>${data[i].cve_id}">${data[i].repository_name}</a></td>
+											<td id="col3_${i}" class="left"><a id="digest_${i}" class="digest_name" href="javascript:;" data-id="${data[i].digest}" data-name="${data[i].repository_name}" style="text-decoration: none; color: #019b72;>${data[i].cve_id}">digest</a></td>
 											<td id="col4_${i}"></td>
 											<td id="col5_${i}">${data[i].cvss_v3_score}</td>
 											<td id="col6_${i}"><span id="severity_${i}">${data[i].severity}</span></td>

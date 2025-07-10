@@ -160,7 +160,7 @@
 							html = `<tr>
                                         <td style="border-right:1px solid #ebebeb"><input type="checkbox" name="${data[i].name}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
                                         <td id="name_${i}">${data[i].name}</td>
-                                        <td><i id="copy_id_${i}" class="fa-regular fa-copy fa-xl copyBtn" data-name="${data[i].name}" style="cursor: pointer" onclick="copyClick(event)"></i></td>
+                                        <td><i id="copy_id_${i}" class="fa-sharp fa-regular fa-copy fa-lg copyBtn" data-name="${data[i].name}" style="cursor: pointer; color: #adadad" onclick="copyClick(event)"></i></td>
                                         <td id="pull_time_${i}">pull_time</td>
                                         <td id="push_time_${i}">push_time</td>
                                     </tr>`;
@@ -385,7 +385,7 @@
 			const buttonId = clickedButton.id;
 			const copyText = document.querySelector(`#${buttonId}`).getAttribute('data-id') + document.querySelector(`#${buttonId}`).getAttribute('data-name')
 			window.navigator.clipboard.writeText(copyText)
-			document.querySelector(`#${buttonId}`).setAttribute('style', 'cursor: pointer; color: #0ACF83;');
+			document.querySelector(`#${buttonId}`).setAttribute('style', 'cursor: pointer; color: #019b72bf;');
 
 			for (var i = 0; i <= sessionStorage.getItem('tagsCnt') - 1; i++) {
 				if ('copy_id_' + i !== buttonId) {

@@ -119,10 +119,10 @@
 
 							html = `<tr>
                                         <td style="border-right:1px solid #ebebeb"><input type="checkbox" name="${data[i].digest}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
-                                        <td class="left"><img id="digest_img_${i}" alt="artifact image" style="width: 8%; margin-right: 5px;"><a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}"></a></td>
-                                        <td><i id="copy_id_${i}" class="fa-regular fa-copy fa-xl copyBtn" style="cursor: pointer" onclick="copyClick(event)"></i></td>
+                                        <td class="left"><img id="digest_img_${i}" alt="artifact image" style="width: 8%; margin-right: 5px;"><a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}" style="text-decoration: none; color: #019b72;"></a></td>
+                                        <td><i id="copy_id_${i}" class="fa-sharp fa-regular fa-copy fa-lg copyBtn" style="cursor: pointer; color: #adadad;" onclick="copyClick(event)"></i></td>
                                         <td id="tag_id_${i}"></td>
-                                        <td><i class="fa-solid fa-circle-xmark" style="color: #e70000"></i></td>
+                                        <td><i class="fa-solid fa-circle-xmark" style="color: #ff5353"></i></td>
                                         <td id="size_id_${i}"></td>
                                         <td><div id="scan_overview_severity_id_${i}"></div><div id="scan_overview_id_${i}"></div></td>
                                         <td>${data[i].pull_count}</td>
@@ -156,13 +156,13 @@
 								sessionStorage.setItem('additions', 'Y');
 							} else if (data[i].type === 'IMAGE') {
 								document.getElementById("scan_overview_id_" + i).innerText = "No Scanned";
-								document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #e70000; width: 100px; height: 23px; margin: 0 auto;')
+								document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #ff5353; width: 100px; height: 23px; margin: 0 auto;')
 								document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-image.png')
 								document.getElementById("digest_img_" + i).setAttribute('style','width: 10%; margin-right: 5px;')
 								sessionStorage.setItem('additions', 'N');
 							} else if (data[i].type === 'CHART') {
 								document.getElementById("scan_overview_id_" + i).innerText = "Unsupported";
-								document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #818894; width: 100px; height: 23px; margin: 0 auto;')
+								document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #818894ad; width: 100px; height: 23px; margin: 0 auto;')
 								document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-chart.png')
 								document.getElementById("digest_img_" + i).setAttribute('style','width: 8%; margin-right: 5px;')
 								sessionStorage.setItem('additions', 'N');
@@ -260,7 +260,7 @@
 			const buttonId = clickedButton.id;
 			const copyText = document.querySelector(`#${buttonId}`).getAttribute('data-id')
 			window.navigator.clipboard.writeText(copyText)
-			document.querySelector(`#${buttonId}`).setAttribute('style', 'cursor: pointer; color: #0ACF83;');
+			document.querySelector(`#${buttonId}`).setAttribute('style', 'cursor: pointer; color: #019b72bf;');
 
 			for (var i = 0; i <= sessionStorage.getItem('artifactsCnt') - 1; i++) {
 				if ('copy_id_' + i !== buttonId) {
