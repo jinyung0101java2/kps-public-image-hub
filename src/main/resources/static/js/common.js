@@ -19,17 +19,17 @@ const func = {
 		// Locale Language 조회
 		func.getLocaleLang();
 
-		// if(IS_GLOBAL == false) {
-		// 	func.loadData('GET', `${func.url}users/clustersList?isGlobal=${IS_GLOBAL}`, 'application/json', func.clusters);
-		// }
-		// else {
-		// 	document.getElementById('clusterTitleDiv').style.display="none";
-		// 	document.getElementById('nameSpaceTitleDiv').style.display="none";
-		//
-		// 	if(sessionStorage.getItem('cluster') == null) {
-		// 		func.loadData('GET', `${func.url}users/clustersList?isGlobal=${IS_GLOBAL}`, 'application/json', func.clusters);
-		// 	}
-		// }
+		if(IS_GLOBAL == false) {
+			func.loadData('GET', `${func.url}users/clustersList?isGlobal=${IS_GLOBAL}`, 'application/json', func.clusters);
+		}
+		else {
+			document.getElementById('clusterTitleDiv').style.display="none";
+			document.getElementById('nameSpaceTitleDiv').style.display="none";
+
+			if(sessionStorage.getItem('cluster') == null) {
+				func.loadData('GET', `${func.url}users/clustersList?isGlobal=${IS_GLOBAL}`, 'application/json', func.clusters);
+			}
+		}
 
 
 		// navigation 초기 선택 설정
