@@ -15,6 +15,11 @@
         <article class="base">
             <div class="creat">
                 <h3 th:text="|Chart #{M0857}|"></h3>
+                <div class="btn03">
+                    <div>
+                        <button type="submit" id="install" th:text="#{M0857}"></button>
+                    </div>
+                </div>
                 <div>
                     <dl>
                         <div style="height:38px; line-height: 38px; width: 100%;"><span id="repoNameDiv" class="header-label"></span></div>
@@ -51,13 +56,6 @@
                             <div id="install_values_view"></div>
                         </dd>
                     </dl>
-                </div>
-            </div>
-            <!-- btn -->
-            <div class="btn02">
-                <button onclick="historyBack()" th:text="#{M0028}"></button>
-                <div>
-                    <button type="submit" id="install" th:text="#{M0857}"></button>
                 </div>
             </div>
         </article>

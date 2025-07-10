@@ -119,7 +119,7 @@
                 for(let i=0; i<repos.pageItems.length; i++) {
                     let repo = repos.pageItems[i];
                     let data_item = JSON.stringify({name:repo.name, url:repo.url});
-                    html += `<tr><td class="left"><a href="javascript:;" data-item='${data_item}'>${repo.name}</a></td>` +
+                    html += `<tr><td class="left"><a href="javascript:;" data-item='${data_item}' style="text-decoration: none; color: #008d68;">${repo.name}</a></td>` +
                         `<td class="letf box"><dl><dt>${repo.url}</dt></dl></td></tr>`;
                 }
 

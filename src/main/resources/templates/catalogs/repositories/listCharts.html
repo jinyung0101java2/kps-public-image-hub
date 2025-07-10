@@ -45,7 +45,7 @@
                     </div>
                     <!-- btn -->
                     <a href="javascript:;" id="delete" class="aside_btn" th:text="#{M0026}"></a>
-                    <a href="javascript:;" id="update" class="aside_btn" style="right:39px; background-color: #0950bf;" th:text="#{M0032}"></a>
+                    <a href="javascript:;" id="update" class="aside_btn" style="right:39px; background-color: #0ACF83;" th:text="#{M0032}"></a>
                 </div>
         </article>
     </div>
@@ -122,7 +122,7 @@
                         icon = (chart.icon.length < 1) ? DEFAULT_ICON_PATH : chart.icon;
                         html += `<tr>` +
                             `<td class="chart-td-first"><div class="chart-logo-wrap"><img class="chart-logo" src="${icon}" onerror="this.src='${DEFAULT_ICON_PATH}';"></div></td>` +
-                            `<td class="left chart-td-sec"><a href="javascript:;" data-item='${data_item}' data-name="${chart.name}">${chart.name}</a></td>` +
+                            `<td class="left chart-td-sec"><a href="javascript:;" data-item='${data_item}' data-name="${chart.name}" style="text-decoration: none; color: #008d68;">${chart.name}</a></td>` +
                             `<td class="left">`;
                         if(chart.deprecated) {html += `<span class="deprecated" title="This package is deprecated.">(Deprecated)</span>`;}
                         html += `${chart.description}</td>` +

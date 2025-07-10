@@ -386,6 +386,15 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 .btn02 div a:first-child {margin-right:6px;}
 .btn02 div button:first-child {margin-right:6px;}
 
+/* btn03 */
+.btn03 {margin-top:29px; overflow:hidden; text-align:center;  font-family:'Apple SD Gothic Neo L', sans-serif;}
+.btn03 > button {color:#fff; background-color:#bdbfc4; float:left; width:120px; line-height:55px; height:52px; font-size:16px; border-radius:2px;}
+.btn03 div {float:right; overflow:hidden;}
+.btn03 div a {width :120px; float:left; background-color:#0ACF83; color:#fff; line-height:55px; height:52px; font-size:16px; font-weight:300; border-radius:2px;}
+.btn03 div button {width :53.69px; float:left; background-color:#0ACF83; color:#fff; line-height:42px; height:38px; font-size:16px; font-weight:300; border-radius:2px; font-family:'Apple SD Gothic Neo L', sans-serif;}
+.btn03 div a:first-child {margin-right:6px;}
+.btn03 div button:first-child {margin-right:6px; font-family: 'Apple SD Gothic Neo', "Noto Sans KR", "맑은 고딕", "Font Awesome 5 Free", monospace !important;}
+
 /* btn04 */
 .btn04 {margin-top:29px; overflow:hidden; text-align:center;  font-family:'Apple SD Gothic Neo L', sans-serif;}
 .btn04 > button {color:#fff; background-color:#bdbfc4; float:left; width:240px; line-height:55px; height:52px; font-size:16px; border-radius:2px;}
