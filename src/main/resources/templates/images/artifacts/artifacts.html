@@ -54,6 +54,7 @@
 </div>
 <th:block layout:fragment="script">
 	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>-->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
 	<script type="text/javascript">
 		window.onload = () => {
 
@@ -117,6 +118,7 @@
 								}
 							}
 
+
 							html = `<tr>
                                         <td style="border-right:1px solid #ebebeb"><input type="checkbox" name="${data[i].digest}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
                                         <td class="left"><img id="digest_img_${i}" alt="artifact image" style="width: 8%; margin-right: 5px;"><a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}" style="text-decoration: none; color: #019b72;"></a></td>
@@ -124,7 +126,7 @@
                                         <td id="tag_id_${i}"></td>
                                         <td><i class="fa-solid fa-circle-xmark" style="color: #ff5353"></i></td>
                                         <td id="size_id_${i}"></td>
-                                        <td><div id="scan_overview_severity_id_${i}"></div><div id="scan_overview_id_${i}"></div></td>
+                                        <td class="tooltip_container"><p id="tooltip_text_${i}" class="tooltip-text"></p><div id="scan_overview_severity_id_${i}"></div><div id="scan_overview_id_${i}"></div><div id="tooltip_chart_${i}" class="tooltip-text">'Sample(개발 중)'<canvas id="myChart" width="170px" height="170px"></canvas></div></td>
                                         <td>${data[i].pull_count}</td>
                                         <td id="push_time_${i}">push_time</td>
                                     </tr>`;
@@ -144,14 +146,21 @@
 							if (data[i].scan_overview != null) {
 								let vulnerabilitiesData = func.vulnerabilitiesData(changeScanOverview3)
 								if (vulnerabilitiesData.severity === 'High') {
-									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #ff8f3d; float: left; margin-left: 10px; width: 50px; color: #ffffff;')
+									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #ff8f3d; float: left; margin-left: 10px; width: 50px; color: #ffffff; cursor: pointer;')
+									document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: High';
+									// document.getElementById("tooltip_chart_" + i).innerText = myChart;
 								} else if (vulnerabilitiesData.severity === 'Medium') {
-									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #ffce66; float: left; margin-left: 10px; width: 50px; color: #ffffff;')
+									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #ffce66; float: left; margin-left: 10px; width: 50px; color: #ffffff; cursor: pointer;')
+									document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Medium';
+									// document.getElementById("tooltip_chart_" + i).innerText = myChart;
 								} else if (vulnerabilitiesData.severity === 'Low') {
-									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #fff1ad; float: left; margin-left: 10px; width: 50px; color: #ffffff;')
+									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #fff1ad; float: left; margin-left: 10px; width: 50px; color: #ffffff; cursor: pointer;')
+									document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Low';
+									// document.getElementById("tooltip_chart_" + i).innerText = myChart;
 								}
 								document.getElementById("scan_overview_severity_id_" + i).innerText = vulnerabilitiesData.severity;
 								document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.total;
+								document.getElementById("scan_overview_id_" + i).setAttribute('style','cursor: pointer;')
 								// document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.severity + "  " + vulnerabilitiesData.total;
 								sessionStorage.setItem('additions', 'Y');
 
@@ -181,11 +190,63 @@
 								}
 							}
 
+							if (data[i].scan_overview != null) {
+								const target = document.getElementById("scan_overview_severity_id_" + i);
+								const tooltip = document.getElementById("tooltip_text_" + i);
+
+								target.addEventListener('mouseover', () => {
+									tooltip.style.display = 'block';
+								}, false);
+
+								target.addEventListener('mouseleave', () => {
+									tooltip.style.display = 'none';
+								}, false);
+
+								const targetChart = document.getElementById("scan_overview_id_" + i);
+								const tooltipChart = document.getElementById("tooltip_chart_" + i);
+
+								targetChart.addEventListener('mouseover', () => {
+									tooltipChart.style.display = 'block';
+								}, false);
+
+								targetChart.addEventListener('mouseleave', () => {
+									tooltipChart.style.display = 'none';
+								}, false);
+							}
+
 						}
 					} else if (data.length === 0) {
 						let html = '<tr><td colspan="9">No Data.</td></tr>';
 						func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 					}
+
+					const ctx = document.getElementById('myChart').getContext('2d');
+					let myChart = new Chart(ctx, {
+						type: 'bar',
+						data: {
+							labels: ['High', 'Medium', 'Low'],
+							datasets: [{
+								data: [20, 30, 70],
+								backgroundColor: [
+									'#ff8f3d',
+									'#ffce66',
+									'#fff1ad'
+								],
+								borderWidth: 0,
+								scaleBeginAtZero: true,
+							}
+							]
+						},
+						options: {
+							plugins: {
+								legend: {
+									display: false
+								}
+							},
+							responsive: false
+						}
+					});
+
 
 					if (document.getElementById('loading')) {
 						document.getElementById('wrap').removeChild(document.getElementById('loading'));
