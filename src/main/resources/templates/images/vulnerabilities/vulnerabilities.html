@@ -18,47 +18,52 @@
 			<fieldset>
 				<ul style="display: flex; float: right;">
 					<li>
-						<div class="statistics">
-							<h3 class="stat-title">Total Images</h3>
-							<div class="stat-box">
-								<i class="fa-solid fa-file fa-2xl stat-img"></i>
-								<div id="total-images" class="total-cnt"></div>
-							</div>
+						<div class="chart-title">
+							<h3 class="stat-title">Total Vulnerabilities</h3>
 						</div>
-					</li>
-					<li>
-						<div class="statistics">
-							<h3 class="stat-title">Total Artifacts</h3>
+						<div class="chart-vul">
 							<div class="stat-box">
-								<i class="fa-solid fa-box-archive fa-2xl stat-img"></i>
-								<div id="total-artifacts" class="total-cnt"></div>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="statistics">
-							<h3 class="stat-title">Total Pulls</h3>
-							<div class="stat-box">
-								<i class="fa-solid fa-download fa-2xl stat-img"></i>
-								<div id="total-pulls" class="total-cnt"></div>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="statistics">
-							<h3 class="stat-title">Storage Used</h3>
-							<div class="stat-box">
-								<i class="fa-solid fa-database fa-2xl stat-img"></i>
-								<div id="total-storages" class="total-cnt"></div>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="last-statistics">
-							<h4 class="stat-title">Critical Vulnerabilities</h4>
-							<div class="stat-box">
-								<i class="fa-solid fa-shield-halved fa-2xl stat-img"></i>
-								<div id="total-Vulnerabilities" class="total-cnt"></div>
+								<div class="chart-graph">
+									<canvas id="myChart" width="180px" height="180px"></canvas>
+								</div>
+								<div class="chart-stat">
+									<ul>
+										<li class="total-title">
+											<span id="total-vul">58</span>
+											<span>total with</span>
+											<span id="fix-vul">58</span>
+											<span>fixable</span>
+										</li>
+										<li class="vul-list">
+											<div class="vul-tit">High</div>
+											<div id="vul-high">20</div>
+										</li>
+										<li class="vul-list">
+											<div class="vul-tit">Medium</div>
+											<div id="vul-medium">20</div>
+										</li>
+										<li class="vul-list">
+											<div class="vul-tit">Low</div>
+											<div id="vul-low">20</div>
+										</li>
+									</ul>
+									<ul class="chart-label">
+										<li>
+											<div class="label-high"></div>
+											<div class="label-text">High</div>
+										</li>
+										<li>
+											<div class="label-medium"></div>
+											<div class="label-text">Medium</div>
+										</li>
+										<li>
+											<div class="label-low"></div>
+											<div class="label-text">Low</div>
+										</li>
+									</ul>
+								</div>
+<!--								<i class="fa-solid fa-shield-halved fa-2xl stat-img"></i>-->
+<!--								<div id="total-Vulnerabilities" class="total-cnt"></div>-->
 							</div>
 						</div>
 					</li>
@@ -122,6 +127,8 @@
 	</div>
 </div>
 <th:block layout:fragment="script">
+<!--	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>-->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
 	<script type="text/javascript">
 		window.onload = () => {
 
@@ -134,6 +141,9 @@
 				pageStart: 1,
 				pageEnd: 0,
 				type: 'administrator',
+				LowCnt: 0,
+				MediumCnt: 0,
+				HighCnt: 0,
 
 				init() {
 					func.nameLoad = vulnerabilities.reset;
@@ -179,26 +189,58 @@
 				drawVulnerabilities(data) {
 
 					let html;
-					let LowCnt = 0;
-					let MediumCnt = 0;
-					let HighCnt = 0;
 					sessionStorage.setItem('vulnerabilitiesCnt', data.length);
 
 					for (var i = 0; i <= data.length - 1; i++) {
 						if (data[i].severity === 'Low') {
-							LowCnt += 1;
+							vulnerabilities.LowCnt += 1;
 						} else if (data[i].severity === 'Medium') {
-							MediumCnt += 1;
+							vulnerabilities.MediumCnt += 1;
 						} else if (data[i].severity === 'High') {
-							HighCnt += 1;
+							vulnerabilities.HighCnt += 1;
 						}
 					}
 
-					console.log('LowCnt:::' + LowCnt)
-					console.log('MediumCnt:::' + MediumCnt)
-					console.log('HighCnt:::' + HighCnt)
-					console.log('cveCnt:::' + sessionStorage.getItem('cveCnt'))
+					document.getElementById("total-vul").innerText = sessionStorage.getItem('cveCnt');
+					document.getElementById("fix-vul").innerText = sessionStorage.getItem('cveCnt');
+					document.getElementById("vul-high").innerText = vulnerabilities.HighCnt;
+					document.getElementById("vul-medium").innerText = vulnerabilities.MediumCnt;
+					document.getElementById("vul-low").innerText = vulnerabilities.LowCnt;
 
+					let highPercentage = 0;
+					let mediumPercentage = 0;
+					let lowPercentage = 0;
+
+					highPercentage = ((vulnerabilities.HighCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
+					mediumPercentage = ((vulnerabilities.MediumCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
+					lowPercentage = ((vulnerabilities.LowCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
+
+					const ctx = document.getElementById('myChart').getContext('2d');
+					new Chart(ctx, {
+						type: 'doughnut',
+						data: {
+							labels: ['High', 'Medium', 'Low'],
+							datasets: [{
+								data: [highPercentage, mediumPercentage, lowPercentage],
+								backgroundColor: [
+									'#ff8f3d',
+									'#ffce66',
+									'#fff1ad'
+								],
+								borderWidth: 0,
+								scaleBeginAtZero: true,
+							}
+							]
+						},
+						options: {
+							plugins: {
+								legend: {
+									display: false
+								}
+							},
+							responsive: false
+						}
+					});
 
 					func.removeHtml(document.querySelector('.listTable'), html, 'tbody');
 
@@ -404,6 +446,25 @@
 
 			vulnerabilities.init();
 		}
+		/*const ctx = document.getElementById('myChart').getContext('2d');
+		var myChart = new Chart(ctx, {
+			type: 'doughnut',
+			data: {
+				datasets: [{
+					data: [20, 60, 20],
+					backgroundColor: [
+						'#ff8f3d',
+						'#ffce66',
+						'#fff1ad'
+					],
+					borderWidth: 0,
+					scaleBeginAtZero: true,
+				}
+				]
+			},
+			options: {
+				responsive: false}
+		});*/
 	</script>
 </th:block>
 </html>

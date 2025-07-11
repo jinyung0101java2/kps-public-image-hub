@@ -154,18 +154,31 @@
 								document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.total;
 								// document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.severity + "  " + vulnerabilitiesData.total;
 								sessionStorage.setItem('additions', 'Y');
-							} else if (data[i].type === 'IMAGE') {
-								document.getElementById("scan_overview_id_" + i).innerText = "No Scanned";
-								document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #ff5353; width: 100px; height: 23px; margin: 0 auto;')
-								document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-image.png')
-								document.getElementById("digest_img_" + i).setAttribute('style','width: 10%; margin-right: 5px;')
-								sessionStorage.setItem('additions', 'N');
-							} else if (data[i].type === 'CHART') {
-								document.getElementById("scan_overview_id_" + i).innerText = "Unsupported";
-								document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #818894ad; width: 100px; height: 23px; margin: 0 auto;')
-								document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-chart.png')
-								document.getElementById("digest_img_" + i).setAttribute('style','width: 8%; margin-right: 5px;')
-								sessionStorage.setItem('additions', 'N');
+
+								if (data[i].type === 'IMAGE') {
+									document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-image.png')
+									document.getElementById("digest_img_" + i).setAttribute('style','width: 10%; margin-right: 5px;')
+									sessionStorage.setItem('additions', 'N');
+								} else if (data[i].type === 'CHART') {
+									document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-chart.png')
+									document.getElementById("digest_img_" + i).setAttribute('style','width: 8%; margin-right: 5px;')
+									sessionStorage.setItem('additions', 'N');
+								}
+
+							} else {
+								if (data[i].type === 'IMAGE') {
+									document.getElementById("scan_overview_id_" + i).innerText = "Not Scanned";
+									document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #ff5353; width: 100px; height: 23px; margin: 0 auto;')
+									document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-image.png')
+									document.getElementById("digest_img_" + i).setAttribute('style','width: 10%; margin-right: 5px;')
+									sessionStorage.setItem('additions', 'N');
+								} else if (data[i].type === 'CHART') {
+									document.getElementById("scan_overview_id_" + i).innerText = "Unsupported";
+									document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #818894ad; width: 100px; height: 23px; margin: 0 auto;')
+									document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-chart.png')
+									document.getElementById("digest_img_" + i).setAttribute('style','width: 8%; margin-right: 5px;')
+									sessionStorage.setItem('additions', 'N');
+								}
 							}
 
 						}
