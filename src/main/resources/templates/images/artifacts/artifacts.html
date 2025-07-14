@@ -167,11 +167,9 @@
 								if (data[i].type === 'IMAGE') {
 									document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-image.png')
 									document.getElementById("digest_img_" + i).setAttribute('style','width: 10%; margin-right: 5px;')
-									sessionStorage.setItem('additions', 'N');
 								} else if (data[i].type === 'CHART') {
 									document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-chart.png')
 									document.getElementById("digest_img_" + i).setAttribute('style','width: 8%; margin-right: 5px;')
-									sessionStorage.setItem('additions', 'N');
 								}
 
 							} else {

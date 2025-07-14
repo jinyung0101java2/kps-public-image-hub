@@ -155,6 +155,7 @@
 						document.getElementById('total-artifacts').innerText = '0';
 						document.getElementById('total-pulls').innerText = '0';
 						document.getElementById('total-storages').innerText = '0 Byte';
+						document.getElementById('total-vulnerabilities').innerText = sessionStorage.getItem('cveCnt');
 
 						let html = '<tr><td colspan="5">No Data.</td></tr>';
 						func.appendHtml(document.querySelector('.listTable'), html, 'tbody');

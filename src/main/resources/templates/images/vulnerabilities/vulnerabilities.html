@@ -29,22 +29,22 @@
 								<div class="chart-stat">
 									<ul>
 										<li class="total-title">
-											<span id="total-vul">58</span>
+											<span id="total-vul"></span>
 											<span>total with</span>
-											<span id="fix-vul">58</span>
+											<span id="fix-vul"></span>
 											<span>fixable</span>
 										</li>
 										<li class="vul-list">
 											<div class="vul-tit">High</div>
-											<div id="vul-high">20</div>
+											<div id="vul-high"></div>
 										</li>
 										<li class="vul-list">
 											<div class="vul-tit">Medium</div>
-											<div id="vul-medium">20</div>
+											<div id="vul-medium"></div>
 										</li>
 										<li class="vul-list">
 											<div class="vul-tit">Low</div>
-											<div id="vul-low">20</div>
+											<div id="vul-low"></div>
 										</li>
 									</ul>
 									<ul class="chart-label">
@@ -59,6 +59,10 @@
 										<li>
 											<div class="label-low"></div>
 											<div class="label-text">Low</div>
+										</li>
+										<li>
+											<div class="label-na"></div>
+											<div class="label-text">N/A</div>
 										</li>
 									</ul>
 								</div>
@@ -172,13 +176,43 @@
 						// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryId')}/summary`, 'application/json', vulnerabilities.drawPage);
 					} else if (sessionStorage.getItem('repositoriesCnt') == 0) {
 
-						document.getElementById('total-images').innerText = '0';
-						document.getElementById('total-artifacts').innerText = '0';
-						document.getElementById('total-pulls').innerText = '0';
-						document.getElementById('total-storages').innerText = '0 Byte';
+						document.getElementById("total-vul").innerText = '0';
+						document.getElementById("fix-vul").innerText = '0';
+						document.getElementById("vul-high").innerText = '0';
+						document.getElementById("vul-medium").innerText = '0';
+						document.getElementById("vul-low").innerText = '0';
+
+						const ctx = document.getElementById('myChart').getContext('2d');
+						new Chart(ctx, {
+							type: 'doughnut',
+							data: {
+								labels: ['N/A'],
+								datasets: [{
+									data: [100],
+									backgroundColor: [
+										'#c5c5c5'
+									],
+									borderWidth: 0,
+									scaleBeginAtZero: true,
+								}
+								]
+							},
+							options: {
+								plugins: {
+									legend: {
+										display: false
+									}
+								},
+								responsive: false
+							}
+						});
+
+
 
 						let html = '<tr><td colspan="10">No Data.</td></tr>';
 						func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
+
+
 
 						if (document.getElementById('loading')) {
 							document.getElementById('wrap').removeChild(document.getElementById('loading'));
