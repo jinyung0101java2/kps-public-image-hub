@@ -168,12 +168,7 @@
 					func.loading();
 
 					if (sessionStorage.getItem('repositoriesCnt') > 0) {
-						// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/auditlog-exts?page=1&page_size=-1`, 'application/json', logs.drawLogs);
-						//func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/logs?page_size=${logs.limit}&page=${logs.page}`, 'application/json', logs.drawLogs);
-						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/security/vul?with_tag=true&tune_count=true&q=project_id%253D${sessionStorage.getItem('repositoryId')}&page=1&page_size=-1`, 'application/json', vulnerabilities.drawVulnerabilities);
-						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories?page=1&page_size=-1`, 'application/json', vulnerabilities.drawRepositories);
-						// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', logs.drawStorage);
-						// func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryId')}/summary`, 'application/json', vulnerabilities.drawPage);
+						vulnerabilities.drawVulnerabilities();
 					} else if (sessionStorage.getItem('repositoriesCnt') == 0) {
 
 						document.getElementById("total-vul").innerText = '0';
@@ -208,7 +203,6 @@
 						});
 
 
-
 						let html = '<tr><td colspan="10">No Data.</td></tr>';
 						func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 
@@ -220,77 +214,88 @@
 					}
 				},
 
-				drawVulnerabilities(data) {
+				drawVulnerabilities() {
 
-					let html;
-					sessionStorage.setItem('vulnerabilitiesCnt', data.length);
+					const data = [];
 
-					for (var i = 0; i <= data.length - 1; i++) {
-						if (data[i].severity === 'Low') {
-							vulnerabilities.LowCnt += 1;
-						} else if (data[i].severity === 'Medium') {
-							vulnerabilities.MediumCnt += 1;
-						} else if (data[i].severity === 'High') {
-							vulnerabilities.HighCnt += 1;
-						}
-					}
+					let page = Math.floor(sessionStorage.getItem('cveCnt') / 15) + 1;
 
-					document.getElementById("total-vul").innerText = sessionStorage.getItem('cveCnt');
-					document.getElementById("fix-vul").innerText = sessionStorage.getItem('cveCnt');
-					document.getElementById("vul-high").innerText = vulnerabilities.HighCnt;
-					document.getElementById("vul-medium").innerText = vulnerabilities.MediumCnt;
-					document.getElementById("vul-low").innerText = vulnerabilities.LowCnt;
+					for (var k = 1; k <= page; k++) {
+						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/security/vul?with_tag=true&tune_count=true&q=project_id%253D${sessionStorage.getItem('repositoryId')}&page=${k}&page_size=15`, 'application/json', (e) => {
+							if (e.length > 0) {
+								for (let l = 0; l <= e.length - 1; l++) {
+									data.push(e[l])
+									if (data.length === Number(sessionStorage.getItem('cveCnt'))) {
 
-					let highPercentage = 0;
-					let mediumPercentage = 0;
-					let lowPercentage = 0;
+										let html;
+										sessionStorage.setItem('vulnerabilitiesCnt', data.length);
 
-					highPercentage = ((vulnerabilities.HighCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
-					mediumPercentage = ((vulnerabilities.MediumCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
-					lowPercentage = ((vulnerabilities.LowCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
+										for (var i = 0; i <= data.length - 1; i++) {
+											if (data[i].severity === 'Low') {
+												vulnerabilities.LowCnt += 1;
+											} else if (data[i].severity === 'Medium') {
+												vulnerabilities.MediumCnt += 1;
+											} else if (data[i].severity === 'High') {
+												vulnerabilities.HighCnt += 1;
+											}
+										}
 
-					const ctx = document.getElementById('myChart').getContext('2d');
-					new Chart(ctx, {
-						type: 'doughnut',
-						data: {
-							labels: ['High', 'Medium', 'Low'],
-							datasets: [{
-								data: [highPercentage, mediumPercentage, lowPercentage],
-								backgroundColor: [
-									'#ff8f3d',
-									'#ffce66',
-									'#fff1ad'
-								],
-								borderWidth: 0,
-								scaleBeginAtZero: true,
-							}
-							]
-						},
-						options: {
-							plugins: {
-								legend: {
-									display: false
-								}
-							},
-							responsive: false
-						}
-					});
+										document.getElementById("total-vul").innerText = sessionStorage.getItem('cveCnt');
+										document.getElementById("fix-vul").innerText = sessionStorage.getItem('cveCnt');
+										document.getElementById("vul-high").innerText = vulnerabilities.HighCnt;
+										document.getElementById("vul-medium").innerText = vulnerabilities.MediumCnt;
+										document.getElementById("vul-low").innerText = vulnerabilities.LowCnt;
 
-					func.removeHtml(document.querySelector('.listTable'), html, 'tbody');
+										let highPercentage = 0;
+										let mediumPercentage = 0;
+										let lowPercentage = 0;
 
-					if (data.length > 0) {
-						for (var i = 0; i <= data.length - 1; i++) {
+										highPercentage = ((vulnerabilities.HighCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
+										mediumPercentage = ((vulnerabilities.MediumCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
+										lowPercentage = ((vulnerabilities.LowCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
 
-							let tag = '';
-							if (data[i].tags !== null) {
-								for (var j = 0; j <= data[i].tags.length - 1; j++) {
-									tag += data[i].tags[j] + ', '
-								}
-							}
+										const ctx = document.getElementById('myChart').getContext('2d');
+										new Chart(ctx, {
+											type: 'doughnut',
+											data: {
+												labels: ['High', 'Medium', 'Low'],
+												datasets: [{
+													data: [highPercentage, mediumPercentage, lowPercentage],
+													backgroundColor: [
+														'#ff8f3d',
+														'#ffce66',
+														'#fff1ad'
+													],
+													borderWidth: 0,
+													scaleBeginAtZero: true,
+												}
+												]
+											},
+											options: {
+												plugins: {
+													legend: {
+														display: false
+													}
+												},
+												responsive: false
+											}
+										});
 
-							let digest = data[i].digest.substr(0,15)
+										func.removeHtml(document.querySelector('.listTable'), html, 'tbody');
 
-							html = `<tr>
+										if (data.length > 0) {
+											for (var i = 0; i <= data.length - 1; i++) {
+
+												let tag = '';
+												if (data[i].tags !== null) {
+													for (var j = 0; j <= data[i].tags.length - 1; j++) {
+														tag += data[i].tags[j] + ', '
+													}
+												}
+
+												let digest = data[i].digest.substr(0,15)
+
+												html = `<tr>
 											<td id="col0_${i}"><div id="arcoBtn_${i}" style="width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;"></div></td>
 											<td id="col1_${i}"><a class="name" href="${data[i].links[0]}" target='_blank' data-id="${data[i].cve_id}" style="text-decoration: none; color: #008d68;">${data[i].cve_id}</a></td>
 											<td id="col2_${i}" class="left"><a class="repository_name" href="javascript:;" data-id="${data[i].repository_name}" data-name="repository" style="text-decoration: none; color: #008d68;>${data[i].cve_id}">${data[i].repository_name}</a></td>
@@ -303,78 +308,263 @@
 											<td id="col9_${i}" class="left"><i class="fa-solid fa-wrench" style="color: #00b92a; margin-right: 7px;"></i>${data[i].fixed_version}</td>
 											</tr><tr><td id="desc_${i}" style="display: none" class="left" colspan="10" name="off">${data[i].desc}</td></tr>`;
 
-							func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
+												func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 
-							document.getElementById("col4_" + i).innerText = tag.slice(0, - 2);
-							document.getElementById("digest_" + i).innerText = digest;
+												document.getElementById("col4_" + i).innerText = tag.slice(0, - 2);
+												document.getElementById("digest_" + i).innerText = digest;
 
-							if (data[i].severity === 'High') {
-								document.getElementById("severity_" + i).setAttribute('style',"background-color: #ff8f3d; border-radius: 10px; padding: 0 27px 0px 27px; color: #ffffff;");
-							} else if (data[i].severity === 'Medium') {
-								document.getElementById("severity_" + i).setAttribute('style',"background-color: #ffce66; border-radius: 10px; padding: 0 16px 0px 16px; color: #ffffff;");
-							} else if (data[i].severity === 'Low') {
-								document.getElementById("severity_" + i).setAttribute('style',"background-color: #fff1ad; border-radius: 10px; padding: 0 28px 0px 28px; color: #ffffff;");
-							}
+												if (data[i].severity === 'High') {
+													document.getElementById("severity_" + i).setAttribute('style',"background-color: #ff8f3d; border-radius: 10px; padding: 0 27px 0px 27px; color: #ffffff;");
+												} else if (data[i].severity === 'Medium') {
+													document.getElementById("severity_" + i).setAttribute('style',"background-color: #ffce66; border-radius: 10px; padding: 0 16px 0px 16px; color: #ffffff;");
+												} else if (data[i].severity === 'Low') {
+													document.getElementById("severity_" + i).setAttribute('style',"background-color: #fff1ad; border-radius: 10px; padding: 0 28px 0px 28px; color: #ffffff;");
+												}
 
-						}
-					} else if (data.length === 0) {
-						let html = '<tr><td colspan="10">No Data.</td></tr>';
-						func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
-					}
+											}
+										} else if (data.length === 0) {
+											let html = '<tr><td colspan="10">No Data.</td></tr>';
+											func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
+										}
 
-					if (document.getElementById('loading')) {
-						document.getElementById('wrap').removeChild(document.getElementById('loading'));
-					}
+										if (document.getElementById('loading')) {
+											document.getElementById('wrap').removeChild(document.getElementById('loading'));
+										}
 
-					document.addEventListener('click', (e) => {
-						for (let i = 0; i <= sessionStorage.getItem('vulnerabilitiesCnt') - 1; i++) {
+										document.addEventListener('click', (e) => {
+											for (let i = 0; i <= sessionStorage.getItem('vulnerabilitiesCnt') - 1; i++) {
 
-							if (e.target && e.target.id === 'arcoBtn_' + `${i}`) {
-								if (document.getElementById("desc_" + `${i}`).getAttribute('name') === 'off') {
-									document.getElementById("desc_" + `${i}`).setAttribute('style', 'text-align: left; padding-left: 40px;');
-									document.getElementById("desc_" + `${i}`).setAttribute('name', 'on');
-									document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(315deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;');
-									for (let j = 0; j <= 9; j++) {
-										document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'border-bottom: 0px;');
+												if (e.target && e.target.id === 'arcoBtn_' + `${i}`) {
+													if (document.getElementById("desc_" + `${i}`).getAttribute('name') === 'off') {
+														document.getElementById("desc_" + `${i}`).setAttribute('style', 'text-align: left; padding-left: 40px;');
+														document.getElementById("desc_" + `${i}`).setAttribute('name', 'on');
+														document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(315deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;');
+														for (let j = 0; j <= 9; j++) {
+															document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'border-bottom: 0px;');
+														}
+													} else if (document.getElementById("desc_" + `${i}`).getAttribute('name') === 'on') {
+														document.getElementById("desc_" + `${i}`).setAttribute('style', 'display: none;');
+														document.getElementById("desc_" + `${i}`).setAttribute('name', 'off')
+														document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;');
+														for (let j = 0; j <= 9; j++) {
+															document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'border-bottom: 1px solid #ebebeb;');
+														}
+													}
+												}
+											}
+										});
+
+										vulnerabilities.listEvent()
+
 									}
-								} else if (document.getElementById("desc_" + `${i}`).getAttribute('name') === 'on') {
-									document.getElementById("desc_" + `${i}`).setAttribute('style', 'display: none;');
-									document.getElementById("desc_" + `${i}`).setAttribute('name', 'off')
-									document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;');
-									for (let j = 0; j <= 9; j++) {
-										document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'border-bottom: 1px solid #ebebeb;');
+
+								}
+							} else if (data.length === 0) {
+								document.getElementById("total-vul").innerText = '0';
+								document.getElementById("fix-vul").innerText = '0';
+								document.getElementById("vul-high").innerText = '0';
+								document.getElementById("vul-medium").innerText = '0';
+								document.getElementById("vul-low").innerText = '0';
+
+								const ctx = document.getElementById('myChart').getContext('2d');
+								new Chart(ctx, {
+									type: 'doughnut',
+									data: {
+										labels: ['N/A'],
+										datasets: [{
+											data: [100],
+											backgroundColor: [
+												'#c5c5c5'
+											],
+											borderWidth: 0,
+											scaleBeginAtZero: true,
+										}
+										]
+									},
+									options: {
+										plugins: {
+											legend: {
+												display: false
+											}
+										},
+										responsive: false
 									}
+								});
+
+
+
+								let html = '<tr><td colspan="10">No Data.</td></tr>';
+								func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
+
+
+
+								if (document.getElementById('loading')) {
+									document.getElementById('wrap').removeChild(document.getElementById('loading'));
 								}
 							}
-						}
-					});
-
-					vulnerabilities.listEvent()
-
-				},
-
-				drawRepositories(data) {
-
-					let totalArtifacts = 0;
-					let totalPulls = 0;
-
-					if (data.length > 0) {
-						for (var i = 0; i <= data.length - 1; i++) {
-
-							totalArtifacts += data[i].artifact_count;
-							totalPulls += data[i].pull_count;
-
-						}
-					}
-
-					document.getElementById('total-artifacts').innerText = totalArtifacts
-					document.getElementById('total-pulls').innerText = totalPulls
-
-					if (document.getElementById('loading')) {
-						document.getElementById('wrap').removeChild(document.getElementById('loading'));
+						});
 					}
 
 				},
+				// drawVulnerabilities() {
+				//
+				// 	let data = func.vulnerabilitiesMerge();
+				//
+				// 	console.log('cveData::: ' + JSON.stringify(JSON.parse(data)))
+				//
+				// 	let html;
+				// 	sessionStorage.setItem('vulnerabilitiesCnt', data.length);
+				//
+				// 	for (var i = 0; i <= data.length - 1; i++) {
+				// 		if (data[i].severity === 'Low') {
+				// 			vulnerabilities.LowCnt += 1;
+				// 		} else if (data[i].severity === 'Medium') {
+				// 			vulnerabilities.MediumCnt += 1;
+				// 		} else if (data[i].severity === 'High') {
+				// 			vulnerabilities.HighCnt += 1;
+				// 		}
+				// 	}
+				//
+				// 	document.getElementById("total-vul").innerText = sessionStorage.getItem('cveCnt');
+				// 	document.getElementById("fix-vul").innerText = sessionStorage.getItem('cveCnt');
+				// 	document.getElementById("vul-high").innerText = vulnerabilities.HighCnt;
+				// 	document.getElementById("vul-medium").innerText = vulnerabilities.MediumCnt;
+				// 	document.getElementById("vul-low").innerText = vulnerabilities.LowCnt;
+				//
+				// 	let highPercentage = 0;
+				// 	let mediumPercentage = 0;
+				// 	let lowPercentage = 0;
+				//
+				// 	highPercentage = ((vulnerabilities.HighCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
+				// 	mediumPercentage = ((vulnerabilities.MediumCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
+				// 	lowPercentage = ((vulnerabilities.LowCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
+				//
+				// 	const ctx = document.getElementById('myChart').getContext('2d');
+				// 	new Chart(ctx, {
+				// 		type: 'doughnut',
+				// 		data: {
+				// 			labels: ['High', 'Medium', 'Low'],
+				// 			datasets: [{
+				// 				data: [highPercentage, mediumPercentage, lowPercentage],
+				// 				backgroundColor: [
+				// 					'#ff8f3d',
+				// 					'#ffce66',
+				// 					'#fff1ad'
+				// 				],
+				// 				borderWidth: 0,
+				// 				scaleBeginAtZero: true,
+				// 			}
+				// 			]
+				// 		},
+				// 		options: {
+				// 			plugins: {
+				// 				legend: {
+				// 					display: false
+				// 				}
+				// 			},
+				// 			responsive: false
+				// 		}
+				// 	});
+				//
+				// 	func.removeHtml(document.querySelector('.listTable'), html, 'tbody');
+				//
+				// 	if (data.length > 0) {
+				// 		for (var i = 0; i <= data.length - 1; i++) {
+				//
+				// 			let tag = '';
+				// 			if (data[i].tags !== null) {
+				// 				for (var j = 0; j <= data[i].tags.length - 1; j++) {
+				// 					tag += data[i].tags[j] + ', '
+				// 				}
+				// 			}
+				//
+				// 			let digest = data[i].digest.substr(0,15)
+				//
+				// 			html = `<tr>
+				// 							<td id="col0_${i}"><div id="arcoBtn_${i}" style="width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;"></div></td>
+				// 							<td id="col1_${i}"><a class="name" href="${data[i].links[0]}" target='_blank' data-id="${data[i].cve_id}" style="text-decoration: none; color: #008d68;">${data[i].cve_id}</a></td>
+				// 							<td id="col2_${i}" class="left"><a class="repository_name" href="javascript:;" data-id="${data[i].repository_name}" data-name="repository" style="text-decoration: none; color: #008d68;>${data[i].cve_id}">${data[i].repository_name}</a></td>
+				// 							<td id="col3_${i}" class="left"><a id="digest_${i}" class="digest_name" href="javascript:;" data-id="${data[i].digest}" data-name="${data[i].repository_name}" style="text-decoration: none; color: #008d68;>${data[i].cve_id}">digest</a></td>
+				// 							<td id="col4_${i}"></td>
+				// 							<td id="col5_${i}">${data[i].cvss_v3_score}</td>
+				// 							<td id="col6_${i}"><span id="severity_${i}">${data[i].severity}</span></td>
+				// 							<td id="col7_${i}" class="left">${data[i].package}</td>
+				// 							<td id="col8_${i}">${data[i].version}</td>
+				// 							<td id="col9_${i}" class="left"><i class="fa-solid fa-wrench" style="color: #00b92a; margin-right: 7px;"></i>${data[i].fixed_version}</td>
+				// 							</tr><tr><td id="desc_${i}" style="display: none" class="left" colspan="10" name="off">${data[i].desc}</td></tr>`;
+				//
+				// 			func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
+				//
+				// 			document.getElementById("col4_" + i).innerText = tag.slice(0, - 2);
+				// 			document.getElementById("digest_" + i).innerText = digest;
+				//
+				// 			if (data[i].severity === 'High') {
+				// 				document.getElementById("severity_" + i).setAttribute('style',"background-color: #ff8f3d; border-radius: 10px; padding: 0 27px 0px 27px; color: #ffffff;");
+				// 			} else if (data[i].severity === 'Medium') {
+				// 				document.getElementById("severity_" + i).setAttribute('style',"background-color: #ffce66; border-radius: 10px; padding: 0 16px 0px 16px; color: #ffffff;");
+				// 			} else if (data[i].severity === 'Low') {
+				// 				document.getElementById("severity_" + i).setAttribute('style',"background-color: #fff1ad; border-radius: 10px; padding: 0 28px 0px 28px; color: #ffffff;");
+				// 			}
+				//
+				// 		}
+				// 	} else if (data.length === 0) {
+				// 		let html = '<tr><td colspan="10">No Data.</td></tr>';
+				// 		func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
+				// 	}
+				//
+				// 	if (document.getElementById('loading')) {
+				// 		document.getElementById('wrap').removeChild(document.getElementById('loading'));
+				// 	}
+				//
+				// 	document.addEventListener('click', (e) => {
+				// 		for (let i = 0; i <= sessionStorage.getItem('vulnerabilitiesCnt') - 1; i++) {
+				//
+				// 			if (e.target && e.target.id === 'arcoBtn_' + `${i}`) {
+				// 				if (document.getElementById("desc_" + `${i}`).getAttribute('name') === 'off') {
+				// 					document.getElementById("desc_" + `${i}`).setAttribute('style', 'text-align: left; padding-left: 40px;');
+				// 					document.getElementById("desc_" + `${i}`).setAttribute('name', 'on');
+				// 					document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(315deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;');
+				// 					for (let j = 0; j <= 9; j++) {
+				// 						document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'border-bottom: 0px;');
+				// 					}
+				// 				} else if (document.getElementById("desc_" + `${i}`).getAttribute('name') === 'on') {
+				// 					document.getElementById("desc_" + `${i}`).setAttribute('style', 'display: none;');
+				// 					document.getElementById("desc_" + `${i}`).setAttribute('name', 'off')
+				// 					document.getElementById('arcoBtn_' + `${i}`).setAttribute('style', 'width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;');
+				// 					for (let j = 0; j <= 9; j++) {
+				// 						document.getElementById("col" + `${j}` + '_' + `${i}`).setAttribute('style', 'border-bottom: 1px solid #ebebeb;');
+				// 					}
+				// 				}
+				// 			}
+				// 		}
+				// 	});
+				//
+				// 	vulnerabilities.listEvent()
+				//
+				// },
+
+				// drawRepositories(data) {
+				//
+				// 	let totalArtifacts = 0;
+				// 	let totalPulls = 0;
+				//
+				// 	if (data.length > 0) {
+				// 		for (var i = 0; i <= data.length - 1; i++) {
+				//
+				// 			totalArtifacts += data[i].artifact_count;
+				// 			totalPulls += data[i].pull_count;
+				//
+				// 		}
+				// 	}
+				//
+				// 	document.getElementById('total-artifacts').innerText = totalArtifacts
+				// 	document.getElementById('total-pulls').innerText = totalPulls
+				//
+				// 	if (document.getElementById('loading')) {
+				// 		document.getElementById('wrap').removeChild(document.getElementById('loading'));
+				// 	}
+				//
+				// },
 
 				listEvent(){
 					var listAll = document.querySelector('.listTable').querySelectorAll('a');
