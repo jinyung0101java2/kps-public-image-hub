@@ -74,6 +74,8 @@ catalogApi:
   url: http://localhost:8093
 harborApi:
   url: ${HARBOR_API_URI}
+harborDomain:
+  url: ${HARBOR_API_DOMAIN}
 
 ---
 spring:
@@ -91,3 +93,5 @@ catalogApi:
   url: ${CP_PORTAL_CATALOG_API_URI}
 harborApi:
   url: ${HARBOR_API_URI}
+harborDomain:
+  url: ${HARBOR_API_DOMAIN}

@@ -138,9 +138,9 @@
 							document.getElementById("size_id_" + i).innerText = size;
 
 							if (data[i].type === 'IMAGE') {
-								document.getElementById("copy_id_" + i).setAttribute('data-id', 'docker pull ' + func.harborUrl.replace('https://', '') + data[i].repository_name + '@' + data[i].digest)
+								document.getElementById("copy_id_" + i).setAttribute('data-id', 'docker pull ' + func.harborDomain.replace('https://', '') + data[i].repository_name + '@' + data[i].digest)
 							} else if (data[i].type === 'CHART') {
-								document.getElementById("copy_id_" + i).setAttribute('data-id', 'helm pull ' + func.harborUrl.replace('https', 'oci') + data[i].repository_name + ' --version ' + data[i].tags[0].name)
+								document.getElementById("copy_id_" + i).setAttribute('data-id', 'helm pull ' + func.harborDomain.replace('https', 'oci') + data[i].repository_name + ' --version ' + data[i].tags[0].name)
 							}
 
 							if (data[i].scan_overview != null) {

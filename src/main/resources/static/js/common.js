@@ -1,6 +1,7 @@
 
 const func = {
 	harborUrl : URI_REQUEST_HARBOR_API,
+	harborDomain : URI_REQUEST_HARBOR_DOMAIN,
 	url : URI_REQUEST_CP_API,
 	catalogUrl : URI_REQUEST_CATALOG_API,
 	chaosUrl : URI_REQUEST_CHAOS_API,
