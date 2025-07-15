@@ -25,8 +25,8 @@
 								<col width="3%" />
 								<col width="13%" />
 								<col width="10%" />
-								<col width="13%" />
-								<col width="13%" />
+								<col width="10%" />
+								<col width="16%" />
 								<col width="13%" />
 								<col width="15%" />
 							</colgroup>
@@ -118,7 +118,6 @@
 								}
 							}
 
-
 							html = `<tr>
                                         <td style="border-right:1px solid #ebebeb"><input type="checkbox" name="${data[i].digest}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
                                         <td class="left"><img id="digest_img_${i}" alt="artifact image" style="width: 8%; margin-right: 5px;"><a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}" style="text-decoration: none; color: #019b72;"></a></td>
@@ -146,16 +145,19 @@
 							if (data[i].scan_overview != null) {
 								let vulnerabilitiesData = func.vulnerabilitiesData(changeScanOverview3)
 								if (vulnerabilitiesData.severity === 'High') {
-									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #ff8f3d; float: left; margin-left: 10px; width: 50px; color: #ffffff; cursor: pointer;')
+									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #ff8f3d; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer;')
 									document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: High';
+									document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -177px;')
 									// document.getElementById("tooltip_chart_" + i).innerText = myChart;
 								} else if (vulnerabilitiesData.severity === 'Medium') {
-									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #ffce66; float: left; margin-left: 10px; width: 50px; color: #ffffff; cursor: pointer;')
+									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #ffce66; float: left; margin-left: 20px; width: 65px; color: #ffffff; cursor: pointer;')
 									document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Medium';
+									document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -207px;')
 									// document.getElementById("tooltip_chart_" + i).innerText = myChart;
 								} else if (vulnerabilitiesData.severity === 'Low') {
-									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #fff1ad; float: left; margin-left: 10px; width: 50px; color: #ffffff; cursor: pointer;')
+									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #fff1ad; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer;')
 									document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Low';
+									document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -175px;')
 									// document.getElementById("tooltip_chart_" + i).innerText = myChart;
 								}
 								document.getElementById("scan_overview_severity_id_" + i).innerText = vulnerabilitiesData.severity;

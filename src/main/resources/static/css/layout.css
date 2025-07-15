@@ -162,7 +162,7 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 
 
 /*------------------------ Content -------------------------*/
-#container #content {flex:1; width:1700px;}
+#container #content {flex:1; width:100%;}
 
 /*------------------------ view -------------------------*/
 .view {background:linear-gradient( to right, #15181d, #292d37 2.5%); padding:111px 71px 66px 71px;}
@@ -790,13 +790,13 @@ header > div > div > div > div > div ul li a.on {background-color:#ff7a0f; color
 #out_a {margin: -80px 0 0 0;}
 .tdbg {background-color: #f7f7f7; !important; }
 
-.pushed-images {border: 1px solid #d3d3d3;	border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px;	height: 124px; margin-left: 10px; color: #47494d; font-size: 16px; letter-spacing: -0.2px;}
+.pushed-images {border: 1px solid #d3d3d3;	border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 220px;	height: 145px; margin-left: 10px; color: #47494d; font-size: 16px; letter-spacing: -0.2px;}
 .pushed-images > h3.stat-title {margin-bottom: 35px}
 .pushed-images > div.resource-box {display: flex; margin-top: 5px; height: 60px;}
 /*.pushed-images > div.time-box {float: right; margin: 50px 0 0 100px; position: fixed;}*/
 /*.pushed-images > div.time-box > div.time {margin: 10px}*/
 /*.pushed-images > div.time-box > div.time {float: right; margin: 15px 0 0 0; position: fixed;}*/
-.pushed-images > div.time-box > div.time {float: right; margin: 15px 0 0 0;}
+.pushed-images > div.time-box > div.time {float: right; margin: 40px 0 0 0;}
 
 .statistics {border: 1px solid #d3d3d3;	border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 198px;	height: 124px; margin-left: 10px;}
 .statistics > h3.stat-title {margin-bottom: 35px}
@@ -832,8 +832,8 @@ header > div > div > div > div > div ul li a.on {background-color:#ff7a0f; color
 
 /*.tooltip-container {position: relative; display: flex; place-content: center; margin-top: 100px;}*/
 .tooltip_container {position: relative; place-content: center; margin-top: 100px;}
-p.tooltip-text {display: none; position: absolute; top: -38px; z-index: 1; background: #000000; padding: 8px; font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: 0px}
-p.tooltip-text:before {content: ""; position: absolute; top: 100%; left: 18%; margin-left: -8px; border: 8px solid transparent; border-top: 8px solid #000000;}
+p.tooltip-text {display: none; position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px; font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -212px}
+p.tooltip-text:before {content: ""; position: absolute; top: 0%; left: 100%; margin-left: -8px; border: 8px solid transparent; border-top: 8px solid #000000;}
 div.tooltip-text {display: none; position: absolute; top: 35px; z-index: 1; background: #000000; padding: 20px; font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: 0px}
 div.tooltip-text:before {content: ""; position: absolute; top: -7%; left: 80%; margin-left: -8px; border: 8px solid transparent; border-bottom: 8px solid #000000;}
 @keyframes fadeIn {from {opacity: 0;} to {opacity: 1;}}
