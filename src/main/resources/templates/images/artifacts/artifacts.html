@@ -94,9 +94,7 @@
 				drawArtifacts(data) {
 
 					let html;
-					let changeScanOverview3;
-
-					sessionStorage.setItem('artifactsCnt', data.length);
+					let changeScanOverview3 = [];
 					if (data.length > 0) {
 						for (var i = 0; i <= data.length - 1; i++) {
 
@@ -104,8 +102,28 @@
 								let originScanOverview = JSON.stringify(data[i].scan_overview)
 								let changeScanOverview1 = originScanOverview.replace('{"application/vnd.security.vulnerability.report; version=1.1":','')
 								let changeScanOverview2 = changeScanOverview1.slice(0, -1)
-								changeScanOverview3 = JSON.parse(changeScanOverview2)
+								let obj = JSON.parse(changeScanOverview2)
+								obj["id"] = data[i].id
+								changeScanOverview3.push(obj)
+								console.log('changeScanOverview3::: ' + JSON.stringify(changeScanOverview3))
 							}
+						}
+					}
+
+					sessionStorage.setItem('artifactsCnt', data.length);
+					if (data.length > 0) {
+						for (var i = 0; i <= data.length - 1; i++) {
+
+							// if (data[i].scan_overview != null) {
+							// 	let originScanOverview = JSON.stringify(data[i].scan_overview)
+							// 	let changeScanOverview1 = originScanOverview.replace('{"application/vnd.security.vulnerability.report; version=1.1":','')
+							// 	let changeScanOverview2 = changeScanOverview1.slice(0, -1)
+							// 	let obj = JSON.parse(changeScanOverview2)
+							// 	obj["id"] = data[i].id
+							// 	//console.log('changeScanOverview2::: ' + JSON.stringify(changeScanOverview2))
+							// 	changeScanOverview3.push(obj)
+							// 	console.log('changeScanOverview3::: ' + JSON.stringify(changeScanOverview3))
+							// }
 
 							let digest = data[i].digest.substr(0,15)
 							let push_time = func.changeTime(data[i].push_time)
@@ -125,10 +143,15 @@
                                         <td id="tag_id_${i}"></td>
                                         <td><i class="fa-solid fa-circle-xmark" style="color: #ff5353"></i></td>
                                         <td id="size_id_${i}"></td>
-                                        <td class="tooltip_container"><p id="tooltip_text_${i}" class="tooltip-text"></p><div id="scan_overview_severity_id_${i}"></div><div id="scan_overview_id_${i}"></div><div id="tooltip_chart_${i}" class="tooltip-text">'Sample(개발 중)'<canvas id="myChart" width="170px" height="170px"></canvas></div></td>
+                                        <td class="tooltip_container"><p id="tooltip_text_${i}" class="tooltip-text"></p><div id="scan_overview_severity_id_${i}"></div><div id="scan_overview_id_${i}"></div>
+                                        <div id="tooltip_chart_${i}" class="tooltip-text" data-id="${data[i].id}">Vulnerability severity: <span id="vul_type_${i}"></span><canvas id="myChart_${i}" width="200px" height="100px"></canvas>
+										<ul><li>Scanned by: <span id="scan_${i}"></span>@<span id="ver_${i}"></span></li><li id="dur_${i}"></li><li id="ctime_${i}"></li></ul>
+                                        </div></td>
                                         <td>${data[i].pull_count}</td>
                                         <td id="push_time_${i}">push_time</td>
                                     </tr>`;
+
+
 							func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 
 							document.getElementById("digest_name_" + i).innerText = digest;
@@ -142,50 +165,55 @@
 								document.getElementById("copy_id_" + i).setAttribute('data-id', 'helm pull ' + func.harborDomain.replace('https', 'oci') + data[i].repository_name + ' --version ' + data[i].tags[0].name)
 							}
 
-							if (data[i].scan_overview != null) {
-								let vulnerabilitiesData = func.vulnerabilitiesData(changeScanOverview3)
-								if (vulnerabilitiesData.severity === 'High') {
-									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #ff8f3d; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer;')
-									document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: High';
-									document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -177px;')
-									// document.getElementById("tooltip_chart_" + i).innerText = myChart;
-								} else if (vulnerabilitiesData.severity === 'Medium') {
-									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #ffce66; float: left; margin-left: 20px; width: 65px; color: #ffffff; cursor: pointer;')
-									document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Medium';
-									document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -207px;')
-									// document.getElementById("tooltip_chart_" + i).innerText = myChart;
-								} else if (vulnerabilitiesData.severity === 'Low') {
-									document.getElementById("scan_overview_severity_id_" + i).setAttribute('style','border-radius: 10px; background: #fff1ad; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer;')
-									document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Low';
-									document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -175px;')
-									// document.getElementById("tooltip_chart_" + i).innerText = myChart;
-								}
-								document.getElementById("scan_overview_severity_id_" + i).innerText = vulnerabilitiesData.severity;
-								document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.total;
-								document.getElementById("scan_overview_id_" + i).setAttribute('style','cursor: pointer;')
-								// document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.severity + "  " + vulnerabilitiesData.total;
-								sessionStorage.setItem('additions', 'Y');
+							for (var k = 0; k <= changeScanOverview3.length - 1; k++) {
+								let vulnerabilitiesData = func.vulnerabilitiesData(changeScanOverview3[k])
+								if (data[i].scan_overview != null && data[i].id === vulnerabilitiesData.id) {
 
-								if (data[i].type === 'IMAGE') {
-									document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-image.png')
-									document.getElementById("digest_img_" + i).setAttribute('style','width: 10%; margin-right: 5px;')
-								} else if (data[i].type === 'CHART') {
-									document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-chart.png')
-									document.getElementById("digest_img_" + i).setAttribute('style','width: 8%; margin-right: 5px;')
-								}
+									if (vulnerabilitiesData.severity === 'High') {
+										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #ff8f3d; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer;')
+										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: High';
+										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -177px;')
+										document.getElementById("vul_type_" + i).innerText = 'High';
+									} else if (vulnerabilitiesData.severity === 'Medium') {
+										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #ffce66; float: left; margin-left: 20px; width: 65px; color: #ffffff; cursor: pointer;')
+										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Medium';
+										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -207px;')
+										document.getElementById("vul_type_" + i).innerText = 'Medium';
+									} else if (vulnerabilitiesData.severity === 'Low') {
+										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #fff1ad; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer;')
+										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Low';
+										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -175px;')
+										document.getElementById("vul_type_" + i).innerText = 'Low';
+									}
+									document.getElementById("scan_overview_severity_id_" + i).innerText = vulnerabilitiesData.severity;
+									document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.total;
+									document.getElementById("scan_overview_id_" + i).setAttribute('style', 'cursor: pointer;')
+									// document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.severity + "  " + vulnerabilitiesData.total;
+									sessionStorage.setItem('additions', 'Y');
 
-							} else {
+									if (data[i].type === 'IMAGE') {
+										document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-image.png')
+										document.getElementById("digest_img_" + i).setAttribute('style', 'width: 10%; margin-right: 5px;')
+									} else if (data[i].type === 'CHART') {
+										document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-chart.png')
+										document.getElementById("digest_img_" + i).setAttribute('style', 'width: 8%; margin-right: 5px;')
+									}
+
+								}
+							}
+
+							if (data[i].scan_overview == null) {
 								if (data[i].type === 'IMAGE') {
 									document.getElementById("scan_overview_id_" + i).innerText = "Not Scanned";
-									document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #ff5353; width: 100px; height: 23px; margin: 0 auto;')
-									document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-image.png')
-									document.getElementById("digest_img_" + i).setAttribute('style','width: 10%; margin-right: 5px;')
+									document.getElementById("scan_overview_id_" + i).setAttribute('style', 'text-align: center; border-radius: 15px; border: 2px solid #ff5353; width: 100px; height: 23px; margin: 0 auto;')
+									document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-image.png')
+									document.getElementById("digest_img_" + i).setAttribute('style', 'width: 10%; margin-right: 5px;')
 									sessionStorage.setItem('additions', 'N');
 								} else if (data[i].type === 'CHART') {
 									document.getElementById("scan_overview_id_" + i).innerText = "Unsupported";
-									document.getElementById("scan_overview_id_" + i).setAttribute('style','text-align: center; border-radius: 15px; border: 2px solid #818894ad; width: 100px; height: 23px; margin: 0 auto;')
-									document.getElementById("digest_img_" + i).setAttribute('src','/img/artifact-chart.png')
-									document.getElementById("digest_img_" + i).setAttribute('style','width: 8%; margin-right: 5px;')
+									document.getElementById("scan_overview_id_" + i).setAttribute('style', 'text-align: center; border-radius: 15px; border: 2px solid #818894ad; width: 100px; height: 23px; margin: 0 auto;')
+									document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-chart.png')
+									document.getElementById("digest_img_" + i).setAttribute('style', 'width: 8%; margin-right: 5px;')
 									sessionStorage.setItem('additions', 'N');
 								}
 							}
@@ -214,39 +242,45 @@
 								}, false);
 							}
 
+							const ctx = document.getElementById('myChart_' + i).getContext('2d');
+							new Chart(ctx, {
+								type: 'bar',
+								data: {
+									labels: ['High', 'Medium', 'Low'],
+									datasets: [{
+										data: [20, 30, 70],
+										backgroundColor: [
+											'#ff8f3d',
+											'#ffce66',
+											'#fff1ad'
+										],
+										borderWidth: 0,
+										scaleBeginAtZero: true,
+									}
+									]
+								},
+								options: {
+									indexAxis: 'y',
+									scales: {
+										x: {
+											beginAtZero: true
+										}
+									},
+									barPercentage: 0.6,
+									plugins: {
+										legend: {
+											display: false
+										}
+									},
+									responsive: false
+								}
+							});
+
 						}
 					} else if (data.length === 0) {
 						let html = '<tr><td colspan="9">No Data.</td></tr>';
 						func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 					}
-
-					const ctx = document.getElementById('myChart').getContext('2d');
-					let myChart = new Chart(ctx, {
-						type: 'bar',
-						data: {
-							labels: ['High', 'Medium', 'Low'],
-							datasets: [{
-								data: [20, 30, 70],
-								backgroundColor: [
-									'#ff8f3d',
-									'#ffce66',
-									'#fff1ad'
-								],
-								borderWidth: 0,
-								scaleBeginAtZero: true,
-							}
-							]
-						},
-						options: {
-							plugins: {
-								legend: {
-									display: false
-								}
-							},
-							responsive: false
-						}
-					});
-
 
 					if (document.getElementById('loading')) {
 						document.getElementById('wrap').removeChild(document.getElementById('loading'));

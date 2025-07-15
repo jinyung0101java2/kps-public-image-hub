@@ -1299,10 +1299,12 @@ const func = {
 		let severity = data.severity;
 		let total = data.summary.total;
 		let fixable = data.summary.fixable;
+		let id = data.id;
 
 		return {
 			"severity" : severity,
-			"total" : total + " Total - " + fixable + " Fixable"
+			"total" : total + " Total - " + fixable + " Fixable",
+			"id" : id
 		}
 
 	},
