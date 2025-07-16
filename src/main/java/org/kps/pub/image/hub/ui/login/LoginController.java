@@ -34,13 +34,11 @@ public class LoginController {
     LocaleResolver localeResolver;
 
     private final LoginService loginService;
-    private final ProviderService providerService;
     private final SecurityUtils securityUtils;
 
     @Autowired
-    public LoginController(LoginService loginService, ProviderService providerService, SecurityUtils securityUtils) {
+    public LoginController(LoginService loginService, SecurityUtils securityUtils) {
         this.loginService = loginService;
-        this.providerService = providerService;
         this.securityUtils = securityUtils;
     }
 
@@ -54,21 +52,6 @@ public class LoginController {
     @GetMapping(value = ConstantsUrl.URI_CP_GET_USER_LOGIN_DATA)
     @ResponseBody
     public UsersLoginMetaData getAdminLoginData() {
-        UsersLoginMetaData usersLoginMetaData = loginService.getAuthenticationUserMetaData();
-        return usersLoginMetaData;
-    }
-
-
-    /**
-     * User Refresh Token 조회
-     *
-     * @return the usersLoginMetaData
-     */
-    @Operation(summary = " User Refresh Token 조회 (Get User Refresh Token)")
-    @GetMapping(value = ConstantsUrl.URI_CP_REFRESH_TOKEN)
-    @ResponseBody
-    public UsersLoginMetaData getReFreshToken() {
-        providerService.getRefreshToken();
         UsersLoginMetaData usersLoginMetaData = loginService.getAuthenticationUserMetaData();
         return usersLoginMetaData;
     }

@@ -23,7 +23,7 @@ public class LoginService {
      *
      * @return the UsersLoginMetaData
      */
-    public UsersLoginMetaData getAuthenticationUserMetaData() {//삭제
+    public UsersLoginMetaData getAuthenticationUserMetaData() {
         UsersLoginMetaData usersLoginMetaData = null;
         try {
             PortalOAuth2User portalOAuth2User  = (PortalOAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -41,21 +41,13 @@ public class LoginService {
      *
      * @param attributes the OAuthAttributes
      */
-    public UsersLoginMetaData setAuthDetailsLoginMetaData(OAuthAttributes attributes) {//삭제
+    public UsersLoginMetaData setAuthDetailsLoginMetaData(OAuthAttributes attributes) {
         UsersLoginMetaData usersLoginMetaData = new UsersLoginMetaData();
-//        usersLoginMetaData.setAccessToken(authenticationResponse.getToken());
-//        usersLoginMetaData.setClusterId(authenticationResponse.getClusterId());
         usersLoginMetaData.setUserId(attributes.getUsername());
         usersLoginMetaData.setUserAuthId(attributes.getSub());
-//        usersLoginMetaData.setUserType(authenticationResponse.getUserType());
-//        usersLoginMetaData.setIsSuperAdmin(authenticationResponse.getIsSuperAdmin());
-//        usersLoginMetaData.setSelectedNamespace("");
-//        usersLoginMetaData.setUserMetaData("");
-//        usersLoginMetaData.setUserMetaDataList(null);
         usersLoginMetaData.setActive(Constants.CHECK_Y);
         return usersLoginMetaData;
     }
-
 
     /**
      * 현재 로그인된 Users Details MetaData 업데이트 (Update Login Meta-Information of currently logged in users)

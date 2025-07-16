@@ -21,9 +21,6 @@ public class PropertyService {
     @Value("${private.repository.url}")
     private String privateRepositoryUrl;
 
-    @Value("${keycloak.superAdminRole}")
-    private String keycloakSuperAdminRole;
-
     @Value("${spring.security.oauth2.client.registration.keycloak.client-id}")
     private String keycloakClientId;
 

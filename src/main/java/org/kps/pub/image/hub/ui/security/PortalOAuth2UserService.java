@@ -1,14 +1,8 @@
 package org.kps.pub.image.hub.ui.security;
 
 import lombok.RequiredArgsConstructor;
-import org.kps.pub.image.hub.ui.common.CommonUtils;
-import org.kps.pub.image.hub.ui.common.Constants;
 import org.kps.pub.image.hub.ui.common.PropertyService;
-import org.kps.pub.image.hub.ui.common.model.ResultStatus;
 import org.kps.pub.image.hub.ui.login.LoginService;
-import org.kps.pub.image.hub.ui.login.ProviderService;
-import org.kps.pub.image.hub.ui.login.model.AuthenticationResponse;
-import org.kps.pub.image.hub.ui.login.model.Users;
 import org.kps.pub.image.hub.ui.login.model.UsersLoginMetaData;
 import org.kps.pub.image.hub.ui.security.model.OAuthAttributes;
 import org.kps.pub.image.hub.ui.security.model.PortalOAuth2User;
@@ -30,16 +24,8 @@ import java.util.List;
 @Service
 public class PortalOAuth2UserService implements OAuth2UserService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PortalOAuth2UserService.class);
-
-    @Autowired
-    private ProviderService providerService;
-
     @Autowired
     private LoginService loginService;
-
-    @Autowired
-    private PropertyService propertyService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
