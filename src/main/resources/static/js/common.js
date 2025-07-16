@@ -14,24 +14,13 @@ const func = {
 	depth2 : '',
 
 	init(depth1, depth2){
+		console.log(depth1)
+		console.log(depth2)
 		func.depth1 = depth1;
 		func.depth2 = depth2;
 
 		// Locale Language 조회
 		func.getLocaleLang();
-
-		// if(IS_GLOBAL == false) {
-		// 	func.loadData('GET', `${func.url}users/clustersList?isGlobal=${IS_GLOBAL}`, 'application/json', func.clusters);
-		// }
-		// else {
-		// 	document.getElementById('clusterTitleDiv').style.display="none";
-		// 	document.getElementById('nameSpaceTitleDiv').style.display="none";
-		//
-		// 	if(sessionStorage.getItem('cluster') == null) {
-		// 		func.loadData('GET', `${func.url}users/clustersList?isGlobal=${IS_GLOBAL}`, 'application/json', func.clusters);
-		// 	}
-		// }
-
 
 		// navigation 초기 선택 설정
 		if(depth1.length >= 0){
@@ -103,96 +92,6 @@ const func = {
 	logout(){
 		sessionStorage.clear();
 		movePage(URI_CP_LOGOUT);
-	},
-
-	clusters(data){
-		var html ='';
-		for(
-			var i=0; i<=data.items.length-1; i++){
-			html += `<li><a href="javascript:;" data-name="${data.items[i].clusterId}" data-type="${data.items[i].clusterType}">${data.items[i].clusterName}</a></li>`;
-		};
-
-		document.getElementById("clusterListUl").innerHTML = html;
-
-		/////////////////////
-		if(sessionStorage.getItem('cluster') != null){
-			document.querySelector('.clusterTop').innerText = sessionStorage.getItem('clusterName');
-		} else {
-			document.querySelector('.clusterTop').innerText = data.items[0].clusterName;
-			sessionStorage.setItem('cluster', data.items[0].clusterId);
-			sessionStorage.setItem('clusterName', data.items[0].clusterName);
-			sessionStorage.setItem('clusterType', data.items[0].clusterType);
-		};
-
-		var name = document.querySelector('.clusterUl').querySelectorAll('a');
-		func.setUserAuthority(sessionStorage.getItem('cluster'), data.items);
-
-		//cluster click event
-		for(var i=0 ; i<name.length; i++){
-			name[i].addEventListener('click', (e) => {
-				sessionStorage.setItem('cluster' , e.target.getAttribute('data-name'));
-				sessionStorage.setItem('clusterType' , e.target.getAttribute('data-type'));
-				sessionStorage.setItem('clusterName', e.target.innerText);
-				document.querySelector('.clusterTop').innerText = e.target.innerText;
-				sessionStorage.removeItem('nameSpace');
-				func.setUserAuthority(sessionStorage.getItem('cluster'), data.items);
-				IS_RELOAD = true;
-				func.loadData('GET', `${func.url}clusters/${sessionStorage.getItem('cluster')}/users/namespacesList`, 'application/json', func.namespaces);
-			}, false);
-		};
-
-		func.loadData('GET', `${func.url}clusters/${sessionStorage.getItem('cluster')}/users/namespacesList`, 'application/json', func.namespaces);
-
-	},
-
-	namespaces(data){
-		func.nameData = data;
-
-		var html = '';
-		if(document.querySelector('.nameSpace')){
-			for(var i=0; i<=data.items.length-1; i++){
-				var namespace = data.items[i].cpNamespace;
-				html += `<li><a href="javascript:;" data-name="${namespace}">${namespace}</a></li>`;
-			};
-
-			document.getElementById("namespaceListUl").innerHTML = html;
-
-			if(sessionStorage.getItem('nameSpace') != null){
-				document.querySelector('.nameTop').innerText = sessionStorage.getItem('nameSpace');
-			} else {
-				document.querySelector('.nameTop').innerText =  data.items[0].cpNamespace;
-				sessionStorage.setItem('nameSpace', data.items[0].cpNamespace);
-				sessionStorage.setItem('roleSetCode', data.items[0].roleSetCode);
-			};
-
-			var name = document.querySelector('.nameSpace').querySelectorAll('a');
-
-			for(var i=0 ; i<name.length; i++){
-				name[i].addEventListener('click', (e) => {
-					sessionStorage.setItem('nameSpace' , e.target.getAttribute('data-name'));
-					document.querySelector('.nameTop').innerText = e.target.innerText;
-					if(IS_NAMELOAD) {
-						func.loadData('GET', null, 'application/json', func.nameLoad);
-					}
-					else {
-						movePage(URI_CP_INDEX_URL);
-					}
-				}, false);
-
-			};
-
-			if(IS_RELOAD) {
-				if(IS_NAMELOAD) {
-					func.loadData('GET', null, 'application/json', func.nameLoad);
-				}
-				else {
-					movePage(URI_CP_INDEX_URL);
-				}
-			}
-			if(IS_INDEX) {
-				func.loadData('GET', null, 'application/json', func.nameLoad);
-			}
-		};
 	},
 
 	proCreate(title, btnName){
@@ -297,9 +196,9 @@ const func = {
 						</fieldset>
 					</dd>
 				</dl>`;
-		   if(IS_TRAFFIC_POLICY_MANAGED) {
-			   createYamlAreaHeight = "360px";
-			   html+=`<dl style="height:25px; margin:15px 0 -15px 0;">
+		if(IS_TRAFFIC_POLICY_MANAGED) {
+			createYamlAreaHeight = "360px";
+			html+=`<dl style="height:25px; margin:15px 0 -15px 0;">
 						<dt></dt>
 						<dd style="text-align:left; display:flex;">
 							<label class="container" style="font-size:14px; width:auto;">${MSG_ALLOW_TRAFFIC_BETWEEN_NAMESPACES_CHK}
@@ -312,8 +211,8 @@ const func = {
 							</div>
 						</dd>
 					  </dl>`;
-		   }
-				html +=`<dl style="margin-top: 20px;">
+		}
+		html +=`<dl style="margin-top: 20px;">
 							<dt>YAML</dt>
 							<dd class="createYamlArea" style="text-align: left;">
 								<textarea class="codemirror-resource-create-textarea"></textarea>
@@ -355,9 +254,9 @@ const func = {
 		document.getElementById('modal').querySelector('.confirm').addEventListener('click', (e) => {
 			var createYaml = document.querySelector(".createYamlArea > .CodeMirror").CodeMirror.getValue();
 			var allowTraffic = false;
-				if(document.getElementById('allowTrafficChk') != null) {
-					allowTraffic = document.getElementById('allowTrafficChk').checked;
-				}
+			if(document.getElementById('allowTrafficChk') != null) {
+				allowTraffic = document.getElementById('allowTrafficChk').checked;
+			}
 			sessionStorage.setItem('nameSpace' , document.getElementById('createName').value);
 			document.querySelector('.nameTop').innerHTML = sessionStorage.getItem('nameSpace');
 			document.getElementById('wrap').removeChild(document.getElementById('modal'));
@@ -429,40 +328,6 @@ const func = {
 
 			func.saveData('PUT', `${func.url}clusters/${sessionStorage.getItem('cluster')}/namespaces/${sessionStorage.getItem('nameSpace')}/${document.getElementById('modify').getAttribute('data-role')}/${sessionStorage.getItem('commonName')}`, sendData, true, 'application/json', func.refresh);
 		}, false);
-	},
-
-	// 로그인 체크 ////////////////////////////////////////////////////////////////
-	loginCheck(){
-		var request = new XMLHttpRequest();
-
-		request.open('GET', URI_CP_GET_USER_LOGIN_DATA, false);
-		request.setRequestHeader('Content-type', 'application/json');
-
-		request.onreadystatechange = () => {
-			if (request.readyState === XMLHttpRequest.DONE){
-				if(request.status === 200){
-					if(JSON.parse(request.responseText).httpStatusCode != 401){
-
-						if(JSON.parse(request.responseText).accessToken == '-') {
-							func.logout();
-							return false;
-						}
-
-						sessionStorage.setItem('user' , JSON.parse(request.responseText).userId);
-						sessionStorage.setItem('userType' , JSON.parse(request.responseText).userType);
-						sessionStorage.setItem('token' , 'Bearer ' + JSON.parse(request.responseText).accessToken);
-
-
-					} else {
-						func.alertPopup('ERROR', JSON.parse(request.responseText).detailMessage, true, MSG_CLOSE, func.refresh);
-					}
-				} else {
-					func.alertPopup('ERROR', JSON.parse(request.responseText).detailMessage, true, MSG_CLOSE);
-				};
-			};
-		};
-
-		request.send();
 	},
 
 	// Refresh 토큰 조회 ////////////////////////////////////////////////////////////////
@@ -548,9 +413,6 @@ const func = {
 	// (전송타입, url, 콜백함수)
 	/////////////////////////////////////////////////////////////////////////////////////
 	loadData(method, url, header, callbackFunction, list){
-		if(sessionStorage.getItem('token') == null){
-			func.loginCheck();
-		};
 
 		if(url == null) {
 			callbackFunction();
@@ -579,7 +441,6 @@ const func = {
 							return func.loadData(method, url, header, callbackFunction, list);
 						}
 						else if(resultMessage == 'TOKEN_FAILED') {
-							func.loginCheck();
 							return func.loadData(method, url, header, callbackFunction, list);
 						}
 						else if(resultCode != RESULT_STATUS_SUCCESS) {
@@ -593,7 +454,6 @@ const func = {
 						}
 					} else if(JSON.parse(request.responseText).httpStatusCode === 500){
 						sessionStorage.clear();
-						func.loginCheck();
 					};
 				};
 			};
@@ -601,79 +461,17 @@ const func = {
 			request.send(); },0);
 	},
 
-	loadHubData(method, url, header, callbackFunction, list){
-		if(sessionStorage.getItem('token') == null){
-			func.loginCheck();
-		};
-
-		if(url == null) {
-			callbackFunction();
-			return false;
-		}
-
-		var request = new XMLHttpRequest();
-
-		setTimeout(function() {
-			request.open(method, url, false);
-			request.setRequestHeader('Content-type', header);
-			request.setRequestHeader('Authorization', sessionStorage.getItem('accessToken'));
-			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
-			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
-
-
-			request.onreadystatechange = () => {
-				if (request.readyState === XMLHttpRequest.DONE){
-					if(request.status === 200 && request.responseText != '') {
-						// var resultMessage = JSON.parse(request.responseText).resultMessage;
-						// var resultCode =  JSON.parse(request.responseText).resultCode;
-						// var detailMessage = JSON.parse(request.responseText).detailMessage;
-						//토큰 만료 검사
-						/*if( resultMessage == 'TOKEN_EXPIRED') {
-							func.refreshToken();
-							return func.loadData(method, url, header, callbackFunction, list);
-						}
-						else if(resultMessage == 'TOKEN_FAILED') {
-							func.loginCheck();
-							return func.loadData(method, url, header, callbackFunction, list);
-						}
-						else if(resultCode != RESULT_STATUS_SUCCESS) {
-							if(document.getElementById('loading')){
-								document.getElementById('wrap').removeChild(document.getElementById('loading'));
-							};
-							func.alertPopup('ERROR', detailMessage, true, MSG_CONFIRM, 'closed');
-						}
-						else {
-							callbackFunction(JSON.parse(request.responseText), list);
-						}*/
-						// callbackFunction(JSON.parse(request.responseText), list);
-					} else if(JSON.parse(request.responseText).httpStatusCode === 500){
-						sessionStorage.clear();
-						func.loginCheck();
-					};
-				};
-			};
-
-		request.send(); },0);
-	},
-
 	loadHarborData(method, url, header, callbackFunction, list){
-		if(sessionStorage.getItem('token') == null){
-			func.loginCheck();
-		};
 
 		if(url == null) {
 			callbackFunction();
 			return false;
 		}
-
-		let credential = this.encodeBase64()
-
 		var request = new XMLHttpRequest();
 
 		setTimeout(function (name, value) {
 			request.open(method, url, false);
 			request.setRequestHeader('Content-type', header);
-			// request.setRequestHeader('Authorization','Basic ' + credential);
 			request.setRequestHeader('Authorization', sessionStorage.getItem('accessToken'));
 			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
 			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
@@ -681,49 +479,10 @@ const func = {
 			request.onreadystatechange = async () => {
 				if (request.readyState === XMLHttpRequest.DONE) {
 					if (request.status === 200 && request.responseText != '') {
-						var resultMessage = JSON.parse(request.responseText).resultMessage;
-						var resultCode = JSON.parse(request.responseText).resultCode;
-						var detailMessage = JSON.parse(request.responseText).detailMessage;
-						//토큰 만료 검사
-						/*if( resultMessage == 'TOKEN_EXPIRED') {
-							func.refreshToken();
-							return func.loadData(method, url, header, callbackFunction, list);
-						}
-						else if(resultMessage == 'TOKEN_FAILED') {
-							func.loginCheck();
-							return func.loadData(method, url, header, callbackFunction, list);
-						}
-						else if(resultCode != RESULT_STATUS_SUCCESS) {
-							if(document.getElementById('loading')){
-								document.getElementById('wrap').removeChild(document.getElementById('loading'));
-							};
-							func.alertPopup('ERROR', detailMessage, true, MSG_CONFIRM, 'closed');
-						}
-						else {
-							callbackFunction(JSON.parse(request.responseText), list);
-						}*/
 						callbackFunction(JSON.parse(request.responseText), list);
-						// console.log(JSON.parse(request.responseText))
-						// console.log(request.getAllResponseHeaders())
-
-						// console.log('X-Total-Count:::' + request.getResponseHeader('x-total-count'))
-						// console.log('Link:::' + request.getResponseHeader('link'))
-						//
-						// this.totalCnt.link = request.getResponseHeader('link')
-						// this.totalCnt.count = request.getResponseHeader('x-total-count')
-
-
-						/*func.totalCnt = {
-							'link': request.getResponseHeader('link'),
-							'count': request.getResponseHeader('x-total-count')
-						};*/
-						// totalCnt[link] = request.getResponseHeader('link')
-						// totalCnt[count] = request.getResponseHeader('x-total-count')
 
 					} else if (JSON.parse(request.responseText).httpStatusCode === 500) {
-						console.log("500")
 						sessionStorage.clear();
-						func.loginCheck();
 					};
 				};
 			};
@@ -732,23 +491,16 @@ const func = {
 	},
 
 	loadCveData(method, url, header, callbackFunction, list){
-		if(sessionStorage.getItem('token') == null){
-			func.loginCheck();
-		};
 
 		if(url == null) {
 			callbackFunction();
 			return false;
 		}
-
-		let credential = this.encodeBase64()
-
 		var request = new XMLHttpRequest();
 
 		setTimeout(function (name, value) {
 			request.open(method, url, false);
 			request.setRequestHeader('Content-type', header);
-			// request.setRequestHeader('Authorization','Basic ' + credential);
 			request.setRequestHeader('Authorization', sessionStorage.getItem('accessToken'));
 			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
 			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
@@ -756,116 +508,19 @@ const func = {
 			request.onreadystatechange = async () => {
 				if (request.readyState === XMLHttpRequest.DONE) {
 					if (request.status === 200 && request.responseText != '') {
-						var resultMessage = JSON.parse(request.responseText).resultMessage;
-						var resultCode = JSON.parse(request.responseText).resultCode;
-						var detailMessage = JSON.parse(request.responseText).detailMessage;
-						//토큰 만료 검사
-						/*if( resultMessage == 'TOKEN_EXPIRED') {
-							func.refreshToken();
-							return func.loadData(method, url, header, callbackFunction, list);
-						}
-						else if(resultMessage == 'TOKEN_FAILED') {
-							func.loginCheck();
-							return func.loadData(method, url, header, callbackFunction, list);
-						}
-						else if(resultCode != RESULT_STATUS_SUCCESS) {
-							if(document.getElementById('loading')){
-								document.getElementById('wrap').removeChild(document.getElementById('loading'));
-							};
-							func.alertPopup('ERROR', detailMessage, true, MSG_CONFIRM, 'closed');
-						}
-						else {
-							callbackFunction(JSON.parse(request.responseText), list);
-						}*/
-						// console.log(JSON.parse(request.responseText))
-						// console.log(request.getAllResponseHeaders())
-
-						// console.log('X-Total-Count:::' + request.getResponseHeader('x-total-count'))
-						// console.log('Link:::' + request.getResponseHeader('link'))
-						//
-						// this.totalCnt.link = request.getResponseHeader('link')
-						// this.totalCnt.count = request.getResponseHeader('x-total-count')
 
 						if (url.includes('security/vul?')) {
 							sessionStorage.setItem('cveCnt', request.getResponseHeader('x-total-count'))
 							func.cveCnt = request.getResponseHeader('x-total-count');
 						}
 
-
-						/*func.totalCnt = {
-							'link': request.getResponseHeader('link'),
-							'count': request.getResponseHeader('x-total-count')
-						};*/
-						// totalCnt[link] = request.getResponseHeader('link')
-						// totalCnt[count] = request.getResponseHeader('x-total-count')
-
 					} else if (JSON.parse(request.responseText).httpStatusCode === 500) {
-						console.log("500")
 						sessionStorage.clear();
-						func.loginCheck();
 					};
 				};
 			};
 
 			request.send(); },0);
-	},
-
-	/////////////////////////////////////////////////////////////////////////////////////
-	// 상태 데이터 로드 - statusLoadData(method, url, callbackFunction)
-	// (전송타입, url, 콜백함수)
-	/////////////////////////////////////////////////////////////////////////////////////
-	statusLoadData(method, url, header, callbackFunction, list){
-		if(sessionStorage.getItem('token') == null){
-			func.loginCheck();
-		};
-
-		if(url == null) {
-			callbackFunction();
-			return false;
-		}
-
-		var request = new XMLHttpRequest();
-
-		setTimeout(function() {
-			request.open(method, url, false);
-			request.setRequestHeader('Content-type', header);
-			request.setRequestHeader('Authorization', sessionStorage.getItem('accessToken'));
-			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
-			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
-
-			request.onreadystatechange = () => {
-				if (request.readyState === XMLHttpRequest.DONE){
-					if(request.status === 200 && request.responseText != ''){
-						var resultMessage = JSON.parse(request.responseText).resultMessage;
-						var resultCode =  JSON.parse(request.responseText).resultCode;
-						var detailMessage = JSON.parse(request.responseText).detailMessage;
-						//토큰 만료 검사
-						if( resultMessage == 'TOKEN_EXPIRED') {
-							func.refreshToken();
-							return func.loadData(method, url, header, callbackFunction, list);
-						}
-						else if(resultMessage == 'TOKEN_FAILED') {
-							func.loginCheck();
-							return func.loadData(method, url, header, callbackFunction, list);
-						}
-						else if(resultCode != RESULT_STATUS_SUCCESS) {
-							if(document.getElementById('loading')){
-								document.getElementById('wrap').removeChild(document.getElementById('loading'));
-							};
-							func.alertPopup('ERROR', detailMessage, true, MSG_CONFIRM, func.moveToMain);
-						}
-						else {
-							callbackFunction(JSON.parse(request.responseText), list);
-						}
-					} else if(JSON.parse(request.responseText).httpStatusCode === 500){
-						sessionStorage.clear();
-						func.loginCheck();
-					};
-				};
-			};
-
-			request.send(); },0);
-
 	},
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -874,11 +529,6 @@ const func = {
 	/////////////////////////////////////////////////////////////////////////////////////
 	saveData(method, url, data, bull, header, callFunc){
 		func.loading();
-
-		if(sessionStorage.getItem('token') == null){
-			func.loginCheck();
-		};
-
 
 		var request = new XMLHttpRequest();
 
@@ -899,7 +549,6 @@ const func = {
 							return func.saveData(method, url, data, bull, header, callFunc);
 						}
 						else if(JSON.parse(request.responseText).resultMessage == 'TOKEN_FAILED') {
-							func.loginCheck();
 							return func.loadData(method, url, header, callbackFunction, list);
 						}
 						else {
@@ -919,13 +568,6 @@ const func = {
 
 						}
 					} else {
-						/*
-                        if(method == 'DELETE'){
-                            /func.alertPopup('DELETE', 'DELETE FAILED', func.winReload);
-                        } else {
-                            /func.alertPopup('SAVE', 'SAVE FAILED', func.winReload);
-                        };
-                        */
 					};
 				};
 			};
@@ -935,11 +577,6 @@ const func = {
 
 	saveHarborData(method, url, data, bull, header, callFunc){
 		func.loading();
-
-		if(sessionStorage.getItem('token') == null){
-			func.loginCheck();
-		};
-
 
 		var request = new XMLHttpRequest();
 
@@ -978,10 +615,6 @@ const func = {
 	dryRun(method, url, data, bull, header, callFunc){
 		func.loading();
 
-		if(sessionStorage.getItem('token') == null){
-			func.loginCheck();
-		};
-
 		var request = new XMLHttpRequest();
 
 		setTimeout(function() {
@@ -1000,7 +633,6 @@ const func = {
 							return func.saveData(method, url, data, bull, header, callFunc);
 						}
 						else if(JSON.parse(request.responseText).resultMessage == 'TOKEN_FAILED') {
-							func.loginCheck();
 							return func.loadData(method, url, header, callbackFunction, list);
 						}
 						else {
@@ -1176,21 +808,6 @@ const func = {
 		return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse("admin:Harbor12345"))
 	},
 
-	/*encodeBase64() {
-
-		let credential = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse("admin:Harbor12345"))
-		console.log(credential)
-		this.decodeBase64(credential)
-		return credential;
-	},
-
-	decodeBase64(data) {
-
-		let credential = CryptoJS.enc.Base64.parse(data).toString(CryptoJS.enc.Utf8)
-		console.log(credential)
-		return credential;
-	}*/
-
 	changeTime(time) {
 		const create_date_time = time;
 		const date = new Date(create_date_time);
@@ -1219,27 +836,23 @@ const func = {
 
 		const timeDifferenceInSeconds = timeDifferenceInMilliseconds / 1000;
 		const timeDifferenceInMinutes = timeDifferenceInSeconds / 60;
-		// console.log(`시간 차이 (분):` +  Math.floor(timeDifferenceInMinutes) + ' 분 전') ;
 		const timeDifferenceInHours = timeDifferenceInMinutes / 60;
-		// console.log(`시간 차이 (시간):` +  Math.floor(timeDifferenceInHours) + ' 시간 전') ;
-
 		const timeDifferenceInDays = timeDifferenceInHours / 24;
-		// console.log(`시간 차이 (일):` + Math.floor(timeDifferenceInDays) + ' 일 전') ;
 
 		if (timeDifferenceInMinutes > 60 && timeDifferenceInHours < 24) {
 			result = {
-						"time": Math.floor(timeDifferenceInHours),
-						"unit": "hour"
+				"time": Math.floor(timeDifferenceInHours),
+				"unit": "hour"
 			}
 		} else if (timeDifferenceInHours > 24) {
 			result = {
-						"time": Math.floor(timeDifferenceInDays),
-						"unit": "day"
+				"time": Math.floor(timeDifferenceInDays),
+				"unit": "day"
 			}
 		} else if (timeDifferenceInMinutes < 60) {
 			result = {
-						"time": Math.floor(timeDifferenceInMinutes),
-						"unit": "minute"
+				"time": Math.floor(timeDifferenceInMinutes),
+				"unit": "minute"
 			}
 		}
 
@@ -1247,52 +860,15 @@ const func = {
 	},
 
 	formatBytes(bytes, decimals) {
-	if (bytes === 0) return '0 Byte';
+		if (bytes === 0) return '0 Byte';
 
-	const k = 1024;
-	// const dm = decimals < 0 ? 0 : decimals;
-	const sizes = ['Byte', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+		const k = 1024;
+		const sizes = ['Byte', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
-	const i = Math.floor(Math.log(bytes) / Math.log(k));
+		const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-	// return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-	return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+		return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 	},
-
-	byteToKib(bytes) {
-
-		let mib = bytes / 1024;
-		let result;
-		result = mib.toFixed(2);
-		return {
-			'number': result,
-			'unit': 'Kib'
-		};
-	},
-
-	byteToMib(bytes) {
-
-		let mib = bytes / 1024 / 1024;
-		let result;
-		result = mib.toFixed(2);
-		return {
-			'number': result,
-			'unit': 'Mib'
-		};
-	},
-
-	byteToGib(bytes) {
-
-		let gib = bytes / 1024 / 1024 / 1024;
-		let result;
-		result = gib.toFixed(2);
-		return {
-			'number': result,
-			'unit': 'Gib'
-		};
-	},
-
-
 
 	vulnerabilitiesData(data) {
 

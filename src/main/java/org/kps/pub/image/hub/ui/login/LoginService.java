@@ -3,6 +3,7 @@ package org.kps.pub.image.hub.ui.login;
 import org.kps.pub.image.hub.ui.common.Constants;
 import org.kps.pub.image.hub.ui.login.model.AuthenticationResponse;
 import org.kps.pub.image.hub.ui.login.model.UsersLoginMetaData;
+import org.kps.pub.image.hub.ui.security.model.OAuthAttributes;
 import org.kps.pub.image.hub.ui.security.model.PortalOAuth2User;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -38,19 +39,19 @@ public class LoginService {
     /**
      * Users Details MetaData 객체 생성(Create Users Login Meta-Information Object)
      *
-     * @param authenticationResponse the AuthenticationResponse
+     * @param attributes the OAuthAttributes
      */
-    public UsersLoginMetaData setAuthDetailsLoginMetaData(AuthenticationResponse authenticationResponse) {//삭제
+    public UsersLoginMetaData setAuthDetailsLoginMetaData(OAuthAttributes attributes) {//삭제
         UsersLoginMetaData usersLoginMetaData = new UsersLoginMetaData();
-        usersLoginMetaData.setAccessToken(authenticationResponse.getToken());
-        usersLoginMetaData.setClusterId(authenticationResponse.getClusterId());
-        usersLoginMetaData.setUserId(authenticationResponse.getUserId());
-        usersLoginMetaData.setUserAuthId(authenticationResponse.getUserAuthId());
-        usersLoginMetaData.setUserType(authenticationResponse.getUserType());
-        usersLoginMetaData.setIsSuperAdmin(authenticationResponse.getIsSuperAdmin());
-        usersLoginMetaData.setSelectedNamespace("");
-        usersLoginMetaData.setUserMetaData("");
-        usersLoginMetaData.setUserMetaDataList(null);
+//        usersLoginMetaData.setAccessToken(authenticationResponse.getToken());
+//        usersLoginMetaData.setClusterId(authenticationResponse.getClusterId());
+        usersLoginMetaData.setUserId(attributes.getUsername());
+        usersLoginMetaData.setUserAuthId(attributes.getSub());
+//        usersLoginMetaData.setUserType(authenticationResponse.getUserType());
+//        usersLoginMetaData.setIsSuperAdmin(authenticationResponse.getIsSuperAdmin());
+//        usersLoginMetaData.setSelectedNamespace("");
+//        usersLoginMetaData.setUserMetaData("");
+//        usersLoginMetaData.setUserMetaDataList(null);
         usersLoginMetaData.setActive(Constants.CHECK_Y);
         return usersLoginMetaData;
     }

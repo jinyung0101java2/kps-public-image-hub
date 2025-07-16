@@ -46,49 +46,11 @@ public class PortalOAuth2UserService implements OAuth2UserService {
         DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
         OAuthAttributes attributes = new OAuthAttributes(oAuth2User.getAttributes());
-        boolean isSuperAdmin = attributes.getRoles().contains(propertyService.getKeycloakSuperAdminRole()) ? true : false;
 
-        // Creating a User Account
-        Users users = new Users(attributes.getUsername(), attributes.getSub(), isSuperAdmin);//삭제
-        LOGGER.info("###############################################################");//삭제
-        LOGGER.info(CommonUtils.loggerReplace("[USERINFO] " + users.userIfo()));//삭제
-        LOGGER.info("###############################################################");//삭제
-
-        try {//삭제
-            ResultStatus status = providerService.registerUsers(users);
-            if (status.getResultCode().equals(Constants.RESULT_STATUS_FAIL)) {
-                if (!Constants.ALREADY_REGISTERED_MESSAGE.contains(status.getResultMessage())) {
-                    throw new Exception(status.getResultMessage());
-                }
-            }
-        } catch (Exception e) {
-            throw new OAuth2AuthenticationException(e.getMessage());
-        }
-
-
-        // Login User
         List<SimpleGrantedAuthority> roles = null;
         UsersLoginMetaData usersLoginMetaData = null;
-        try {//삭제
-            AuthenticationResponse response = providerService.loginUsers(users);//삭제
-            if (response.getResultCode().equals(Constants.RESULT_STATUS_SUCCESS)) {//삭제
-                LOGGER.info("###############################################################");//삭제
-                LOGGER.info("[LOGIN] CP API LOGIN SUCCESSFUL ");//삭제
-                LOGGER.info("###############################################################");//삭제
-                usersLoginMetaData = loginService.setAuthDetailsLoginMetaData(response);//삭제
-                roles = Arrays.asList(new SimpleGrantedAuthority(usersLoginMetaData.getUserType()));
-            } else {
-                if (response.getResultMessage().equals(Constants.LOGIN_INACTIVE_USER_MESSAGE)) {
-                    usersLoginMetaData = loginService.setAuthDetailsLoginMetaData(response);
-                    roles = Arrays.asList(new SimpleGrantedAuthority(Constants.AUTH_INACTIVE_USER));
-                } else {
-                    throw new Exception(response.getResultMessage());
-                }
-
-            }
-        } catch (Exception e) {
-            throw new OAuth2AuthenticationException(e.getMessage());
-        }
+        usersLoginMetaData = loginService.setAuthDetailsLoginMetaData(attributes);
+        roles = Arrays.asList(new SimpleGrantedAuthority(attributes.getRoles().get(1)));
 
         return new PortalOAuth2User(roles, attributes.getAttributes(), attributes.getNameAttributeKey(), usersLoginMetaData);
     }

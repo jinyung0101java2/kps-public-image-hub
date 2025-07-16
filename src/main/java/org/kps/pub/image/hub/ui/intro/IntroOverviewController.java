@@ -24,9 +24,6 @@ public class IntroOverviewController {
 
     private final RestTemplateService restTemplateService;
 
-    @Autowired
-    private LoginService loginService;
-
     public IntroOverviewController(RestTemplateService restTemplateService) {
         this.restTemplateService = restTemplateService;
     }
@@ -41,23 +38,8 @@ public class IntroOverviewController {
         OAuthTokens oAuthTokens = restTemplateService.getKeyCloakToken();
         model.addAttribute("accessToken", oAuthTokens.getAccessToken());
 
-        UsersLoginMetaData usersLoginMetaData = loginService.getAuthenticationUserMetaData();
-        if (Constants.AUTH_ADMIN_LIST.contains(usersLoginMetaData.getUserType())) {
-            return "images/overview";
-        }
-
-        return "index";
+        return "images/overview";
     }
 
-
-    /**
-     * Index 페이지 이동(Move Intro overview page)
-     *
-     * @return the intro overview
-     */
-    @GetMapping(value = ConstantsUrl.URI_CP_INDEX_URL)
-    public String getIntroOverview() {
-        return "index";
-    }
 }
 
