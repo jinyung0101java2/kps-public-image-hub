@@ -22,7 +22,7 @@ public class LoginService {
      *
      * @return the UsersLoginMetaData
      */
-    public UsersLoginMetaData getAuthenticationUserMetaData() {
+    public UsersLoginMetaData getAuthenticationUserMetaData() {//삭제
         UsersLoginMetaData usersLoginMetaData = null;
         try {
             PortalOAuth2User portalOAuth2User  = (PortalOAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -40,7 +40,7 @@ public class LoginService {
      *
      * @param authenticationResponse the AuthenticationResponse
      */
-    public UsersLoginMetaData setAuthDetailsLoginMetaData(AuthenticationResponse authenticationResponse) {
+    public UsersLoginMetaData setAuthDetailsLoginMetaData(AuthenticationResponse authenticationResponse) {//삭제
         UsersLoginMetaData usersLoginMetaData = new UsersLoginMetaData();
         usersLoginMetaData.setAccessToken(authenticationResponse.getToken());
         usersLoginMetaData.setClusterId(authenticationResponse.getClusterId());

@@ -112,15 +112,4 @@ public class LoginController {
         return ConstantsUrl.LANG_EN;
     }
 
-
-    /**
-     * User 클러스터 권한 설정 (Setting User Cluster Authority)
-     */
-    @Operation(summary = "User 클러스터 권한 설정 (Setting User Cluster Authority)")
-    @PutMapping(value = ConstantsUrl.URI_API_SET_CLUSTER_AUTHORITY)
-    @ResponseBody
-    public void setUserClusterAuthority(@RequestBody String userType) {
-        securityUtils.updateUserAuthorities(userType);
-    }
-
 }

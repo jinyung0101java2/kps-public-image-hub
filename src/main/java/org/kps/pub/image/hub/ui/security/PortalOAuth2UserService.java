@@ -49,12 +49,12 @@ public class PortalOAuth2UserService implements OAuth2UserService {
         boolean isSuperAdmin = attributes.getRoles().contains(propertyService.getKeycloakSuperAdminRole()) ? true : false;
 
         // Creating a User Account
-        Users users = new Users(attributes.getUsername(), attributes.getSub(), isSuperAdmin);
-        LOGGER.info("###############################################################");
-        LOGGER.info(CommonUtils.loggerReplace("[USERINFO] " + users.userIfo()));
-        LOGGER.info("###############################################################");
+        Users users = new Users(attributes.getUsername(), attributes.getSub(), isSuperAdmin);//삭제
+        LOGGER.info("###############################################################");//삭제
+        LOGGER.info(CommonUtils.loggerReplace("[USERINFO] " + users.userIfo()));//삭제
+        LOGGER.info("###############################################################");//삭제
 
-        try {
+        try {//삭제
             ResultStatus status = providerService.registerUsers(users);
             if (status.getResultCode().equals(Constants.RESULT_STATUS_FAIL)) {
                 if (!Constants.ALREADY_REGISTERED_MESSAGE.contains(status.getResultMessage())) {
@@ -69,13 +69,13 @@ public class PortalOAuth2UserService implements OAuth2UserService {
         // Login User
         List<SimpleGrantedAuthority> roles = null;
         UsersLoginMetaData usersLoginMetaData = null;
-        try {
-            AuthenticationResponse response = providerService.loginUsers(users);
-            if (response.getResultCode().equals(Constants.RESULT_STATUS_SUCCESS)) {
-                LOGGER.info("###############################################################");
-                LOGGER.info("[LOGIN] CP API LOGIN SUCCESSFUL ");
-                LOGGER.info("###############################################################");
-                usersLoginMetaData = loginService.setAuthDetailsLoginMetaData(response);
+        try {//삭제
+            AuthenticationResponse response = providerService.loginUsers(users);//삭제
+            if (response.getResultCode().equals(Constants.RESULT_STATUS_SUCCESS)) {//삭제
+                LOGGER.info("###############################################################");//삭제
+                LOGGER.info("[LOGIN] CP API LOGIN SUCCESSFUL ");//삭제
+                LOGGER.info("###############################################################");//삭제
+                usersLoginMetaData = loginService.setAuthDetailsLoginMetaData(response);//삭제
                 roles = Arrays.asList(new SimpleGrantedAuthority(usersLoginMetaData.getUserType()));
             } else {
                 if (response.getResultMessage().equals(Constants.LOGIN_INACTIVE_USER_MESSAGE)) {
