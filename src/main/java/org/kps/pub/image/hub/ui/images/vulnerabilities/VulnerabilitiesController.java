@@ -28,25 +28,4 @@ public class VulnerabilitiesController {
         return BASE_URL + "vulnerabilities";
     }
 
-    /**
-     * Vulnerabilities 상세 페이지 이동(Go to the vulnerabilities details page)
-     *
-     * @return the view
-     */
-    @GetMapping(value = ConstantsUrl.URI_KPS_HUB_IMAGE_VULNERABILITY + ConstantsUrl.URI_CP_DETAILS)
-    public String getVulnerabilitiesDetail() {
-        return BASE_URL + "vulnerabilitiesDetail";
-    }
-
-    /**
-     * Vulnerabilities 생성 페이지 이동(Go to the vulnerabilities creates page)
-     *
-     * @return the view
-     */
-    @PreAuthorize("@authSecurity.checkIsSuperAdmin()")
-    @GetMapping(value = ConstantsUrl.URI_KPS_HUB_IMAGE_VULNERABILITY + ConstantsUrl.URI_CP_CREATE)
-    public String getVulnerabilitiesCreate() {
-        return BASE_URL + "vulnerabilitiesCreate";
-    }
-
 }

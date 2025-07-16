@@ -36,14 +36,4 @@ public class ArtifactsController {
         return BASE_URL + "artifactsDetail";
     }
 
-    /**
-     * Artifacts 생성 페이지 이동(Go to the image artifacts creates page)
-     *
-     * @return the view
-     */
-    @PreAuthorize("@authSecurity.checkIsSuperAdmin()")
-    @GetMapping(value = ConstantsUrl.URI_KPS_HUB_IMAGE_ARTIFACT + ConstantsUrl.URI_CP_CREATE)
-    public String getArtifactsCreate() {
-        return BASE_URL + "artifactsCreate";
-    }
 }

@@ -27,25 +27,4 @@ public class LogsController {
         return BASE_URL + "logs";
     }
 
-    /**
-     * Logs 상세 페이지 이동(Go to the image logs details page)
-     *
-     * @return the view
-     */
-    @GetMapping(value = ConstantsUrl.URI_KPS_HUB_IMAGE_LOG + ConstantsUrl.URI_CP_DETAILS)
-    public String getLogsDetail() {
-        return BASE_URL + "logsDetail";
-    }
-
-    /**
-     * Logs 생성 페이지 이동(Go to the image logs creates page)
-     *
-     * @return the view
-     */
-    @PreAuthorize("@authSecurity.checkIsSuperAdmin()")
-    @GetMapping(value = ConstantsUrl.URI_KPS_HUB_IMAGE_LOG + ConstantsUrl.URI_CP_CREATE)
-    public String getLogsCreate() {
-        return BASE_URL + "logsCreate";
-    }
-
 }

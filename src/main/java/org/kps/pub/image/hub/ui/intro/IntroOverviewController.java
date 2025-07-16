@@ -1,12 +1,8 @@
 package org.kps.pub.image.hub.ui.intro;
 
-import org.kps.pub.image.hub.ui.common.Constants;
 import org.kps.pub.image.hub.ui.common.ConstantsUrl;
 import org.kps.pub.image.hub.ui.common.RestTemplateService;
-import org.kps.pub.image.hub.ui.login.LoginService;
-import org.kps.pub.image.hub.ui.login.model.UsersLoginMetaData;
 import org.kps.pub.image.hub.ui.security.model.OAuthTokens;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

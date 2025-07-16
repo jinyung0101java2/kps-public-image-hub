@@ -27,25 +27,4 @@ public class ProjectsController {
         return BASE_URL + "projects";
     }
 
-    /**
-     * Projects 상세 페이지 이동(Go to the projects details page)
-     *
-     * @return the view
-     */
-    @GetMapping(value = ConstantsUrl.URI_KPS_HUB_IMAGE_PROJECT + ConstantsUrl.URI_CP_DETAILS)
-    public String getProjectsDetail() {
-        return BASE_URL + "projectsDetail";
-    }
-
-    /**
-     * Projects 생성 페이지 이동(Go to the projects creates page)
-     *
-     * @return the view
-     */
-    @PreAuthorize("@authSecurity.checkIsSuperAdmin()")
-    @GetMapping(value = ConstantsUrl.URI_KPS_HUB_IMAGE_PROJECT + ConstantsUrl.URI_CP_CREATE)
-    public String getProjectsCreate() {
-        return BASE_URL + "projectsCreate";
-    }
-
 }
