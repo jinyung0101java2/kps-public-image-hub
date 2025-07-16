@@ -270,7 +270,7 @@
                     for(var i=0; i<=listAll.length-1; i++){
                         listAll[i].addEventListener('click', (e) => {
                             sessionStorage.setItem('repositoryName', e.target.getAttribute('data-id'));
-                            func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects`, 'application/json', (e) => {
+                            func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects?page=1&page_size=-1`, 'application/json', (e) => {
                                 for (var i = 0; i <= e.length - 1; i++) {
                                     if (sessionStorage.getItem('repositoryName') === e[i].name) {
                                         sessionStorage.setItem('repositoryId', e[i].project_id);

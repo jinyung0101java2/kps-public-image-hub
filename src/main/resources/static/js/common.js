@@ -14,8 +14,6 @@ const func = {
 	depth2 : '',
 
 	init(depth1, depth2){
-		console.log(depth1)
-		console.log(depth2)
 		func.depth1 = depth1;
 		func.depth2 = depth2;
 
