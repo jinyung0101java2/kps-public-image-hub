@@ -135,7 +135,7 @@ header > div > div > div > div > a {text-indent:-9999px; display:inline-block; w
 
 
 /*------------------------ Aside -------------------------*/
-aside {width:240px; background-color:#f3f3f3; padding:177px 47px 0 47px; font-family:'Apple SD Gothic Neo B', sans-serif; position: fixed; height: 100%;}
+aside {width:240px; background-color:#f3f3f3; padding:177px 47px 0 47px; font-family:'Apple SD Gothic Neo B', sans-serif;}
 aside nav > ul > li {font-size:22px; line-height:35px; margin-top:26px; position:relative;}
 aside nav > ul > li:first-child {margin-top:0;}
 aside nav ul li ul {height:0!important; opacity:0;}
@@ -162,7 +162,7 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 
 
 /*------------------------ Content -------------------------*/
-#container #content {flex:1; width:100%;}
+#container #content {flex:1; width:1700px;}
 
 /*------------------------ view -------------------------*/
 .view {background:linear-gradient( to right, #15181d, #292d37 2.5%); padding:111px 71px 66px 71px;}
@@ -232,7 +232,7 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 
 /* base */
 /*.base {padding:60px 70px 200px 70px;}*/
-.base-pro > div:first-child {background-color:#ffffff; padding:90px 55px 30px 40px; box-shadow:-3px 2px 5px -5px rgba(204, 204, 204, 0.5);}
+.base-pro > div:first-child {background-color:#ffffff; padding:90px 40px 30px 40px; box-shadow:-3px 2px 5px -5px rgba(204, 204, 204, 0.5);}
 .base-pro.tab-cont-wrap > div {background-color:#ffffff; padding:50px 40px 30px 40px; box-shadow:-3px 2px 5px -5px rgba(204, 204, 204, 0.5);}
 
 /* title */
@@ -240,8 +240,6 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 
 /* info */
 .info > h3 {font-family:'Apple SD Gothic Neo B', sans-serif; padding-top:9px; color:#47494d; font-size:26px; line-height:30px;}
-
-.article {margin-left: 240px;}
 
 /*selectbox*/
 .selectbox {width:500px;}
@@ -449,7 +447,7 @@ aside nav > ul > li.plus.on:before {content:""; background-color:#41454b;}
 /*------------------------ Clusters namespacesCreate -------------------------*/
 .base div h3 {font-family:'Apple SD Gothic Neo B', sans-serif; font-size:26px; font-weight:300; margin-bottom:32px; line-height:30px;}
 .base div h3 span {font-size:22px;}
-.base div.creat {padding:47px 39px 60px 39px;}
+.base div.creat {padding:47px 39px 60px 39px; width: 100%;}
 .creat > div > dl:first-child {margin-top:0;}
 .creat > div > dl {margin-top:30px;}
 .creat > div > dl dt {font-size:16px; color:#47494d; margin-bottom:7px; font-family:'Apple SD Gothic Neo',"Noto Sans KR", "맑은 고딕", "Font Awesome 5 Free",monospace !important; font-weight:400;}
