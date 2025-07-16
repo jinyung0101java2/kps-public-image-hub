@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @since 2022.07.01
  */
 
-@PreAuthorize("@authSecurity.checkIsGlobal()")
 @Controller
 public class VulnerabilitiesController {
     private static final String BASE_URL = "images/vulnerabilities/";

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @since 2022.07.01
  */
 
-@PreAuthorize("@authSecurity.checkIsGlobal()")
 @Controller
 public class ImageRepositoriesController {
     private static final String BASE_URL = "images/repositories/";
