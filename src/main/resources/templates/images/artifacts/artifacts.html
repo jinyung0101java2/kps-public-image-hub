@@ -184,12 +184,17 @@
 										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Low';
 										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -175px;')
 										document.getElementById("vul_type_" + i).innerText = 'Low';
+									} else if (vulnerabilitiesData.severity === 'None') {
+										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #808080; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer;')
+										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: None';
+										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -177px;')
+										document.getElementById("vul_type_" + i).innerText = 'None';
 									}
+
 									document.getElementById("scan_overview_severity_id_" + i).innerText = vulnerabilitiesData.severity;
 									document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.total;
 									document.getElementById("scan_overview_id_" + i).setAttribute('style', 'cursor: pointer;')
 									// document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.severity + "  " + vulnerabilitiesData.total;
-									sessionStorage.setItem('additions', 'Y');
 
 									if (data[i].type === 'IMAGE') {
 										document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-image.png')
@@ -208,13 +213,11 @@
 									document.getElementById("scan_overview_id_" + i).setAttribute('style', 'text-align: center; border-radius: 15px; border: 2px solid #ff5353; width: 100px; height: 23px; margin: 0 auto;')
 									document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-image.png')
 									document.getElementById("digest_img_" + i).setAttribute('style', 'width: 10%; margin-right: 5px;')
-									sessionStorage.setItem('additions', 'N');
 								} else if (data[i].type === 'CHART') {
 									document.getElementById("scan_overview_id_" + i).innerText = "Unsupported";
 									document.getElementById("scan_overview_id_" + i).setAttribute('style', 'text-align: center; border-radius: 15px; border: 2px solid #818894ad; width: 100px; height: 23px; margin: 0 auto;')
 									document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-chart.png')
 									document.getElementById("digest_img_" + i).setAttribute('style', 'width: 8%; margin-right: 5px;')
-									sessionStorage.setItem('additions', 'N');
 								}
 							}
 
