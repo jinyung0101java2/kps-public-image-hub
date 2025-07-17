@@ -36,11 +36,11 @@ public class IntroOverviewController {
     @GetMapping(value = {"/", ConstantsUrl.URI_CP_BASE_URL})
     public Object baseView(Model model) {
         OAuthTokens oAuthTokens = restTemplateService.getKeyCloakToken();
-        UsersLoginMetaData usersLoginMetaData = loginService.getAuthenticationUserMetaData();
+//        UsersLoginMetaData usersLoginMetaData = loginService.getAuthenticationUserMetaData();
         model.addAttribute("accessToken", oAuthTokens.getAccessToken());
-        model.addAttribute("username", usersLoginMetaData.getUserId());
-        model.addAttribute("realname", usersLoginMetaData.getUserRealName());
-        model.addAttribute("email", usersLoginMetaData.getUserEmail());
+//        model.addAttribute("username", usersLoginMetaData.getUserId());
+//        model.addAttribute("realname", usersLoginMetaData.getUserRealName());
+//        model.addAttribute("email", usersLoginMetaData.getUserEmail());
 
         return "images/overview";
     }

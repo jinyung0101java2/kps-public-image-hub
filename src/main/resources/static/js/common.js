@@ -895,7 +895,7 @@ const func = {
 		return cvssData;
 	},
 
-	userCheck(username, realname, email) {
+	/*userCheck(username, realname, email) {
 		console.log(username + ' :: ' + realname + ' :: ' + email)
 		func.loadHarborData('GET', `${func.harborUrl}api/v2.0/users`, 'application/json', (e) => {
 			if (e.length > 0) {
@@ -910,5 +910,5 @@ const func = {
 				}
 			}
 		});
-	}
+	}*/
 }

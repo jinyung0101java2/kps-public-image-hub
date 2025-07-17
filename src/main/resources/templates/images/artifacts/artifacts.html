@@ -192,8 +192,14 @@
 									}
 
 									document.getElementById("scan_overview_severity_id_" + i).innerText = vulnerabilitiesData.severity;
-									document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.total;
 									document.getElementById("scan_overview_id_" + i).setAttribute('style', 'cursor: pointer;')
+									if (vulnerabilitiesData.total === "0 Total - 0 Fixable") {
+										document.getElementById("scan_overview_id_" + i).innerText = "No vulnerability";
+										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #808080; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer; display: none')
+										//document.getElementById("scan_overview_severity_id_" + i).
+									} else {
+										document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.total
+									}
 									// document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.severity + "  " + vulnerabilitiesData.total;
 
 									if (data[i].type === 'IMAGE') {
