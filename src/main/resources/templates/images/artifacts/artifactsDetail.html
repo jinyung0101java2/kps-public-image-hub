@@ -249,7 +249,7 @@
 									html = `<tr>
 											<td id="col0_${i}"><div id="arcoBtn_${i}" style="width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;"></div></td>
 											<td id="col1_${i}"><a class="name" href="${changeData3.vulnerabilities[i].links[0]}" target='_blank' data-id="${changeData3.vulnerabilities[i].id}">${changeData3.vulnerabilities[i].id}</a></td>
-											<td id="col2_${i}"><div id="severity_${i}"></div></td>
+											<td id="col2_${i}"><span id="severity_${i}"></span></td>
 											<td id="col3_${i}" class="addtions"></td>
 											<td id="col4_${i}" class="left">${changeData3.vulnerabilities[i].package}</td>
 											<td id="col5_${i}">${changeData3.vulnerabilities[i].version}</td>
@@ -257,22 +257,23 @@
 											<td id="col7_${i}">No</td>
 											</tr><tr><td id="desc_${i}" style="display: none" class="left" colspan="8" name="off">${changeData3.vulnerabilities[i].description}</td></tr>`;
 
+									// <td id="col2_${i}"><div id="severity_${i}"></div></td>
 									// <td id="col2_${i}"><div id="severity_${i}"><span style="color: #ffffff">${changeData3.vulnerabilities[i].severity}</span></div></td>
 
 									func.appendHtml(document.querySelector('.additionListTable'), html, 'tbody');
 
 									if (changeData3.vulnerabilities[i].severity === 'High') {
 										document.getElementById("severity_" + i).innerText = changeData3.vulnerabilities[i].severity;
-										document.getElementById("severity_" + i).setAttribute('style',"background-color: #ff8f3d; border-radius: 10px; color: #ffffff'");
+										document.getElementById("severity_" + i).setAttribute('style',"background-color: #ff8f3d; border-radius: 10px; padding: 0 27px 0px 27px; color: #ffffff;");
 									} else if (changeData3.vulnerabilities[i].severity === 'Medium') {
 										document.getElementById("severity_" + i).innerText = changeData3.vulnerabilities[i].severity;
-										document.getElementById("severity_" + i).setAttribute('style',"background-color: #ffce66; border-radius: 10px; color: #ffffff'");
+										document.getElementById("severity_" + i).setAttribute('style',"background-color: #ffce66; border-radius: 10px; padding: 0 16px 0px 16px; color: #ffffff;");
 									} else if (changeData3.vulnerabilities[i].severity === 'Low') {
 										document.getElementById("severity_" + i).innerText = changeData3.vulnerabilities[i].severity;
-										document.getElementById("severity_" + i).setAttribute('style',"background-color: #fff1ad; border-radius: 10px; color: #ffffff'");
+										document.getElementById("severity_" + i).setAttribute('style',"background-color: #fff1ad; border-radius: 10px; padding: 0 28px 0px 28px; color: #ffffff;");
 									} else if (changeData3.vulnerabilities[i].severity === 'Unknown') {
-										document.getElementById("severity_" + i).innerText = 'n/a';
-										document.getElementById("severity_" + i).setAttribute('style',"background-color: #808080; border-radius: 10px; color: #ffffff'");
+										document.getElementById("severity_" + i).innerText = 'N/A';
+										document.getElementById("severity_" + i).setAttribute('style',"background-color: #808080; border-radius: 10px; padding: 0 28px 0px 28px; color: #ffffff;");
 									}
 
 									document.getElementById("col3_" + i).innerText = cvssData;
@@ -280,7 +281,7 @@
 									html = `<tr>
 											<td id="col0_${i}"><div id="arcoBtn_${i}" style="width: 1px; height: 1px; border-top: 1px solid #afb5bb; border-right: 1px solid #afb5bb; transform: rotate(135deg); position: absolute; left: 12px; padding: 4px; cursor: pointer;"></div></td>
 											<td id="col1_${i}"><a class="name" href="${changeData3.vulnerabilities[i].links[0]}" target='_blank' data-id="${changeData3.vulnerabilities[i].id}">${changeData3.vulnerabilities[i].id}</a></td>
-											<td id="col2_${i}"><div id="severity_${i}"><span style="color: #ffffff">${changeData3.vulnerabilities[i].severity}</span></div></td>
+											<td id="col2_${i}"><span id="severity_${i}"></span></td>
 											<td id="col3_${i}" class="addtions"></td>
 											<td id="col4_${i}" class="left">${changeData3.vulnerabilities[i].package}</td>
 											<td id="col5_${i}">${changeData3.vulnerabilities[i].version}</td>
@@ -291,13 +292,17 @@
 									func.appendHtml(document.querySelector('.additionListTable'), html, 'tbody');
 
 									if (changeData3.vulnerabilities[i].severity === 'High') {
-										document.getElementById("severity_" + i).setAttribute('style',"background-color: #ff8f3d; border-radius: 10px;");
+										document.getElementById("severity_" + i).innerText = changeData3.vulnerabilities[i].severity;
+										document.getElementById("severity_" + i).setAttribute('style',"background-color: #ff8f3d; border-radius: 10px; padding: 0 27px 0px 27px; color: #ffffff;");
 									} else if (changeData3.vulnerabilities[i].severity === 'Medium') {
-										document.getElementById("severity_" + i).setAttribute('style',"background-color: #ffce66; border-radius: 10px;");
+										document.getElementById("severity_" + i).innerText = changeData3.vulnerabilities[i].severity;
+										document.getElementById("severity_" + i).setAttribute('style',"background-color: #ffce66; border-radius: 10px; padding: 0 16px 0px 16px; color: #ffffff;");
 									} else if (changeData3.vulnerabilities[i].severity === 'Low') {
-										document.getElementById("severity_" + i).setAttribute('style',"background-color: #fff1ad; border-radius: 10px;");
+										document.getElementById("severity_" + i).innerText = changeData3.vulnerabilities[i].severity;
+										document.getElementById("severity_" + i).setAttribute('style',"background-color: #fff1ad; border-radius: 10px; padding: 0 28px 0px 28px; color: #ffffff;");
 									} else if (changeData3.vulnerabilities[i].severity === 'Unknown') {
-										document.getElementById("severity_" + i).setAttribute('style',"background-color: #808080; border-radius: 10px;");
+										document.getElementById("severity_" + i).innerText = 'N/A';
+										document.getElementById("severity_" + i).setAttribute('style',"background-color: #808080; border-radius: 10px; padding: 0 28px 0px 28px; color: #ffffff;");
 									}
 
 									document.getElementById("col3_" + i).innerText = "";

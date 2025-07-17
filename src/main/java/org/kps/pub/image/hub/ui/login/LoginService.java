@@ -1,7 +1,6 @@
 package org.kps.pub.image.hub.ui.login;
 
 import org.kps.pub.image.hub.ui.common.Constants;
-import org.kps.pub.image.hub.ui.login.model.AuthenticationResponse;
 import org.kps.pub.image.hub.ui.login.model.UsersLoginMetaData;
 import org.kps.pub.image.hub.ui.security.model.OAuthAttributes;
 import org.kps.pub.image.hub.ui.security.model.PortalOAuth2User;
