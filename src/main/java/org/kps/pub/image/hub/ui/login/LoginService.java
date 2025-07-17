@@ -45,9 +45,15 @@ public class LoginService {
         UsersLoginMetaData usersLoginMetaData = new UsersLoginMetaData();
         usersLoginMetaData.setUserId(attributes.getUsername());
         usersLoginMetaData.setUserRealName(attributes.getUsername());
-//        usersLoginMetaData.setUserEmail(attributes.getAttributes().get("email").toString());
         usersLoginMetaData.setUserAuthId(attributes.getSub());
         usersLoginMetaData.setActive(Constants.CHECK_Y);
+
+        if (attributes.getAttributes().get("email") != null) {
+            usersLoginMetaData.setUserEmail(attributes.getAttributes().get("email").toString());
+        } else {
+            usersLoginMetaData.setUserEmail("");
+        }
+
         return usersLoginMetaData;
     }
 
