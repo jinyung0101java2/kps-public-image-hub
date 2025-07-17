@@ -33,7 +33,4 @@ public class PropertyService {
     @Value("${keycloak.introspectUri}")
     private String keycloakIntrospectUri;
 
-//    @Value("${server.servlet.session.cookie.name}")
-//    private String cpSessionCookieName;
-
 }

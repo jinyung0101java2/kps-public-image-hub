@@ -26,7 +26,6 @@ const func = {
 			document.querySelector('[aside_d1='+depth1+']').classList.toggle('on', true);
 			// depth2 toggle on
 			document.querySelector('[aside_d2='+depth2+']').classList.toggle('on', true);
-
 		}
 
 		// navigation height 설정
@@ -894,5 +893,22 @@ const func = {
 		}
 
 		return cvssData;
+	},
+
+	userCheck(username, realname, email) {
+		console.log(username + ' :: ' + realname + ' :: ' + email)
+		func.loadHarborData('GET', `${func.harborUrl}api/v2.0/users`, 'application/json', (e) => {
+			if (e.length > 0) {
+				for (let i = 0; i <= e.length - 1; i++) {
+					console.log(JSON.stringify(e[i]))
+					if (e[i].name !== username) {
+
+						let userData = {"email": email, "realname": realname, "comment": "", "password": "", "username": username}
+						console.log(JSON.stringify(userData))
+						//func.saveData('POST', `${func.harborUrl}api/v2.0/users`, JSON.stringify(userData), true, 'application/json', func.refresh);
+					}
+				}
+			}
+		});
 	}
 }

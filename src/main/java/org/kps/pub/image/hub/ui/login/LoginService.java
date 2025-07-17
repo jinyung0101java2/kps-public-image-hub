@@ -44,6 +44,8 @@ public class LoginService {
     public UsersLoginMetaData setAuthDetailsLoginMetaData(OAuthAttributes attributes) {
         UsersLoginMetaData usersLoginMetaData = new UsersLoginMetaData();
         usersLoginMetaData.setUserId(attributes.getUsername());
+        usersLoginMetaData.setUserRealName(attributes.getUsername());
+//        usersLoginMetaData.setUserEmail(attributes.getAttributes().get("email").toString());
         usersLoginMetaData.setUserAuthId(attributes.getSub());
         usersLoginMetaData.setActive(Constants.CHECK_Y);
         return usersLoginMetaData;

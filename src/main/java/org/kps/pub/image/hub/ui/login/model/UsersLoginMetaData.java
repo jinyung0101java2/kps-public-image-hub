@@ -20,6 +20,8 @@ import java.util.List;
 public class UsersLoginMetaData implements Serializable {
 
     private String userId;
+    private String userRealName;
+    private String userEmail;
     private String userAuthId;
     private String userType;
     private String accessToken;

@@ -301,8 +301,8 @@
 											<td id="col2_${i}" class="left"><a class="repository_name" href="javascript:;" data-id="${data[i].repository_name}" data-name="repository" style="text-decoration: none; color: #008d68;>${data[i].cve_id}">${data[i].repository_name}</a></td>
 											<td id="col3_${i}" class="left"><a id="digest_${i}" class="digest_name" href="javascript:;" data-id="${data[i].digest}" data-name="${data[i].repository_name}" style="text-decoration: none; color: #008d68;>${data[i].cve_id}">digest</a></td>
 											<td id="col4_${i}"></td>
-											<td id="col5_${i}">${data[i].cvss_v3_score}</td>
-											<td id="col6_${i}"><span id="severity_${i}">${data[i].severity}</span></td>
+											<td id="col5_${i}"></td>
+											<td id="col6_${i}"><span id="severity_${i}"></span></td>
 											<td id="col7_${i}" class="left">${data[i].package}</td>
 											<td id="col8_${i}">${data[i].version}</td>
 											<td id="col9_${i}" class="left"><i class="fa-solid fa-wrench" style="color: #00b92a; margin-right: 7px;"></i>${data[i].fixed_version}</td>
@@ -312,13 +312,24 @@
 
 												document.getElementById("col4_" + i).innerText = tag.slice(0, - 2);
 												document.getElementById("digest_" + i).innerText = digest;
+												if (data[i].cvss_v3_score != null) {
+													document.getElementById("col5_" + i).innerText = data[i].cvss_v3_score;
+												} else if (data[i].cvss_v3_score == null) {
+													document.getElementById("col5_" + i).innerText = '';
+												}
 
 												if (data[i].severity === 'High') {
+													document.getElementById("severity_" + i).innerText = data[i].severity;
 													document.getElementById("severity_" + i).setAttribute('style',"background-color: #ff8f3d; border-radius: 10px; padding: 0 27px 0px 27px; color: #ffffff;");
 												} else if (data[i].severity === 'Medium') {
+													document.getElementById("severity_" + i).innerText = data[i].severity;
 													document.getElementById("severity_" + i).setAttribute('style',"background-color: #ffce66; border-radius: 10px; padding: 0 16px 0px 16px; color: #ffffff;");
 												} else if (data[i].severity === 'Low') {
+													document.getElementById("severity_" + i).innerText = data[i].severity;
 													document.getElementById("severity_" + i).setAttribute('style',"background-color: #fff1ad; border-radius: 10px; padding: 0 28px 0px 28px; color: #ffffff;");
+												} else if (data[i].severity === 'Unknown') {
+													document.getElementById("severity_" + i).innerText = 'n/a';
+													document.getElementById("severity_" + i).setAttribute('style',"background-color: #808080; border-radius: 10px; padding: 0 28px 0px 28px; color: #ffffff;");
 												}
 
 											}

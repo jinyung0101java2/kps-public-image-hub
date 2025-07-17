@@ -1,13 +1,10 @@
 package org.kps.pub.image.hub.ui.security;
 
 import lombok.RequiredArgsConstructor;
-import org.kps.pub.image.hub.ui.common.PropertyService;
 import org.kps.pub.image.hub.ui.login.LoginService;
 import org.kps.pub.image.hub.ui.login.model.UsersLoginMetaData;
 import org.kps.pub.image.hub.ui.security.model.OAuthAttributes;
 import org.kps.pub.image.hub.ui.security.model.PortalOAuth2User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
