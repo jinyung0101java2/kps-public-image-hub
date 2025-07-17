@@ -80,7 +80,6 @@ public class RestTemplateService {
      */
     public <T> T send(String reqApi, String reqUrl, HttpMethod httpMethod, Object bodyObject, Class<T> responseType) {
 
-        setApiUrlAuthorization(reqApi);
 
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
@@ -146,7 +145,6 @@ public class RestTemplateService {
      */
     public <T> T sendYaml(String reqApi, String reqUrl, HttpMethod httpMethod, Object bodyObject, Class<T> responseType, String contentType) {
 
-        setApiUrlAuthorization(reqApi);
 
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
@@ -196,25 +194,6 @@ public class RestTemplateService {
     }
 
 
-    /**
-     * Set Authorization according to Target API
-     *
-     * @param reqApi the reqApi
-     */
-    private void setApiUrlAuthorization(String reqApi) {
-
-        String apiUrl = "";
-        String authorization = "";
-
-        // CONTAINER PLATFORM API
-        if (Constants.TARGET_CP_API.equals(reqApi)) {
-            apiUrl = propertyService.getCpApiUrl();
-            authorization = cpApiBase64Authorization + getAccessToken();
-        }
-
-        base64Authorization = authorization;
-        baseUrl = apiUrl;
-    }
 
 
     /**
@@ -252,7 +231,6 @@ public class RestTemplateService {
      */
     public <T> T sendRefreshToken(String reqApi, HttpMethod httpMethod, Object bodyObject, Class<T> responseType) {
 
-        setApiUrlAuthorization(reqApi);
 
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
@@ -321,7 +299,6 @@ public class RestTemplateService {
      * @return the HttpEntity<Object>
      */
     public  HttpEntity<Object>  updateRequestEntity(String reqApi, Object bodyObject, String contentType) {
-        setApiUrlAuthorization(reqApi);
 
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);

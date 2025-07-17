@@ -15,9 +15,6 @@ import org.springframework.stereotype.Service;
 @Data
 public class PropertyService {
 
-    @Value("${cpApi.url}")
-    private String cpApiUrl;
-
     @Value("${private.repository.url}")
     private String privateRepositoryUrl;
 
@@ -36,7 +33,7 @@ public class PropertyService {
     @Value("${keycloak.introspectUri}")
     private String keycloakIntrospectUri;
 
-    @Value("${server.servlet.session.cookie.name}")
-    private String cpSessionCookieName;
+//    @Value("${server.servlet.session.cookie.name}")
+//    private String cpSessionCookieName;
 
 }

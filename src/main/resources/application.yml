@@ -1,6 +1,6 @@
 spring:
   application:
-    name: cp-portal-ui
+    name: kps-public-image-hub-ui
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
@@ -28,10 +28,6 @@ keycloak:
 
 server:
   port: ${PORT:8095}
-  servlet:
-    session:
-      cookie:
-        name: CPADMINPORTALSESSION
 
 management:
   security:
@@ -67,8 +63,6 @@ logging:
   file:
     path: logs
 
-cpApi:
-  url: http://localhost:3333
 catalogApi:
   url: http://localhost:8093
 harborApi:
@@ -86,8 +80,6 @@ logging:
   file:
     path: /home/1000/logs
 
-cpApi:
-  url: ${CP_PORTAL_API_URI}
 catalogApi:
   url: ${CP_PORTAL_CATALOG_API_URI}
 harborApi:

@@ -77,7 +77,6 @@ public class SecurityConfig {
                         .addLogoutHandler(portalOauth2LogoutHandler)
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
-                        .deleteCookies("JSESSIONID", propertyService.getCpSessionCookieName())
                         .logoutSuccessUrl("/"));
         return http.build();
     }
