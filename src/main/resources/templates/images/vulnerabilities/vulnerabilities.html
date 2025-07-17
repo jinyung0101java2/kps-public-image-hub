@@ -35,6 +35,10 @@
 											<span>fixable</span>
 										</li>
 										<li class="vul-list">
+											<div class="vul-tit">Critical</div>
+											<div id="vul-critical"></div>
+										</li>
+										<li class="vul-list">
 											<div class="vul-tit">High</div>
 											<div id="vul-high"></div>
 										</li>
@@ -46,8 +50,16 @@
 											<div class="vul-tit">Low</div>
 											<div id="vul-low"></div>
 										</li>
+										<li class="vul-list">
+											<div class="vul-tit">N/A</div>
+											<div id="vul-unknown"></div>
+										</li>
 									</ul>
 									<ul class="chart-label">
+										<li>
+											<div class="label-critical"></div>
+											<div class="label-text">Critical</div>
+										</li>
 										<li>
 											<div class="label-high"></div>
 											<div class="label-text">High</div>
@@ -61,7 +73,7 @@
 											<div class="label-text">Low</div>
 										</li>
 										<li>
-											<div class="label-na"></div>
+											<div class="label-unknown"></div>
 											<div class="label-text">N/A</div>
 										</li>
 									</ul>
@@ -149,6 +161,7 @@
 				MediumCnt: 0,
 				HighCnt: 0,
 				UnknownCnt: 0,
+				CriticalCnt: 0,
 
 				init() {
 					func.nameLoad = vulnerabilities.reset;
@@ -174,9 +187,11 @@
 
 						document.getElementById("total-vul").innerText = '0';
 						document.getElementById("fix-vul").innerText = '0';
+						document.getElementById("vul-critical").innerText = '0';
 						document.getElementById("vul-high").innerText = '0';
 						document.getElementById("vul-medium").innerText = '0';
 						document.getElementById("vul-low").innerText = '0';
+						document.getElementById("vul-unknown").innerText = '0';
 
 						const ctx = document.getElementById('myChart').getContext('2d');
 						new Chart(ctx, {
@@ -203,11 +218,8 @@
 							}
 						});
 
-
 						let html = '<tr><td colspan="10">No Data.</td></tr>';
 						func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
-
-
 
 						if (document.getElementById('loading')) {
 							document.getElementById('wrap').removeChild(document.getElementById('loading'));
@@ -240,33 +252,40 @@
 												vulnerabilities.HighCnt += 1;
 											} else if (data[i].severity === 'Unknown') {
 												vulnerabilities.UnknownCnt += 1;
+											} else if (data[i].severity === 'Critical') {
+												vulnerabilities.CriticalCnt += 1;
 											}
 										}
 
 										document.getElementById("total-vul").innerText = sessionStorage.getItem('cveCnt');
 										document.getElementById("fix-vul").innerText = sessionStorage.getItem('cveCnt');
+										document.getElementById("vul-critical").innerText = vulnerabilities.CriticalCnt;
 										document.getElementById("vul-high").innerText = vulnerabilities.HighCnt;
 										document.getElementById("vul-medium").innerText = vulnerabilities.MediumCnt;
 										document.getElementById("vul-low").innerText = vulnerabilities.LowCnt;
+										document.getElementById("vul-unknown").innerText = vulnerabilities.UnknownCnt;
 
 										let highPercentage = 0;
 										let mediumPercentage = 0;
 										let lowPercentage = 0;
 										let unknownPercentage = 0;
+										let criticalPercentage = 0;
 
 										highPercentage = ((vulnerabilities.HighCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
 										mediumPercentage = ((vulnerabilities.MediumCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
 										lowPercentage = ((vulnerabilities.LowCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
 										unknownPercentage = ((vulnerabilities.UnknownCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
+										criticalPercentage = ((vulnerabilities.CriticalCnt / sessionStorage.getItem('cveCnt')) * 100).toFixed(2)
 
 										const ctx = document.getElementById('myChart').getContext('2d');
 										new Chart(ctx, {
 											type: 'doughnut',
 											data: {
-												labels: ['High', 'Medium', 'Low', 'N/A'],
+												labels: ['Critical', 'High', 'Medium', 'Low', 'N/A'],
 												datasets: [{
-													data: [highPercentage, mediumPercentage, lowPercentage, unknownPercentage],
+													data: [criticalPercentage, highPercentage, mediumPercentage, lowPercentage, unknownPercentage],
 													backgroundColor: [
+														'#FF4D2E',
 														'#ff8f3d',
 														'#ffce66',
 														'#fff1ad',
@@ -336,8 +355,10 @@
 												} else if (data[i].severity === 'Unknown') {
 													document.getElementById("severity_" + i).innerText = 'N/A';
 													document.getElementById("severity_" + i).setAttribute('style',"background-color: #808080; border-radius: 10px; padding: 0 28px 0px 28px; color: #ffffff;");
+												} else if (data[i].severity === 'Critical') {
+													document.getElementById("severity_" + i).innerText = data[i].severity;
+													document.getElementById("severity_" + i).setAttribute('style', "background-color: #FF4D2E; border-radius: 10px; padding: 0 16px 0px 16px; color: #ffffff;");
 												}
-
 											}
 										} else if (data.length === 0) {
 											let html = '<tr><td colspan="10">No Data.</td></tr>';

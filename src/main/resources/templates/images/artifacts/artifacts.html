@@ -189,12 +189,18 @@
 										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: None';
 										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -177px;')
 										document.getElementById("vul_type_" + i).innerText = 'None';
+									} else if (vulnerabilitiesData.severity === 'Critical') {
+										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #FF4D2E; float: left; margin-left: 20px; width: 65px; color: #ffffff; cursor: pointer;')
+										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Critical';
+										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -207px;')
+										document.getElementById("vul_type_" + i).innerText = 'Critical';
 									}
 
 									document.getElementById("scan_overview_severity_id_" + i).innerText = vulnerabilitiesData.severity;
 									document.getElementById("scan_overview_id_" + i).setAttribute('style', 'cursor: pointer;')
 									if (vulnerabilitiesData.total === "0 Total - 0 Fixable") {
 										document.getElementById("scan_overview_id_" + i).innerText = "No vulnerability";
+										document.getElementById("scan_overview_id_" + i).setAttribute('style', 'cursor: pointer; background-color: #2ec0ff; width: 50%; display: inline-block; color: #ffffff;')
 										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #808080; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer; display: none')
 										//document.getElementById("scan_overview_severity_id_" + i).
 									} else {
@@ -255,10 +261,11 @@
 							new Chart(ctx, {
 								type: 'bar',
 								data: {
-									labels: ['High', 'Medium', 'Low'],
+									labels: ['Critical', 'High', 'Medium', 'Low'],
 									datasets: [{
-										data: [20, 30, 70],
+										data: [10, 10, 30, 70],
 										backgroundColor: [
+											'#FF4D2E',
 											'#ff8f3d',
 											'#ffce66',
 											'#fff1ad'

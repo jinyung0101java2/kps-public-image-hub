@@ -35,6 +35,7 @@ const func = {
 			navSub[i].style.height = (childSum*35+30)+((childSum-1)*10)+'px';
 		};
 
+		func.userCheck();
 		func.event();
 	},
 
@@ -895,6 +896,9 @@ const func = {
 		return cvssData;
 	},
 
+	userCheck() {
+
+	}
 	/*userCheck(username, realname, email) {
 		console.log(username + ' :: ' + realname + ' :: ' + email)
 		func.loadHarborData('GET', `${func.harborUrl}api/v2.0/users`, 'application/json', (e) => {

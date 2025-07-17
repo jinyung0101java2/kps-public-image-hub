@@ -47,7 +47,7 @@
 				<a href="javascript:" id="delete" class="delete" style="top: 35px; right: 150px;" th:text="#{M0026}" ></a>
 			</div>
 		</article>
-		<article class="location" style="padding-top: 0; height: 65px;">
+		<article id="latestPush" class="location" style="padding-top: 0; height: 65px;">
 			<ul class="title">
 				<span th:text="#{M0952}"></span>
 			</ul>
@@ -154,11 +154,13 @@
 
 					let html;
 
-					let ascendingOrderData = data.sort((a, b) => new Date(b.op_time) - new Date(a.op_time))
+					if (data.length > 0) {
 
-					for(var i = 0; i <= 4; i++) {
-						let time = func.differenceInTime(ascendingOrderData[i].op_time)
-						html = `<li>
+						let ascendingOrderData = data.sort((a, b) => new Date(b.op_time) - new Date(a.op_time))
+
+						for (var i = 0; i <= 4; i++) {
+							let time = func.differenceInTime(ascendingOrderData[i].op_time)
+							html = `<li>
                                     <div class="pushed-images">
                                         <div class="resource-box">
                                             <i class="fa-solid fa-file" style="margin-right: 7px;"></i>
@@ -170,30 +172,33 @@
                                     </div>
                                 </li>`;
 
-						func.appendHtml(document.querySelector('.resource'), html, 'ul');
+							func.appendHtml(document.querySelector('.resource'), html, 'ul');
 
-						if (time.unit === "minute") {
-							if (time.time === 1) {
-								document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_MINUTE_AGO;
-							} else if (time.time > 1) {
-								document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_MINUTES_AGO;
-							} else if (time.time === 0) {
-								document.getElementById("pushed_time_" + i).innerText = A_MOMENT_AGO;
+							if (time.unit === "minute") {
+								if (time.time === 1) {
+									document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_MINUTE_AGO;
+								} else if (time.time > 1) {
+									document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_MINUTES_AGO;
+								} else if (time.time === 0) {
+									document.getElementById("pushed_time_" + i).innerText = A_MOMENT_AGO;
+								}
+							} else if (time.unit === "hour") {
+								if (time.time === 1) {
+									document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_HOUR_AGO;
+								} else if (time.time > 1) {
+									document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_HOURS_AGO;
+								}
+							} else if (time.unit === "day") {
+								if (time.time === 1) {
+									document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_DAY_AGO;
+								} else if (time.time > 1) {
+									document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_DAYS_AGO;
+								}
 							}
-						} else if (time.unit === "hour") {
-							if (time.time === 1) {
-								document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_HOUR_AGO;
-							} else if (time.time > 1) {
-								document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_HOURS_AGO;
-							}
-						} else if (time.unit === "day") {
-							if (time.time === 1) {
-								document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_DAY_AGO;
-							} else if (time.time > 1) {
-								document.getElementById("pushed_time_" + i).innerText = time.time + " " + UNIT_DAYS_AGO;
-							}
+
 						}
-
+					} else if (data.length === 0) {
+						document.getElementById('latestPush').setAttribute('style', 'display: none')
 					}
 
 				},

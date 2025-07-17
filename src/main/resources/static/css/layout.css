@@ -810,22 +810,24 @@ header > div > div > div > div > div ul li a.on {background-color:#ff7a0f; color
 .last-statistics > div.stat-box > div.total-cnt {font-size: 30px; margin: -7px 0px 0px 22px}
 .last-statistics > div.stat-box {display: flex}
 .last-statistics > div.stat-box > div.total-cnt > div.total-unit {padding: 34px 25px 25px 0px; width: 35%}
-.chart-vul {border: 1px solid #d3d3d3; border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 490px; height: 250px; margin-left: 10px; margin-right: 40px}
+.chart-vul {border: 1px solid #d3d3d3; border-bottom: 4px solid #d3d3d3; padding: 12px 18px; width: 570px; height: 280px; margin-left: 10px; margin-right: 40px}
 .chart-vul > div.stat-box {display: flex;}
-.chart-vul > div.stat-box > div.chart-graph {margin: 20px 20px 5px 10px;;}
+.chart-vul > div.stat-box > div.chart-graph {margin: 40px 30px 5px 10px;;}
 .chart-vul > div.stat-box > div.chart-stat {padding-top: 10px;}
 .chart-vul > div.stat-box > div.chart-stat > ul.chart-label {display: flex; margin-top: 30px;}
 .chart-vul > div.stat-box > div.chart-stat > ul.chart-label > li > div.label-text {font-size: 15px; line-height: 15px; margin-right: 12px;}
 .chart-vul > div.stat-box > div.chart-stat > ul.chart-label > li > div.label-na {background-color: #c5c5c5; border-radius: 3px; width: 12px; height: 12px; margin-right: 4px;}
+.chart-vul > div.stat-box > div.chart-stat > ul.chart-label > li > div.label-critical {background-color: #FF4D2E; border-radius: 3px; width: 12px; height: 12px; margin-right: 4px;}
 .chart-vul > div.stat-box > div.chart-stat > ul.chart-label > li > div.label-high {background-color: #ff8f3d; border-radius: 3px; width: 12px; height: 12px; margin-right: 4px;}
 .chart-vul > div.stat-box > div.chart-stat > ul.chart-label > li > div.label-medium {background-color: #ffce66; border-radius: 3px; width: 12px; height: 12px; margin-right: 4px;}
 .chart-vul > div.stat-box > div.chart-stat > ul.chart-label > li > div.label-low {background-color: #fff1ad; border-radius: 3px; width: 12px; height: 12px; margin-right: 4px;}
+.chart-vul > div.stat-box > div.chart-stat > ul.chart-label > li > div.label-unknown {background-color: #c5c5c5; border-radius: 3px; width: 12px; height: 12px; margin-right: 4px;}
 .chart-vul > div.stat-box > div.chart-stat > ul > li {margin-bottom: 6px; display: flex;}
 .chart-vul > div.stat-box > div.chart-stat > ul > li.total-title {font-size: 20px; margin-top: 15px; margin-bottom: 20px}
 .chart-vul > div.stat-box > div.chart-stat > ul > li.total-title > span {margin-right: 4px;}
 .chart-vul > div.stat-box > div.chart-stat > ul > li.vul-list {display: flex; font-size: 17px; color: #818894}
 .chart-vul > div.stat-box > div.chart-stat > ul > li.vul-list > div.vul-tit {width: 100px}
-.chart-title {border: 1px solid #d3d3d3; width: 460px; border: 1px solid #d3d3d3; border-bottom: 0; padding: 15px 18px; width: 490px; margin-left: 10px; margin-right: 40px;}
+.chart-title {border: 1px solid #d3d3d3; width: 460px; border: 1px solid #d3d3d3; border-bottom: 0; padding: 15px 18px; width: 560px; margin-left: 10px; margin-right: 40px;}
 .stat-img {margin-left: 20px;}
 
 /*.tooltip-container {position: relative; display: flex; place-content: center; margin-top: 100px;}*/
