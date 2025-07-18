@@ -162,31 +162,37 @@
 										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: High';
 										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -177px;')
 										document.getElementById("vul_type_" + i).innerText = 'High';
+										document.getElementById("vul_type_" + i).setAttribute('style', 'color: #ff8f3d');
 									} else if (vulnerabilitiesData.severity === 'Medium') {
 										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #ffce66; float: left; margin-left: 20px; width: 65px; color: #ffffff; cursor: pointer;')
 										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Medium';
 										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -207px;')
 										document.getElementById("vul_type_" + i).innerText = 'Medium';
+										document.getElementById("vul_type_" + i).setAttribute('style', 'color: #ffce66');
 									} else if (vulnerabilitiesData.severity === 'Low') {
 										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #fff1ad; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer;')
 										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Low';
 										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -175px;')
 										document.getElementById("vul_type_" + i).innerText = 'Low';
+										document.getElementById("vul_type_" + i).setAttribute('style', 'color: #fff1ad');
 									} else if (vulnerabilitiesData.severity === 'None') {
 										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #808080; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer;')
 										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: None';
 										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -177px;')
 										document.getElementById("vul_type_" + i).innerText = 'None';
+										document.getElementById("vul_type_" + i).setAttribute('style', 'color: #c5c5c5');
 									} else if (vulnerabilitiesData.severity === 'Critical') {
 										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #FF4D2E; float: left; margin-left: 20px; width: 65px; color: #ffffff; cursor: pointer;')
 										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Critical';
 										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -207px;')
 										document.getElementById("vul_type_" + i).innerText = 'Critical';
+										document.getElementById("vul_type_" + i).setAttribute('style', 'color: #FF4D2E');
 									}
 
 									document.getElementById("scan_overview_severity_id_" + i).innerText = vulnerabilitiesData.severity;
 									document.getElementById("scan_overview_id_" + i).setAttribute('style', 'cursor: pointer;')
 									if (vulnerabilitiesData.total === "0 Total - 0 Fixable") {
+										document.getElementById("tooltip_chart_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: 240px; width: 250px; height: 130px')
 										document.getElementById("scan_overview_id_" + i).innerText = "No vulnerability";
 										document.getElementById("scan_overview_id_" + i).setAttribute('style', 'cursor: pointer; background-color: #2ec0ff; width: 50%; display: inline-block; color: #ffffff;')
 										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #808080; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer; display: none')
@@ -308,9 +314,6 @@
 									tooltipChart.style.display = 'none';
 								}, false);
 							}
-
-
-
 
 						}
 					} else if (data.length === 0) {

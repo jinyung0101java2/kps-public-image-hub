@@ -816,10 +816,12 @@ const func = {
 		var mins = Math.floor((seconds - hours*3600)/60)
 		var secs = seconds - hours*3600 - mins*60
 
-		if (hours > 1) {
-			return addZero(hours).replace(/^0+/, '') + ' h ' + addZero(mins).replace(/^0+/, '') + ' m ' + addZero(secs).replace(/^0+/, '') + ' sec'
-		} else if (hours === 0) {
-			return addZero(mins).replace(/^0+/, '') + ' m ' + addZero(secs).replace(/^0+/, '') + ' sec'
+		if (hours > 1 || mins > 1 || secs > 1) {
+			return addZero(hours).replace(/^0+/, '') + ' hr ' + addZero(mins).replace(/^0+/, '') + ' min ' + addZero(secs).replace(/^0+/, '') + ' sec'
+		} else if (hours === 0 || mins > 1 || secs > 1) {
+			return addZero(mins).replace(/^0+/, '') + ' min ' + addZero(secs).replace(/^0+/, '') + ' sec'
+		} else if (hours === 0 || mins > 1 || secs === 0) {
+			return addZero(mins).replace(/^0+/, '') + ' min '
 		}
 
 		function addZero(num) {
