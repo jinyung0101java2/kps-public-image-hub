@@ -62,10 +62,10 @@
 						<colgroup >
 							<col width="2%" />
 							<col width="16%" />
-							<col width="6%" />
-							<col width="6%" />
-							<col width="22%" />
-							<col width="16%" />
+							<col width="11%" />
+							<col width="11%" />
+							<col width="18%" />
+							<col width="10%" />
 							<col width="16%" />
 							<col width="16%" />
 						</colgroup>
@@ -133,7 +133,13 @@
 
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}/tags?with_signature=true&with_immutable_status=true&page=1&page_size=-1`, 'application/json', artifacts.drawTags);
 					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}?with_tag=false&with_scan_overview=true&with_sbom_overview=true&with_label=true&with_immutable_status=true`, 'application/json', artifacts.drawOverview);
-					func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}/additions/vulnerabilities?page=1&page_size=-1`, 'application/json', artifacts.drawAdditions);
+					if (sessionStorage.getItem('artifactsType') === 'CHART') {
+						let html = '<tr><td colspan="8">No Data.</td></tr>';
+						func.appendHtml(document.querySelector('.additionListTable'), html, 'tbody');
+					} else {
+						func.loadHarborData('GET', `${func.harborUrl}api/v2.0/projects/${sessionStorage.getItem('repositoryName')}/repositories/${sessionStorage.getItem('imageName')}/artifacts/${sessionStorage.getItem('artifactsName')}/additions/vulnerabilities?page=1&page_size=-1`, 'application/json', artifacts.drawAdditions);
+					}
+
 				},
 
 				drawTags(data) {
@@ -177,46 +183,51 @@
 
 				drawOverview(data) {
 
-					let extraAttrs = data.extra_attrs;
+					if (data.extra_attrs != null) {
+						let extraAttrs = data.extra_attrs;
 
-					let keysArr = Object.keys(extraAttrs)
-					let valuesArr = Object.values(extraAttrs)
+						let keysArr = Object.keys(extraAttrs)
+						let valuesArr = Object.values(extraAttrs)
 
-					let html;
-					if (keysArr.length > 0) {
-						for (var i = 0; i <= keysArr.length - 1; i++) {
+						let html;
+						if (keysArr.length > 0) {
+							for (var i = 0; i <= keysArr.length - 1; i++) {
 
-							html = `<tr>
-										<td id="keys_id_${i}" style="background-color: #f7f7f7; font-size: 18px; color: #47494D"></td>
-										<td class="left" id="values_id_${i}"></td>
-									</tr>`;
-							func.appendHtml(document.querySelector('.overviewListTable'), html, 'tbody');
+								html = `<tr>
+											<td id="keys_id_${i}" style="background-color: #f7f7f7; font-size: 18px; color: #47494D"></td>
+											<td class="left" id="values_id_${i}"></td>
+										</tr>`;
+								func.appendHtml(document.querySelector('.overviewListTable'), html, 'tbody');
 
-							if (keysArr[i] === 'created') {
-								let time = func.changeTime(valuesArr[i])
+								if (keysArr[i] === 'created') {
+									let time = func.changeTime(valuesArr[i])
 
-								document.getElementById("keys_id_" + i).innerText = keysArr[i];
-								document.getElementById("values_id_" + i).innerText = time;
-							} else if(typeof valuesArr[i] === 'object') {
-								document.getElementById("keys_id_" + i).innerText = keysArr[i];
-								document.getElementById("values_id_" + i).innerText = JSON.stringify(valuesArr[i]);
-							} else {
-								document.getElementById("keys_id_" + i).innerText = keysArr[i];
-								document.getElementById("values_id_" + i).innerText = valuesArr[i];
+									document.getElementById("keys_id_" + i).innerText = keysArr[i];
+									document.getElementById("values_id_" + i).innerText = time;
+								} else if(typeof valuesArr[i] === 'object') {
+									document.getElementById("keys_id_" + i).innerText = keysArr[i];
+									document.getElementById("values_id_" + i).innerText = JSON.stringify(valuesArr[i]);
+								} else {
+									document.getElementById("keys_id_" + i).innerText = keysArr[i];
+									document.getElementById("values_id_" + i).innerText = valuesArr[i];
+								}
+
 							}
-
+						} else if (extraAttrs.length === 0) {
+							let html = '<tr><td colspan="2">No Data.</td></tr>';
+							func.appendHtml(document.querySelector('.overviewListTable'), html, 'tbody');
 						}
-					} else if (extraAttrs.length === 0) {
+
+						for (var i = 0; i <= sessionStorage.getItem('tagsCnt') - 1; i++) {
+							if (data.type === 'IMAGE') {
+								document.getElementById("copy_id_" + i).setAttribute('data-id', 'docker pull ' + func.harborDomain.replace('https://', '') + data.repository_name + ':')
+							} else if (data.type === 'CHART') {
+								document.getElementById("copy_id_" + i).setAttribute('data-id', 'helm pull ' + func.harborDomain.replace('https', 'oci') + data.repository_name + ' --version ')
+							}
+						}
+					} else if (data.extra_attrs == null) {
 						let html = '<tr><td colspan="2">No Data.</td></tr>';
 						func.appendHtml(document.querySelector('.overviewListTable'), html, 'tbody');
-					}
-
-					for (var i = 0; i <= sessionStorage.getItem('tagsCnt') - 1; i++) {
-						if (data.type === 'IMAGE') {
-							document.getElementById("copy_id_" + i).setAttribute('data-id', 'docker pull ' + func.harborDomain.replace('https://', '') + data.repository_name + ':')
-						} else if (data.type === 'CHART') {
-							document.getElementById("copy_id_" + i).setAttribute('data-id', 'helm pull ' + func.harborDomain.replace('https', 'oci') + data.repository_name + ' --version ')
-						}
 					}
 
 					if (document.getElementById('loading')) {

@@ -890,7 +890,11 @@ const func = {
 		let cvss3Values = Object.values(data)
 
 		for (var i = 0; i <= cvss3Keys.length - 1; i++) {
-			cvssData += cvss3Keys[i] + ": " + cvss3Values[i].V3Score + " ";
+			if (Object.keys(cvss3Values[i]).includes("V3Score")) {
+				cvssData += cvss3Keys[i] + ": " + cvss3Values[i].V3Score + '\n';
+			} else {
+				cvssData += cvss3Keys[i] + ":" + '\n';
+			}
 		}
 
 		return cvssData;

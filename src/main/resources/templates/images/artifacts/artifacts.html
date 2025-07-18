@@ -138,7 +138,7 @@
 
 							html = `<tr>
                                         <td style="border-right:1px solid #ebebeb"><input type="checkbox" name="${data[i].digest}" id="${data[i].id}" class="checkbox_${i}"/><label for="${data[i].id}" style="padding-left: 27px; position: relative; cursor: pointer;"></label></td>
-                                        <td class="left"><img id="digest_img_${i}" alt="artifact image" style="width: 8%; margin-right: 5px;"><a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}" style="text-decoration: none; color: #019b72;"></a></td>
+                                        <td class="left"><img id="digest_img_${i}" alt="artifact image" style="width: 8%; margin-right: 5px;"><a id="digest_name_${i}" class="name" href="javascript:;" data-id="${data[i].digest}" data-type="${data[i].type}" style="text-decoration: none; color: #019b72;"></a></td>
                                         <td><i id="copy_id_${i}" class="fa-sharp fa-regular fa-copy fa-lg copyBtn" style="cursor: pointer; color: #adadad;" onclick="copyClick(event)"></i></td>
                                         <td id="tag_id_${i}"></td>
                                         <td><i class="fa-solid fa-circle-xmark" style="color: #ff5353"></i></td>
@@ -368,6 +368,7 @@
 					for(var i=0; i<=listAll.length-1; i++){
 						listAll[i].addEventListener('click', (e) => {
 							sessionStorage.setItem('artifactsName', e.target.getAttribute('data-id'));
+							sessionStorage.setItem('artifactsType', e.target.getAttribute('data-type'));
 
 							document.location.href = URI_KPS_HUB_IMAGE_ARTIFACT_DETAIL;
 						}, true);

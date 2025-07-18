@@ -330,9 +330,10 @@
 											<td id="col6_${i}"><span id="severity_${i}"></span></td>
 											<td id="col7_${i}" class="left">${data[i].package}</td>
 											<td id="col8_${i}">${data[i].version}</td>
-											<td id="col9_${i}" class="left"><i class="fa-solid fa-wrench" style="color: #00b92a; margin-right: 7px;"></i>${data[i].fixed_version}</td>
+											<td id="col9_${i}" class="left"><i class="fa-solid fa-wrench" style="color: #00b92a; margin-right: 7px;"></i><span id="fixed_version_${i}"></span></td>
 											</tr><tr><td id="desc_${i}" style="display: none" class="left" colspan="10" name="off">${data[i].desc}</td></tr>`;
 
+												// <td id="col9_${i}" className="left"><i className="fa-solid fa-wrench" style="color: #00b92a; margin-right: 7px;"><span id="fixed_version_${i}"></span></i></td>
 												func.appendHtml(document.querySelector('.listTable'), html, 'tbody');
 
 												document.getElementById("col4_" + i).innerText = tag.slice(0, - 2);
@@ -341,6 +342,12 @@
 													document.getElementById("col5_" + i).innerText = data[i].cvss_v3_score;
 												} else if (data[i].cvss_v3_score == null) {
 													document.getElementById("col5_" + i).innerText = '';
+												}
+
+												if (data[i].fixed_version != null) {
+													document.getElementById("fixed_version_" + i).innerText = data[i].fixed_version;
+												} else if (data[i].fixed_version == null) {
+													document.getElementById("fixed_version_" + i).innerText = '';
 												}
 
 												if (data[i].severity === 'High') {
