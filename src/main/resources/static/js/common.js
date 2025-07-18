@@ -806,6 +806,28 @@ const func = {
 		return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse("admin:Harbor12345"))
 	},
 
+	countingSeconds(seconds) {
+
+		if (seconds < 61) {
+			return addZero(seconds).replace(/^0+/, '') +' sec'
+		}
+		// sec
+		var hours = Math.floor(seconds/3600)
+		var mins = Math.floor((seconds - hours*3600)/60)
+		var secs = seconds - hours*3600 - mins*60
+
+		if (hours > 1) {
+			return addZero(hours).replace(/^0+/, '') + ' h ' + addZero(mins).replace(/^0+/, '') + ' m ' + addZero(secs).replace(/^0+/, '') + ' sec'
+		} else if (hours === 0) {
+			return addZero(mins).replace(/^0+/, '') + ' m ' + addZero(secs).replace(/^0+/, '') + ' sec'
+		}
+
+		function addZero(num) {
+			return ((num < 10) ? '0' : '') + num
+		}
+
+	},
+
 	changeTime(time) {
 		const create_date_time = time;
 		const date = new Date(create_date_time);

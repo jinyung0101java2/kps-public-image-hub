@@ -105,7 +105,6 @@
 								let obj = JSON.parse(changeScanOverview2)
 								obj["id"] = data[i].id
 								changeScanOverview3.push(obj)
-								console.log('changeScanOverview3::: ' + JSON.stringify(changeScanOverview3))
 							}
 						}
 					}
@@ -113,17 +112,6 @@
 					sessionStorage.setItem('artifactsCnt', data.length);
 					if (data.length > 0) {
 						for (var i = 0; i <= data.length - 1; i++) {
-
-							// if (data[i].scan_overview != null) {
-							// 	let originScanOverview = JSON.stringify(data[i].scan_overview)
-							// 	let changeScanOverview1 = originScanOverview.replace('{"application/vnd.security.vulnerability.report; version=1.1":','')
-							// 	let changeScanOverview2 = changeScanOverview1.slice(0, -1)
-							// 	let obj = JSON.parse(changeScanOverview2)
-							// 	obj["id"] = data[i].id
-							// 	//console.log('changeScanOverview2::: ' + JSON.stringify(changeScanOverview2))
-							// 	changeScanOverview3.push(obj)
-							// 	console.log('changeScanOverview3::: ' + JSON.stringify(changeScanOverview3))
-							// }
 
 							let digest = data[i].digest.substr(0,15)
 							let push_time = func.changeTime(data[i].push_time)
@@ -144,8 +132,8 @@
                                         <td><i class="fa-solid fa-circle-xmark" style="color: #ff5353"></i></td>
                                         <td id="size_id_${i}"></td>
                                         <td class="tooltip_container"><p id="tooltip_text_${i}" class="tooltip-text"></p><div id="scan_overview_severity_id_${i}"></div><div id="scan_overview_id_${i}"></div>
-                                        <div id="tooltip_chart_${i}" class="tooltip-text" data-id="${data[i].id}">Vulnerability severity: <span id="vul_type_${i}"></span><canvas id="myChart_${i}" width="200px" height="100px"></canvas>
-										<ul><li>Scanned by: <span id="scan_${i}"></span>@<span id="ver_${i}"></span></li><li id="dur_${i}"></li><li id="ctime_${i}"></li></ul>
+                                        <div id="tooltip_chart_${i}" class="tooltip-text" data-id="${data[i].id}">Vulnerability severity: <span id="vul_type_${i}"></span><canvas id="myChart_${i}" width="250px" height="130px"></canvas>
+										<ul style="font-size: 14px; text-align: left;"><li>Scanned by: <span id="scan_${i}"></span>@<span id="ver_${i}"></span></li><li>Duration: <span id="dur_${i}"></li><li>Scan completed time: <scan id="end_time_${i}"></scan></li></ul>
                                         </div></td>
                                         <td>${data[i].pull_count}</td>
                                         <td id="push_time_${i}">push_time</td>
@@ -202,11 +190,9 @@
 										document.getElementById("scan_overview_id_" + i).innerText = "No vulnerability";
 										document.getElementById("scan_overview_id_" + i).setAttribute('style', 'cursor: pointer; background-color: #2ec0ff; width: 50%; display: inline-block; color: #ffffff;')
 										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #808080; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer; display: none')
-										//document.getElementById("scan_overview_severity_id_" + i).
 									} else {
 										document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.total
 									}
-									// document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.severity + "  " + vulnerabilitiesData.total;
 
 									if (data[i].type === 'IMAGE') {
 										document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-image.png')
@@ -216,6 +202,71 @@
 										document.getElementById("digest_img_" + i).setAttribute('style', 'width: 8%; margin-right: 5px;')
 									}
 
+    								document.getElementById('scan_' + k).innerText = changeScanOverview3[k].scanner.name
+									document.getElementById('ver_' + k).innerText = changeScanOverview3[k].scanner.version
+									document.getElementById('dur_' + k).innerText = func.countingSeconds(changeScanOverview3[k].duration)
+									document.getElementById('end_time_' + k).innerText = func.changeTime(changeScanOverview3[k].end_time)
+
+									let criticalCnt = 0;
+									let highCnt = 0;
+									let mediumCnt = 0;
+									let	lowCnt = 0;
+									let unknownCnt = 0;
+
+									let barCntObj = changeScanOverview3[k].summary.summary;
+									let barCntKeys = Object.keys(barCntObj)
+									let barCntValues = Object.values(barCntObj)
+
+									for (var c = 0; c <= barCntKeys.length - 1; c++) {
+
+										if (barCntKeys[c].includes('Critical')) {
+											criticalCnt = barCntValues[c]
+										} else if (barCntKeys[c].includes('High')) {
+											highCnt = barCntValues[c]
+										} else if (barCntKeys[c].includes('Medium')) {
+											mediumCnt = barCntValues[c]
+										} else if (barCntKeys[c].includes('Low')) {
+											lowCnt = barCntValues[c]
+										}  else if (barCntKeys[c].includes('Unknown')) {
+											unknownCnt = barCntValues[c]
+										}
+									}
+
+									const ctx = document.getElementById('myChart_' + i).getContext('2d');
+									new Chart(ctx, {
+										type: 'bar',
+										data: {
+											labels: ['Critical', 'High', 'Medium', 'Low', 'N/A'],
+											datasets: [{
+												data: [criticalCnt, highCnt, mediumCnt, lowCnt, unknownCnt],
+												backgroundColor: [
+													'#FF4D2E',
+													'#ff8f3d',
+													'#ffce66',
+													'#fff1ad',
+													'#c5c5c5'
+												],
+												borderWidth: 0,
+												scaleBeginAtZero: true,
+											}
+											]
+										},
+										options: {
+											indexAxis: 'y',
+											scales: {
+												x: {
+													beginAtZero: true
+												}
+											},
+											barPercentage: 0.6,
+											plugins: {
+												legend: {
+													display: false
+												}
+											},
+											responsive: false
+										}
+									});
 								}
 							}
 
@@ -247,6 +298,7 @@
 
 								const targetChart = document.getElementById("scan_overview_id_" + i);
 								const tooltipChart = document.getElementById("tooltip_chart_" + i);
+								document.getElementById("tooltip_chart_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: 240px;')
 
 								targetChart.addEventListener('mouseover', () => {
 									tooltipChart.style.display = 'block';
@@ -257,40 +309,8 @@
 								}, false);
 							}
 
-							const ctx = document.getElementById('myChart_' + i).getContext('2d');
-							new Chart(ctx, {
-								type: 'bar',
-								data: {
-									labels: ['Critical', 'High', 'Medium', 'Low'],
-									datasets: [{
-										data: [10, 10, 30, 70],
-										backgroundColor: [
-											'#FF4D2E',
-											'#ff8f3d',
-											'#ffce66',
-											'#fff1ad'
-										],
-										borderWidth: 0,
-										scaleBeginAtZero: true,
-									}
-									]
-								},
-								options: {
-									indexAxis: 'y',
-									scales: {
-										x: {
-											beginAtZero: true
-										}
-									},
-									barPercentage: 0.6,
-									plugins: {
-										legend: {
-											display: false
-										}
-									},
-									responsive: false
-								}
-							});
+
+
 
 						}
 					} else if (data.length === 0) {
