@@ -152,10 +152,12 @@
 				drawRepositories(data) {
 
 					let html;
+					let totalImages = data.length;
 					let totalArtifacts = 0;
 					let totalPulls = 0;
 
 					sessionStorage.setItem('repositoriesCnt', data.length);
+					document.getElementById('total-images').innerText = totalImages;
 
 					func.removeHtml(document.querySelector('.listTable'), html, 'tbody');
 
@@ -199,7 +201,7 @@
 
 					repositories.pageEnd = data.project_admin_count;
 					document.getElementById('total-storages').innerText = func.formatBytes(data.quota.used.storage);
-					document.getElementById('total-images').innerText = data.repo_count;
+					// document.getElementById('total-images').innerText = data.repo_count;
 					document.getElementById('total-vulnerabilities').innerText = sessionStorage.getItem('cveCnt');
 
 					// document.getElementById('page-start').innerText = repositories.page;

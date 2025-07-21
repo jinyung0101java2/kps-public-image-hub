@@ -78,6 +78,11 @@
 
                 init() {
                     sessionStorage.setItem('accessToken' , 'Bearer ' + [[${accessToken}]]);
+                    let sendData = {"username":[[${username}]]+'_'+[[${username}]]}
+
+                    // func.loadLoginData('GET', `${func.harborUrl}c/oidc/login?redirect_url=/harbor/projects`, 'application/json');
+                    // func.saveUserData('POST', `${func.harborUrl}c/oidc/onboard`, JSON.stringify(sendData), true, 'application/json');
+
                     func.nameLoad = projects.reset;
 
                     projects.load();

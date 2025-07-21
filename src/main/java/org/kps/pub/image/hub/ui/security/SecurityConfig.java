@@ -71,6 +71,7 @@ public class SecurityConfig {
                         .loginPage(propertyService.getKeycloakOauth2LoginPath())
                         .userInfoEndpoint(userInfo -> userInfo.userService(portalOAuth2UserService))
                         .defaultSuccessUrl("/", true)
+//                        .defaultSuccessUrl("/harbor/login", true)
                         .failureHandler(portalOauth2FailureHandler))
                 .logout(logout -> logout
                         .logoutUrl(ConstantsUrl.URI_CP_LOGOUT)

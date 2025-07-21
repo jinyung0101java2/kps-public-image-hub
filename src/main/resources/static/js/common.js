@@ -35,7 +35,7 @@ const func = {
 			navSub[i].style.height = (childSum*35+30)+((childSum-1)*10)+'px';
 		};
 
-		func.userCheck();
+		// func.userCheck();
 		func.event();
 	},
 
@@ -459,6 +459,35 @@ const func = {
 			request.send(); },0);
 	},
 
+	loadLoginData(method, url, header){
+
+		if(url == null) {
+			callbackFunction();
+			return false;
+		}
+		var request = new XMLHttpRequest();
+
+		setTimeout(function (name, value) {
+			request.open(method, url, false);
+			request.setRequestHeader('Content-type', header);
+			request.setRequestHeader('Authorization', sessionStorage.getItem('accessToken'));
+			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
+			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
+
+			request.onreadystatechange = async () => {
+				if (request.readyState === XMLHttpRequest.DONE) {
+					if (request.status === 200 && request.responseText != '') {
+						callbackFunction(JSON.parse(request.responseText), list);
+
+					} else if (JSON.parse(request.responseText).httpStatusCode === 500) {
+						sessionStorage.clear();
+					};
+				};
+			};
+
+			request.send(); },0);
+	},
+
 	loadHarborData(method, url, header, callbackFunction, list){
 
 		if(url == null) {
@@ -573,6 +602,42 @@ const func = {
 			request.send(data); }, 0);
 	},
 
+	saveUserData(method, url, data, bull, header){
+		func.loading();
+
+		var request = new XMLHttpRequest();
+
+		setTimeout(function() {
+			request.open(method, url, false);
+			request.setRequestHeader('Content-type', header);
+			request.setRequestHeader('Authorization', sessionStorage.getItem('accessToken'));
+			request.setRequestHeader('uLang', CURRENT_LOCALE_LANGUAGE);
+			request.setRequestHeader('Accept-Language', CURRENT_LOCALE_LANGUAGE);
+
+			request.onreadystatechange = () => {
+				if (request.readyState === XMLHttpRequest.DONE){
+					if(request.status === 200 || request.status === 201) {
+						// if (method === 'DELETE') {
+						// 	func.alertPopup('SUCCESS', MSG_DELETE_COMPLETED, true, MSG_CONFIRM, callFunc);
+						// } else if (method === 'POST') {
+						// 	func.alertPopup('SUCCESS', MSG_CREATION_COMPLETED, true, MSG_CONFIRM, callFunc);
+						// }
+						if (document.getElementById('loading')) {
+							document.getElementById('wrap').removeChild(document.getElementById('loading'));
+						}
+					} else {
+						func.alertPopup('ERROR', MSG_ERROR, true, MSG_CONFIRM, 'closed');
+
+						if (document.getElementById('loading')) {
+							document.getElementById('wrap').removeChild(document.getElementById('loading'));
+						}
+					}
+				};
+			};
+
+			request.send(data); }, 0);
+	},
+
 	saveHarborData(method, url, data, bull, header, callFunc){
 		func.loading();
 
@@ -603,7 +668,7 @@ const func = {
 				};
 			};
 
-			request.send(data); }, 0);
+		request.send(data); }, 0);
 	},
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -816,11 +881,12 @@ const func = {
 		var mins = Math.floor((seconds - hours*3600)/60)
 		var secs = seconds - hours*3600 - mins*60
 
-		if (hours > 1 || mins > 1 || secs > 1) {
-			return addZero(hours).replace(/^0+/, '') + ' hr ' + addZero(mins).replace(/^0+/, '') + ' min ' + addZero(secs).replace(/^0+/, '') + ' sec'
-		} else if (hours === 0 || mins > 1 || secs > 1) {
+		console.log(mins)
+		console.log(secs)
+
+		if (mins >= 1 && secs >= 1) {
 			return addZero(mins).replace(/^0+/, '') + ' min ' + addZero(secs).replace(/^0+/, '') + ' sec'
-		} else if (hours === 0 || mins > 1 || secs === 0) {
+		} else if (mins >= 1 && secs === 0) {
 			return addZero(mins).replace(/^0+/, '') + ' min '
 		}
 
@@ -924,9 +990,9 @@ const func = {
 		return cvssData;
 	},
 
-	userCheck() {
+	/*userCheck() {
 
-	}
+	}*/
 	/*userCheck(username, realname, email) {
 		console.log(username + ' :: ' + realname + ' :: ' + email)
 		func.loadHarborData('GET', `${func.harborUrl}api/v2.0/users`, 'application/json', (e) => {

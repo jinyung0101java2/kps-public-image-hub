@@ -29,6 +29,7 @@ public class SecurityUtils {
 
     public OAuthTokens getTokens() {
         OAuthTokens oAuthTokens = null;
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             OAuth2AuthenticationToken oauth2Auth = (OAuth2AuthenticationToken) authentication;

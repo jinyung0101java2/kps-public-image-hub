@@ -132,10 +132,10 @@
                                         <td><i class="fa-solid fa-circle-xmark" style="color: #ff5353"></i></td>
                                         <td id="size_id_${i}"></td>
                                         <td class="tooltip_container"><p id="tooltip_text_${i}" class="tooltip-text"></p><div id="scan_overview_severity_id_${i}"></div><div id="scan_overview_id_${i}"></div>
-                                        <div id="tooltip_chart_${i}" class="tooltip-text" data-id="${data[i].id}">Vulnerability severity: <span id="vul_type_${i}"></span><canvas id="myChart_${i}" width="250px" height="130px"></canvas>
+                                        <div id="tooltip_chart_${i}" class="tooltip-text" data-id="${data[i].id}"><span id="vul_title_${i}"></span><span id="vul_type_${i}"></span><canvas id="myChart_${i}" width="250px" height="130px"></canvas>
 										<ul style="font-size: 14px; text-align: left;"><li>Scanned by: <span id="scan_${i}"></span>@<span id="ver_${i}"></span></li><li>Duration: <span id="dur_${i}"></li><li>Scan completed time: <scan id="end_time_${i}"></scan></li></ul>
                                         </div></td>
-                                        <td>${data[i].pull_count}</td>
+                                        <td id="labels_${i}"></td>
                                         <td id="push_time_${i}">push_time</td>
                                     </tr>`;
 
@@ -147,147 +147,16 @@
 							document.getElementById("tag_id_" + i).innerText = tag.slice(0, - 2);
 							document.getElementById("size_id_" + i).innerText = size;
 
+							if (data[0].labels != null) {
+								document.getElementById("labels_" + i).innerText = data[i].labels[0].name;
+							} else if (data[0].labels == null) {
+								document.getElementById("labels_" + i).innerText = '';
+							}
+
 							if (data[i].type === 'IMAGE') {
 								document.getElementById("copy_id_" + i).setAttribute('data-id', 'docker pull ' + func.harborDomain.replace('https://', '') + data[i].repository_name + '@' + data[i].digest)
 							} else if (data[i].type === 'CHART') {
 								document.getElementById("copy_id_" + i).setAttribute('data-id', 'helm pull ' + func.harborDomain.replace('https', 'oci') + data[i].repository_name + ' --version ' + data[i].tags[0].name)
-							}
-
-							for (var k = 0; k <= changeScanOverview3.length - 1; k++) {
-								let vulnerabilitiesData = func.vulnerabilitiesData(changeScanOverview3[k])
-								if (data[i].scan_overview != null && data[i].id === vulnerabilitiesData.id) {
-
-									if (vulnerabilitiesData.severity === 'High') {
-										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #ff8f3d; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer;')
-										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: High';
-										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -177px;')
-										document.getElementById("vul_type_" + i).innerText = 'High';
-										document.getElementById("vul_type_" + i).setAttribute('style', 'color: #ff8f3d');
-									} else if (vulnerabilitiesData.severity === 'Medium') {
-										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #ffce66; float: left; margin-left: 20px; width: 65px; color: #ffffff; cursor: pointer;')
-										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Medium';
-										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -207px;')
-										document.getElementById("vul_type_" + i).innerText = 'Medium';
-										document.getElementById("vul_type_" + i).setAttribute('style', 'color: #ffce66');
-									} else if (vulnerabilitiesData.severity === 'Low') {
-										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #fff1ad; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer;')
-										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Low';
-										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -175px;')
-										document.getElementById("vul_type_" + i).innerText = 'Low';
-										document.getElementById("vul_type_" + i).setAttribute('style', 'color: #fff1ad');
-									} else if (vulnerabilitiesData.severity === 'None') {
-										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #808080; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer;')
-										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: None';
-										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -177px;')
-										document.getElementById("vul_type_" + i).innerText = 'None';
-										document.getElementById("vul_type_" + i).setAttribute('style', 'color: #c5c5c5');
-									} else if (vulnerabilitiesData.severity === 'Critical') {
-										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #FF4D2E; float: left; margin-left: 20px; width: 65px; color: #ffffff; cursor: pointer;')
-										document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Critical';
-										document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -207px;')
-										document.getElementById("vul_type_" + i).innerText = 'Critical';
-										document.getElementById("vul_type_" + i).setAttribute('style', 'color: #FF4D2E');
-									}
-
-									document.getElementById("scan_overview_severity_id_" + i).innerText = vulnerabilitiesData.severity;
-									document.getElementById("scan_overview_id_" + i).setAttribute('style', 'cursor: pointer;')
-									if (vulnerabilitiesData.total === "0 Total - 0 Fixable") {
-										document.getElementById("tooltip_chart_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: 240px; width: 250px; height: 130px')
-										document.getElementById("scan_overview_id_" + i).innerText = "No vulnerability";
-										document.getElementById("scan_overview_id_" + i).setAttribute('style', 'cursor: pointer; background-color: #2ec0ff; width: 50%; display: inline-block; color: #ffffff;')
-										document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #808080; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer; display: none')
-									} else {
-										document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.total
-									}
-
-									if (data[i].type === 'IMAGE') {
-										document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-image.png')
-										document.getElementById("digest_img_" + i).setAttribute('style', 'width: 10%; margin-right: 5px;')
-									} else if (data[i].type === 'CHART') {
-										document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-chart.png')
-										document.getElementById("digest_img_" + i).setAttribute('style', 'width: 8%; margin-right: 5px;')
-									}
-
-    								document.getElementById('scan_' + k).innerText = changeScanOverview3[k].scanner.name
-									document.getElementById('ver_' + k).innerText = changeScanOverview3[k].scanner.version
-									document.getElementById('dur_' + k).innerText = func.countingSeconds(changeScanOverview3[k].duration)
-									document.getElementById('end_time_' + k).innerText = func.changeTime(changeScanOverview3[k].end_time)
-
-									let criticalCnt = 0;
-									let highCnt = 0;
-									let mediumCnt = 0;
-									let	lowCnt = 0;
-									let unknownCnt = 0;
-
-									let barCntObj = changeScanOverview3[k].summary.summary;
-									let barCntKeys = Object.keys(barCntObj)
-									let barCntValues = Object.values(barCntObj)
-
-									for (var c = 0; c <= barCntKeys.length - 1; c++) {
-
-										if (barCntKeys[c].includes('Critical')) {
-											criticalCnt = barCntValues[c]
-										} else if (barCntKeys[c].includes('High')) {
-											highCnt = barCntValues[c]
-										} else if (barCntKeys[c].includes('Medium')) {
-											mediumCnt = barCntValues[c]
-										} else if (barCntKeys[c].includes('Low')) {
-											lowCnt = barCntValues[c]
-										}  else if (barCntKeys[c].includes('Unknown')) {
-											unknownCnt = barCntValues[c]
-										}
-									}
-
-									const ctx = document.getElementById('myChart_' + i).getContext('2d');
-									new Chart(ctx, {
-										type: 'bar',
-										data: {
-											labels: ['Critical', 'High', 'Medium', 'Low', 'N/A'],
-											datasets: [{
-												data: [criticalCnt, highCnt, mediumCnt, lowCnt, unknownCnt],
-												backgroundColor: [
-													'#FF4D2E',
-													'#ff8f3d',
-													'#ffce66',
-													'#fff1ad',
-													'#c5c5c5'
-												],
-												borderWidth: 0,
-												scaleBeginAtZero: true,
-											}
-											]
-										},
-										options: {
-											indexAxis: 'y',
-											scales: {
-												x: {
-													beginAtZero: true
-												}
-											},
-											barPercentage: 0.6,
-											plugins: {
-												legend: {
-													display: false
-												}
-											},
-											responsive: false
-										}
-									});
-								}
-							}
-
-							if (data[i].scan_overview == null) {
-								if (data[i].type === 'IMAGE') {
-									document.getElementById("scan_overview_id_" + i).innerText = "Not Scanned";
-									document.getElementById("scan_overview_id_" + i).setAttribute('style', 'text-align: center; border-radius: 15px; border: 2px solid #ff5353; width: 100px; height: 23px; margin: 0 auto;')
-									document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-image.png')
-									document.getElementById("digest_img_" + i).setAttribute('style', 'width: 10%; margin-right: 5px;')
-								} else if (data[i].type === 'CHART') {
-									document.getElementById("scan_overview_id_" + i).innerText = "Unsupported";
-									document.getElementById("scan_overview_id_" + i).setAttribute('style', 'text-align: center; border-radius: 15px; border: 2px solid #818894ad; width: 100px; height: 23px; margin: 0 auto;')
-									document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-chart.png')
-									document.getElementById("digest_img_" + i).setAttribute('style', 'width: 8%; margin-right: 5px;')
-								}
 							}
 
 							if (data[i].scan_overview != null) {
@@ -313,7 +182,178 @@
 								targetChart.addEventListener('mouseleave', () => {
 									tooltipChart.style.display = 'none';
 								}, false);
+
+								for (var k = 0; k <= changeScanOverview3.length - 1; k++) {
+									let vulnerabilitiesData = func.vulnerabilitiesData(changeScanOverview3[k])
+									if (data[i].scan_overview != null && data[i].id === vulnerabilitiesData.id) {
+
+										if (vulnerabilitiesData.severity === 'High') {
+											document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #ff8f3d; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer;')
+											document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: High';
+											document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -177px;')
+											document.getElementById("vul_title_" + i).innerText = 'Vulnerability severity: ';
+											document.getElementById("vul_type_" + i).innerText = 'High';
+											document.getElementById("vul_type_" + i).setAttribute('style', 'color: #ff8f3d');
+										} else if (vulnerabilitiesData.severity === 'Medium') {
+											document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #ffce66; float: left; margin-left: 20px; width: 65px; color: #ffffff; cursor: pointer;')
+											document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Medium';
+											document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -207px;')
+											document.getElementById("vul_title_" + i).innerText = 'Vulnerability severity: ';
+											document.getElementById("vul_type_" + i).innerText = 'Medium';
+											document.getElementById("vul_type_" + i).setAttribute('style', 'color: #ffce66');
+										} else if (vulnerabilitiesData.severity === 'Low') {
+											document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #fff1ad; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer;')
+											document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Low';
+											document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -175px;')
+											document.getElementById("vul_title_" + i).innerText = 'Vulnerability severity: ';
+											document.getElementById("vul_type_" + i).innerText = 'Low';
+											document.getElementById("vul_type_" + i).setAttribute('style', 'color: #fff1ad');
+										} else if (vulnerabilitiesData.severity === 'None') {
+											document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #808080; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer;')
+											document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: None';
+											document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -177px;')
+											document.getElementById("vul_title_" + i).innerText = 'Vulnerability severity: ';
+											document.getElementById("vul_type_" + i).innerText = 'None';
+											document.getElementById("vul_type_" + i).setAttribute('style', 'color: #c5c5c5');
+										} else if (vulnerabilitiesData.severity === 'Critical') {
+											document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #FF4D2E; float: left; margin-left: 20px; width: 65px; color: #ffffff; cursor: pointer;')
+											document.getElementById("tooltip_text_" + i).innerText = 'Vulnerability severity: Critical';
+											document.getElementById("tooltip_text_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: -207px;')
+											document.getElementById("vul_title_" + i).innerText = 'Vulnerability severity: ';
+											document.getElementById("vul_type_" + i).innerText = 'Critical';
+											document.getElementById("vul_type_" + i).setAttribute('style', 'color: #FF4D2E');
+										}
+
+										document.getElementById("scan_overview_severity_id_" + i).innerText = vulnerabilitiesData.severity;
+										document.getElementById("scan_overview_id_" + i).setAttribute('style', 'cursor: pointer;')
+										if (vulnerabilitiesData.total === "0 Total - 0 Fixable") {
+											document.getElementById("scan_overview_id_" + i).innerText = "No vulnerability";
+											document.getElementById("scan_overview_id_" + i).setAttribute('style', 'cursor: pointer; background-color: #2ec0ff; width: 50%; display: inline-block; color: #ffffff;')
+											document.getElementById("scan_overview_severity_id_" + i).setAttribute('style', 'border-radius: 10px; background: #808080; float: left; margin-left: 25px; width: 50px; color: #ffffff; cursor: pointer; display: none')
+											document.getElementById("vul_title_" + i).innerText = 'No vulnerability';
+											document.getElementById("vul_title_" + i).setAttribute('style','color: #2ec0ff;');
+											document.getElementById("vul_type_" + i).innerText = '';
+											document.getElementById("myChart_" + i).setAttribute('style', 'display: none');
+											document.getElementById("tooltip_chart_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: rgb(0, 0, 0); padding: 8px; font-size: 1rem; color: rgb(255, 255, 255); border-radius: 2px; animation: 0.6s ease 0s 1 normal none running fadeIn; margin-left: 240px; width: 265.98px;');
+										} else {
+											document.getElementById("scan_overview_id_" + i).innerText = vulnerabilitiesData.total
+										}
+
+										if (data[i].type === 'IMAGE') {
+											document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-image.png')
+											document.getElementById("digest_img_" + i).setAttribute('style', 'width: 10%; margin-right: 5px;')
+										} else if (data[i].type === 'CHART') {
+											document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-chart.png')
+											document.getElementById("digest_img_" + i).setAttribute('style', 'width: 8%; margin-right: 5px;')
+										}
+
+										document.getElementById('scan_' + k).innerText = changeScanOverview3[k].scanner.name
+										document.getElementById('ver_' + k).innerText = changeScanOverview3[k].scanner.version
+										document.getElementById('dur_' + k).innerText = func.countingSeconds(changeScanOverview3[k].duration)
+										document.getElementById('end_time_' + k).innerText = func.changeTime(changeScanOverview3[k].end_time)
+
+										let criticalCnt = 0;
+										let highCnt = 0;
+										let mediumCnt = 0;
+										let lowCnt = 0;
+										let unknownCnt = 0;
+
+										let barCntObj = changeScanOverview3[k].summary.summary;
+										let barCntKeys = Object.keys(barCntObj)
+										let barCntValues = Object.values(barCntObj)
+
+										for (var c = 0; c <= barCntKeys.length - 1; c++) {
+
+											if (barCntKeys[c].includes('Critical')) {
+												criticalCnt = barCntValues[c]
+											} else if (barCntKeys[c].includes('High')) {
+												highCnt = barCntValues[c]
+											} else if (barCntKeys[c].includes('Medium')) {
+												mediumCnt = barCntValues[c]
+											} else if (barCntKeys[c].includes('Low')) {
+												lowCnt = barCntValues[c]
+											} else if (barCntKeys[c].includes('Unknown')) {
+												unknownCnt = barCntValues[c]
+											}
+										}
+
+										const ctx = document.getElementById('myChart_' + i).getContext('2d');
+										new Chart(ctx, {
+											type: 'bar',
+											data: {
+												labels: ['Critical', 'High', 'Medium', 'Low', 'N/A'],
+												datasets: [{
+													data: [criticalCnt, highCnt, mediumCnt, lowCnt, unknownCnt],
+													backgroundColor: [
+														'#FF4D2E',
+														'#ff8f3d',
+														'#ffce66',
+														'#fff1ad',
+														'#c5c5c5'
+													],
+													borderWidth: 0,
+													scaleBeginAtZero: true,
+												}
+												]
+											},
+											options: {
+												indexAxis: 'y',
+												scales: {
+													x: {
+														beginAtZero: true
+													}
+												},
+												barPercentage: 0.6,
+												plugins: {
+													legend: {
+														display: false
+													}
+												},
+												responsive: false
+											}
+										});
+									}
+								}
 							}
+
+							if (data[i].scan_overview == null) {
+								if (data[i].type === 'IMAGE') {
+									document.getElementById("scan_overview_id_" + i).innerText = "Not Scanned";
+									document.getElementById("scan_overview_id_" + i).setAttribute('style', 'text-align: center; border-radius: 15px; border: 2px solid #ff5353; width: 100px; height: 23px; margin: 0 auto;')
+									document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-image.png')
+									document.getElementById("digest_img_" + i).setAttribute('style', 'width: 10%; margin-right: 5px;')
+								} else if (data[i].type === 'CHART') {
+									document.getElementById("scan_overview_id_" + i).innerText = "Unsupported";
+									document.getElementById("scan_overview_id_" + i).setAttribute('style', 'text-align: center; border-radius: 15px; border: 2px solid #818894ad; width: 100px; height: 23px; margin: 0 auto;')
+									document.getElementById("digest_img_" + i).setAttribute('src', '/img/artifact-chart.png')
+									document.getElementById("digest_img_" + i).setAttribute('style', 'width: 8%; margin-right: 5px;')
+								}
+							}
+
+							/*if (data[i].scan_overview != null) {
+								const target = document.getElementById("scan_overview_severity_id_" + i);
+								const tooltip = document.getElementById("tooltip_text_" + i);
+
+								target.addEventListener('mouseover', () => {
+									tooltip.style.display = 'block';
+								}, false);
+
+								target.addEventListener('mouseleave', () => {
+									tooltip.style.display = 'none';
+								}, false);
+
+								const targetChart = document.getElementById("scan_overview_id_" + i);
+								const tooltipChart = document.getElementById("tooltip_chart_" + i);
+								document.getElementById("tooltip_chart_" + i).setAttribute('style', 'position: absolute; top: 17px; z-index: 1; background: #000000; padding: 8px;  font-size: 1rem; color: #fff; border-radius: 2px; animation: fadeIn 0.6s; margin-left: 240px;')
+
+								targetChart.addEventListener('mouseover', () => {
+									tooltipChart.style.display = 'block';
+								}, false);
+
+								targetChart.addEventListener('mouseleave', () => {
+									tooltipChart.style.display = 'none';
+								}, false);
+							}*/
 
 						}
 					} else if (data.length === 0) {

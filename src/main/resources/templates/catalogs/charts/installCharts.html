@@ -15,11 +15,6 @@
         <article class="base">
             <div class="creat">
                 <h3 th:text="|Chart #{M0857}|"></h3>
-                <div class="btn03">
-                    <div>
-                        <button type="submit" id="install" th:text="#{M0857}"></button>
-                    </div>
-                </div>
                 <div>
                     <dl>
                         <div style="height:38px; line-height: 38px; width: 100%;"><span id="repoNameDiv" class="header-label"></span></div>
@@ -35,23 +30,17 @@
                                      </fieldset>
                                  </dd>
                              </div>
-                            </div>
-                    </dl>
-                    <dl>
-                        <dt><label for="release_name">Release Name</label></dt>
-                        <dd>
-                            <input id="release_name" type="text" th:placeholder="#{M0858}"/>
-                        </dd>
+                        </div>
                     </dl>
                     <dl style="margin-top:50px;">
                         <dd>
                             <div class="modal-pane-wrap">
-                               <div class="modal-pane"><span class="title-label" th:text="#{M0904}"></span></div>
-                                <div style="width:6%;"></div>
-                                <div class="modal-pane"><span class="title-label" th:text="#{M0905}"></span>
-                                    <span class="info-label" th:text="#{M0906}"></span>
-                                    <span id="collapse" class="icon-pane">
-                                     <img id="collapse_img" title="Expand Content" class="expand"/></span></div>
+                            <div class="modal-pane"><span class="title-label" th:text="#{M0904}"></span></div>
+                            <div style="width:6%;"></div>
+                            <div class="modal-pane"><span class="title-label" th:text="#{M0905}"></span>
+                                <span class="info-label" th:text="#{M0906}"></span>
+                                <span id="collapse" class="icon-pane">
+                                 <img id="collapse_img" title="Expand Content" class="expand"/></span></div>
                             </div>
                             <div id="install_values_view"></div>
                         </dd>
