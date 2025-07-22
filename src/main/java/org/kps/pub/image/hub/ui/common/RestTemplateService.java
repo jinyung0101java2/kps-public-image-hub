@@ -1,6 +1,9 @@
 package org.kps.pub.image.hub.ui.common;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.kps.pub.image.hub.ui.common.model.CommonStatusCode;
 import org.kps.pub.image.hub.ui.common.model.ResultStatus;
 import org.kps.pub.image.hub.ui.login.LoginService;
@@ -11,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -43,6 +48,9 @@ public class RestTemplateService {
     private final OAuth2AuthorizedClientService authorizedClientService;
     private HttpServletRequest request;
 
+    @Autowired
+    private HttpServletRequest httpServletRequest;
+
 
     /**
      * Instantiates a new Rest template service
@@ -66,6 +74,93 @@ public class RestTemplateService {
         cpApiBase64Authorization = "Bearer ";
     }
 
+    /**
+     * t 전송(sendLoginHarbor t)
+     *
+     * @param <T>          the type parameter
+     * @param reqUrl       the req url
+     * @param httpMethod   the http method
+     * @param bodyObject the body object
+     * @param responseType the response type
+     * @return the t
+     */
+    public <T> T sendLoginHarbor(String reqUrl, HttpMethod httpMethod, Object bodyObject, Class<T> responseType){
+        HttpHeaders reqHeaders = new HttpHeaders();
+        HttpServletResponse httpServletResponse;
+
+//        String ck ="";
+//        try {
+//            Cookie[] cookies=httpServletRequest.getCookies();
+//            if(cookies!=null){
+//                for (Cookie c : cookies) {
+//                    String name = c.getName();
+//                    String value = c.getValue();
+//                    if (name.equals("JSESSIONID")) {
+//                       ck = value;
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//
+//        }
+//
+//        //sid 가져오기
+//        HttpSession session = request.getSession();
+//        String sessionId = session.getId();
+
+
+
+
+//        reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
+        reqHeaders.add(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        reqHeaders.add("ACCEPT", MediaType.APPLICATION_JSON_VALUE);
+        reqHeaders.add("x-harbor-csrf-token", "");
+//        reqHeaders.add("Cookie", );
+//        reqHeaders.add("Cookie", "JSESSIONID=" + ck + ";" + "sid=" + sessionId);
+//        reqHeaders.add("Cookie", "_gorilla_csrf=" + ck + ";" + "sid=" + sessionId);
+
+        HttpEntity<Object> reqEntity;
+        reqEntity = new HttpEntity<>(bodyObject, reqHeaders);
+
+        ClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+        RestTemplate restTemplate = new RestTemplate(httpRequestFactory);
+
+        reqUrl = reqUrl + "/c/oidc/login?redirect_url=/harbor/projects";
+//        reqUrl = reqUrl + "/c/oidc/onboard";
+        ResponseEntity<T> resEntity = null;
+        System.out.println(reqHeaders);
+
+//        resEntity = restTemplate.exchange(reqUrl, httpMethod, reqEntity, responseType);
+
+        try {
+            resEntity = restTemplate.exchange(reqUrl, httpMethod, reqEntity, responseType);
+                LOGGER.info("Response Type: {}", "response body is null");
+                LOGGER.info("Response Status: {}", resEntity.getStatusCode());
+                LOGGER.info("Response Headers: {}", resEntity.getHeaders());
+                LOGGER.info("Response Headers Location: {}", resEntity.getHeaders().getLocation());
+                LOGGER.info("Response Headers x-harbor-csrf-token: {}", resEntity.getHeaders().get("x-harbor-csrf-token"));
+//                LOGGER.info("Response Body: {}", resEntity.getBody());
+
+            T location = (T) resEntity.getHeaders().getLocation();
+
+            System.out.println(location);
+
+            return (T) resEntity.getHeaders();
+        } catch (HttpStatusCodeException exception) {
+            LOGGER.info("HttpStatusCodeException API Call URL : {}, errorCode : {}, errorMessage : {}", CommonUtils.loggerReplace(reqUrl), CommonUtils.loggerReplace(exception.getRawStatusCode()), CommonUtils.loggerReplace(exception.getMessage()));
+
+            for (CommonStatusCode code : CommonStatusCode.class.getEnumConstants()) {
+                if (code.getCode() == exception.getRawStatusCode()) {
+                    return (T) new ResultStatus(Constants.RESULT_STATUS_FAIL, exception.getStatusText(), code.getCode(), code.getMsg());
+                }
+            }
+
+        } catch (Exception e) {
+            return (T) new ResultStatus(Constants.RESULT_STATUS_FAIL, e.getMessage(), CommonStatusCode.INTERNAL_SERVER_ERROR.getCode(), CommonStatusCode.INTERNAL_SERVER_ERROR.getMsg());
+        }
+
+        return resEntity.getBody();
+    };
 
     /**
      * Send t
@@ -298,7 +393,7 @@ public class RestTemplateService {
      *
      * @return the HttpEntity<Object>
      */
-    public  HttpEntity<Object>  updateRequestEntity(String reqApi, Object bodyObject, String contentType) {
+    public  HttpEntity<Object> updateRequestEntity(String reqApi, Object bodyObject, String contentType) {
 
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.add(AUTHORIZATION_HEADER_KEY, base64Authorization);
@@ -332,5 +427,19 @@ public class RestTemplateService {
 
         return oAuthTokens;
     }
+
+//    public String getCookie() {
+//        Cookie[] cookies=req.getCookies(); // 모든 쿠키 가져오기
+//        if(cookies!=null){
+//            for (Cookie c : cookies) {
+//                String name = c.getName(); // 쿠키 이름 가져오기
+//                String value = c.getValue(); // 쿠키 값 가져오기
+//                if (name.equals("내가 찾으려는 쿠키 ID")) {
+//                    return value;
+//                }
+//            }
+//        }
+//        return value;
+//    }
 
 }

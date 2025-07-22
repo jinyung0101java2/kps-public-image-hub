@@ -28,6 +28,8 @@ public class IntroOverviewController {
         this.loginService = loginService;
     }
 
+    private static final String BASE_URL = "images/dashboard/";
+
     /**
      * index 페이지 이동(Move Intro overview page)
      *
@@ -43,6 +45,11 @@ public class IntroOverviewController {
 //        model.addAttribute("email", usersLoginMetaData.getUserEmail());
 
         return "images/overview";
+    }
+
+    @GetMapping(value = ConstantsUrl.URI_DASHBOARD)
+    public String getDashboard() {
+        return BASE_URL + "dashboard";
     }
 
 }

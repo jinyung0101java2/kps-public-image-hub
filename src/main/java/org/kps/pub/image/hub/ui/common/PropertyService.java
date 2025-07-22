@@ -18,6 +18,9 @@ public class PropertyService {
     @Value("${private.repository.url}")
     private String privateRepositoryUrl;
 
+    @Value("${harborDomain.url}")
+    private String harborDomainUrl;
+
     @Value("${spring.security.oauth2.client.registration.keycloak.client-id}")
     private String keycloakClientId;
 

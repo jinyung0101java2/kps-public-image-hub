@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+<div layout:fragment="content" class="article">
+	<div id="content" class="sub-page">
+		<article class="base-pro">
+			<div class="notice">
+				<div class="table_style01" style="margin-bottom: 0">
+					<iframe src="https://dashboard.133.186.152.47.nip.io/" width="100%", height=1000px>
+					</iframe>
+					<table>
+						<caption>Projects List</caption>
+						<colgroup >
+							<col width="4%" />
+							<col width="16%" />
+							<col width="16%" />
+							<col width="16%" />
+							<col width="16%" />
+							<col width="16%" />
+							<col width="16%" />
+						</colgroup>
+						<thead>
+						<tr>
+							<th scope="col"><input type="checkbox" name="all-projects" id="all-projects"><label for="all-projects" style="padding-left: 27px; position: relative; cursor: pointer;"></label></th>
+							<th scope="col">Name</th>
+							<th scope="col">Access Level</th>
+							<th scope="col">Role</th>
+							<th scope="col">Type</th>
+							<th scope="col">Repositories Count</th>
+							<th scope="col">Create Time</th>
+						</tr>
+						</thead>
+						<tbody class="listTable">
+						</tbody>
+					</table>
+				</div>
+				<a href="javascript:" id="create" class="create" th:text="#{M0938}" ></a>
+				<a href="javascript:" id="delete" class="delete" style="top: 35px; right: 150px;" th:text="#{M0026}" ></a>
+			</div>
+		</article>
+		<article id="latestPush" class="location" style="padding-top: 0; height: 65px;">
+			<ul class="title">
+				<span th:text="#{M0952}"></span>
+			</ul>
+		</article>
+		<article>
+			<fieldset>
+				<ul class="resource" style="display: flex; float: left; padding-left: 30px; padding-bottom: 40px;">
+				</ul>
+			</fieldset>
+		</article>
+	</div>
+</div>
+<th:block layout:fragment="script">
+</th:block>
+</html>
